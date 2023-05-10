@@ -1,0 +1,55 @@
+
+Date: 3rd May 2K23 - 10:18 PM..!!
+
+KOH Notes for Two Pointers.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+Short n Crisp Notes:
+--------------------
+
+1. Two Pointers is a technique used for solving problems that involve iterating over an array or list using two pointers or indices.
+
+2. The basic idea behind Two Pointers is to use two pointers to iterate through the array or list in parallel, usually starting at the beginning and end, or at two different ends.
+   The pointers typically move through the array or sequence at different rates, with one pointer moving faster than the other.
+
+3. Two Pointers can only be applied to SORTED arrays, lists or collections.
+
+4. When using Two Pointers, it's important to keep track of the indices of the pointers, and to make sure that they covers edge cases but don't go out of bounds.
+
+5. Two pointers can be used to solve a variety of problems, including finding pairs of elements that meet certain criteria, searching for a subarray with a specific sum, and merging two sorted arrays.
+
+6. Two pointers are often used in conjunction with sorting algorithms, such as merge sort or quicksort.
+
+7. The Two Pointers technique can often reduce the time complexity of a problem from O(n^2) to O(n) or O(n log n), making it much more efficient.
+
+8. Two Pointers can be used to optimize space complexity by performing operations in place instead of creating new data structures.
+
+9. Two Pointers can be used in combination with other techniques to solve more complex problems.
+- binary search, 
+- sliding windows, 
+- sorting algorithms like merge sort or quicksort, etc. 
+
+10. Two Pointers technique can be used to solve a wide variety of problems, including:
+- finding pairs with a given sum, 
+- finding the longest subarray with a given sum, 
+- finding duplicates, 
+- finding the longest substring without repeating characters, 
+- removing duplicates from a sorted array or list, 
+- sliding windows - such as finding the maximum sum of a subarray of size k, 
+- reversing elements of an array or list, such as reversing a subarray of size k.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+LeetCode #1: Two Sum
+--------------------
+
+URL: https://leetcode.com/problems/two-sum/description/
+
+The Two Pointers technique is not well suited for solving LeetCode problem 1, Two Sum, because the input array is not sorted.
+
+The Two Pointers technique is typically used for problems where the input array is sorted, and we need to find a specific element or a pair of elements that meet certain criteria. For example, finding a pair of elements in a sorted array that add up to a given target sum can be solved using the Two Pointers technique in O(n) time complexity.
+
+However, for an unsorted array like the one in LeetCode problem 1, we cannot use the Two Pointers technique alone. We need to use some Auxilary Data Structure, such as a Hash Table or HashMap.
+
+-----------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,138 @@
+
+Date: 8th Apr. 2K23 - 02:42 PM..!!
+
+KOH Notes for Memory Allocation in Java.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+Short n Crisp Notes:
+--------------------
+
+1. Java uses two types of memory: stack and heap.
+2. Heap stores dynamically allocated memory and is slower.
+3. Stack stores function calls, parameters, local variables, and return addresses and is faster.
+4. Static variables are stored in the method area of the heap and require synchronization to access.
+5. Non-static instance members of a class are stored in the heap, and their references are stored on the stack.
+6. Garbage collection frees up memory that is no longer being used, but if memory is used faster than the garbage collector can free it up, it can lead to an out-of-memory error.
+7. Memory fragmentation occurs when there is not enough contiguous free space in the heap to satisfy a memory allocation request, even though the total amount of free space is sufficient.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Memory Allocation:
+------------------
+
+1. Java programs use two types of memory: stack and heap.
+
+2. Java uses automatic garbage collection to free up memory that is no longer being used, but if memory is being used faster than the garbage collector can free it up, the program can eventually run out of memory and crash due to an out-of-memory error.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+HEAP Memory:
+------------
+
+1. Heap is used to store dynamically allocated memory, and is slower and can suffer from memory fragmentation and leaks.
+	The heap is used to store objects that are created dynamically during the execution of the program.
+   	In Java, Objects created with the 'new' keyword are stored in the heap and accessed via reference variables.
+
+2. The heap is slower than the stack because it uses non-contiguous memory and has to allocate memory dynamically.
+	Memory fragmentation can cause slower performance and even memory leaks, where a program fails to deallocate memory that it no longer needs.
+
+
+3. The heap is managed dynamically, which can cause issues like memory fragmentation, slower performance, and memory leaks.
+   Memory leaks occur when a program fails to deallocate memory that it no longer needs, leading to a gradual loss of available memory and potential crashes.
+   To avoid memory leaks and ensure proper memory usage, it's important to release objects when they're no longer needed.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+STACK Memory:
+-------------
+
+The stack is used to store function calls, parameters, local variables, and return addresses, and is faster than the heap because it uses contiguous memory.
+
+The stack is managed automatically by the system, with each function call adding a new stack frame and each return statement removing the topmost stack frame.
+
+The reference to an object created on the heap is stored on the stack as a pointer to the memory location of the object. This reference is a local variable to the scope where it is defined and is stored on the stack frame associated with that scope.
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Static Instance:
+----------------
+
+1. Static variables are stored in a special area of memory called the method area (some more names), which is part of the HEAP and require synchronization to access.
+
+2. Accessing static variables requires synchronization, which can add overhead to the execution time.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Non-static Instance:
+--------------------
+
+1. Non-static instance members (fields) of a class are stored in the heap. Then, a reference to the memory location of the object on the heap is returned, and this reference is what is stored on the stack as a local variable.
+
+2. However, each object's reference (i.e. a pointer to the object's memory location) is stored on the stack. So, when you create a new object of a class, a reference to that object is created on the stack. The reference is a local variable to the scope where it is defined and is stored on the stack frame associated with that scope.
+
+3. When a class has non-static instance members of another class, the reference to the instance of that class is stored on the stack, and the instance itself is stored on the heap. 
+
+4. If a class has non-static instance member of another class, the object of the inner class is created on the heap and a reference to that object is stored on the stack as a pointer.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Garbage Collection & Memory Error:
+----------------------------------
+
+1. What is Garbage Collection?
+	Java uses automatic garbage collection to free up memory that is no longer being used by a program. The garbage collector periodically runs in the background and identifies and deletes objects that are no longer referenced by any part of the program. This helps prevent memory leaks and frees up memory for the program to use.
+ 
+2. What is Out Of Memory Error?
+	If the program continues to run without releasing any memory, it will eventually run out of available memory and crash due to an out-of-memory error.
+	Example: Infinite Recursion
+	
+3. Why there is Out Of Memory Error when Garbage Collection is done automatically by the JVM?
+	Garbage collection in Java is designed to automatically identify and remove unused objects from the heap. However, if a program continues to allocate new objects without ever releasing them, the garbage collector will not be able to free up enough memory to prevent an out-of-memory error.
+
+	In other words, if the program is using memory faster than the garbage collector can free it up, the heap will eventually become full and the program will crash due to an out-of-memory error. This is why it's important to be careful with memory usage and ensure that objects are properly released when they're no longer needed.
+	-	Amazing Explanation..!! :D
+	
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Memory Fragmentaion:
+--------------------
+
+Memory fragmentation occurs when there is not enough contiguous free space in the heap to satisfy a memory allocation request, even though the total amount of free space is sufficient. For example, imagine the heap has two free blocks of memory, one block of size 10 and another block of size 20. If a request is made for 15 bytes of memory, the request cannot be satisfied because there is no contiguous block of memory of that size. The heap is considered fragmented.
+
+When a program requests memory from the heap and there is not enough contiguous free space available, the heap manager must search for a combination of free blocks of memory that add up to the requested size. This can be a slow process, especially if the heap is heavily fragmented, with many small blocks of free memory scattered throughout the heap.
+
+Additionally, when a program deallocates memory, it creates more small free blocks of memory that can further contribute to fragmentation. Over time, if the heap becomes heavily fragmented, the heap manager may have to perform more complex and time-consuming algorithms to find suitable blocks of memory to allocate, which can slow down the program's performance.
+
+In extreme cases, memory leaks can occur, where a program fails to deallocate memory that it no longer needs, leading to a gradual loss of available memory and potential crashes.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Memory Leaks:
+-------------
+
+Memory leaks occur in computer programs when dynamically allocated memory is not released after it is no longer needed, resulting in a gradual loss of available memory. This can lead to potential crashes or other unexpected behavior in the program.
+
+In Java, memory leaks can occur when objects are not properly released by the garbage collector. For example, if an object is assigned to a variable, but the variable is never assigned to null or goes out of scope, the object will continue to exist in memory even if it is no longer needed. If this happens repeatedly over the course of the program's execution, it can result in a significant loss of available memory and ultimately cause the program to crash due to an out-of-memory error.
+
+To prevent memory leaks in Java, it's important to ensure that objects are properly released when they are no longer needed. This can be done by explicitly assigning null to object references or by using the try-with-resources statement to automatically close resources after they are used. Proper coding practices and regular testing can also help identify and prevent memory leaks in Java programs.
+
+
+-----------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,173 @@
+
+Date: 5th May 2K23 - 01:00 AM..!!
+
+Problem#: 88. Merge Sorted Array
+
+URL: https://leetcode.com/problems/merge-sorted-array
+
+Keywords: Two Pointers, Mid-pointer, Merge Sort
+
+----------------------------------------------------------------------------------------------------
+
+Notes:
+------
+
+When merging two sorted arrays, we can use a two-pointer approach to merge them into a single sorted array.
+
+We can use two pointers to keep track of the current index in each array we are iterating over.
+
+We can move the pointers based on certain conditions, such as comparing the values at the current indices.
+
+We can start from either end of the arrays depending on which side has more empty space or which one is longer.
+
+In some cases, it may be necessary to use a temporary array to store elements temporarily while we merge the two arrays.
+
+We can use an extra array to store one of the arrays temporarily if we don't have enough empty space in the first array
+to accommodate both arrays but using an extra array increases the space complexity of the solution.
+
+The time complexity of the solution using the Two Pointers technique is generally O(m+n), where m and n are the lengths of the arrays being merged.
+
+Depending on the problem, we may need to start iterating from either end of the arrays or from the middle.
+
+----------------------------------------------------------------------------------------------------
+
+New Topics Learnt:
+------------------
+
+System.arraycopy(srcArr, srcArrStartIndex, targetArr, targetArrStartIndex, numOfElementsToBeCopied);
+
+public static void arraycopy(Object source_arr, int sourcePos, Object dest_arr, int destPos, int len)
+Parameters :
+source_arr : array to be copied from
+sourcePos : starting position in source array from where to copy
+dest_arr : array to be copied in
+destPos : starting position in destination array, where to copy in
+len : total no. of components to be copied.
+
+----------------------------------------------------------------------------------------------------
+
+Clean & Short Code Approach: using Mid-pointer.
+
+Code:
+
+class Solution {
+
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        
+        solution3(nums1, m, nums2, n);
+
+        // solution2(nums1, m, nums2, n);
+        // solution1(nums1, m, nums2, n);
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public void solution3(int[] nums1, int m, int[] nums2, int n) {
+        /*
+            Time:   O(m + n)
+            Space:  O(1)
+            Approach: Clean & Optimized - Two Pointers Technique - Filling nums1 Array from end.
+        */
+
+        int index1 = m - 1;
+        int index2 = n - 1;
+        int tempIndex = m + n - 1;
+
+        while (index1 >= 0 && index2 >= 0) nums1[tempIndex--] = nums1[index1] > nums2[index2] ? nums1[index1--] : nums2[index2--];
+        System.arraycopy(nums2, 0, nums1, 0, index2 + 1);
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public void solution2(int[] nums1, int m, int[] nums2, int n) {
+        /*
+            Time:   O(m + n)
+            Space:  O(1)
+            Approach: Two Pointers Technique - Filling nums1 Array from end.
+        */
+
+        int index1 = m - 1;
+        int index2 = n - 1;
+        int tempIndex = m + n - 1;
+
+        for (int i = m + n - 1; i >= 0; i--, tempIndex--) {
+            
+            if (index2 == -1) {
+                while (index1 >= 0) nums1[tempIndex--] = nums1[index1--];
+                break;
+            }
+
+            if (index1 == -1) {
+                while (index2 >= 0) nums1[tempIndex--] = nums2[index2--];
+                break;
+            }
+
+            int x1 = nums1[index1];
+            int x2 = nums2[index2];
+
+            if (x1 > x2) {
+                nums1[tempIndex] = x1;
+                index1--;
+            } else {
+                nums1[tempIndex] = x2;
+                index2--;
+            }
+
+        }
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public void solution1(int[] nums1, int m, int[] nums2, int n) {
+        /*
+            Time:   O(m + n)
+            Space:  O(m)
+            Approach: Two Pointers Technique - Filling nums1 Array from start.
+        */
+
+        if (nums2.length == 0) return;
+        if (nums1.length == 0) {
+            nums1 = Arrays.copyOf(nums2, m + n); //  When nums1 is empty array, Merge it by copying nums2.
+            return;
+        }
+
+        int index1 = 0;
+        int index2 = 0;
+        int tempIndex = 0;
+
+        int[] tempNums = Arrays.copyOf(nums1, m);
+
+        for (int i = 0; i < m + n; i++) {
+
+            if (tempIndex == m) {
+                while (index2 < n) nums1[index1++] = nums2[index2++];   //  Populate nums1 with remaining elements from nums2.
+                break;
+            }
+
+            if (index2 == n) {
+                while (tempIndex < m) nums1[index1++] = tempNums[tempIndex++];   //  Populate nums1 with remaining elements from tempNums.
+                break;
+            }
+
+            int x2 = nums2[index2];
+            int temp = tempNums[tempIndex];
+
+            if (x2 < temp) {
+                nums1[index1] = x2;
+                index2++;
+            } else {
+                nums1[index1] = temp;
+                tempIndex++;
+            }
+
+            index1++;
+        }
+
+    }
+
+}
+
+----------------------------------------------------------------------------------------------------

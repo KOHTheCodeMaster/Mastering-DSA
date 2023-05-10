@@ -1,0 +1,118 @@
+
+Date: 5th May 2K23 - 09:52 AM..!!
+
+Problem#: 167. Two Sum II - Input Array Is Sorted
+
+URL: https://leetcode.com/problems/two-sum-ii-input-array-is-sorted
+
+Keywords: Two Pointers, Binary Search
+
+----------------------------------------------------------------------------------------------------
+
+Notes:
+------
+
+There are different approaches to solve this problem, such as Brute-force, Binary Search, Hash Map and Two Pointers.
+
+The two-pointer approach can be a very efficient way to solve problems involving arrays that are sorted or have some kind of pattern.
+
+Binary search is another algorithm that can be used to solve problems involving arrays, especially when the array is sorted.
+
+----------------------------------------------------------------------------------------------------
+
+Code:
+
+class Solution {
+    
+    public int[] twoSum(int[] numbers, int target) {
+
+        return solutionUsingTwoPointers(numbers, target);
+
+        // return solutionUsingBinarySearch(numbers, target);
+
+    }
+
+//	----------------------------------------------------------------------------------------------------
+
+    public int[] solutionUsingTwoPointers(int[] numbers, int target) {
+        /*
+            Time:       O(n)
+            Space:      O(1)
+            Approach:   Using Two Pointers
+        */
+        
+        int[] resultIndices = new int[2];
+
+        int left = 0;
+        int right = numbers.length - 1;
+
+        while (left < right) {
+            int num1 = numbers[left];
+            int num2 = numbers[right];
+
+            if (num1 + num2 == target) {
+                resultIndices[0] = left + 1;
+                resultIndices[1] = right + 1;
+                break;
+            }
+            else if (num1 + num2 > target) right--;
+            else left++;
+        }
+
+        return resultIndices;
+
+    }
+
+//	----------------------------------------------------------------------------------------------------
+
+    public int[] solutionUsingBinarySearch(int[] numbers, int target) {
+        /*
+            Time:       O(n log(n))
+            Space:      O(1)
+            Approach:   Using Binary Search
+        */
+        
+        int[] resultIndices = new int[2];
+
+        for (int i = 0; i < numbers.length; i++) {
+
+            int num1 = numbers[i];
+            int num2 = target - num1;
+
+            int startIndex = i + 1;
+            int endIndex = numbers.length - 1;
+
+            int index2 = binarySearchTargetIndex(numbers, startIndex, endIndex, num2);
+
+            if (index2 != -1) {
+                resultIndices[0] = i + 1;
+                resultIndices[1] = index2 + 1;
+                break;
+            }
+
+        }
+
+        return resultIndices;
+
+    }
+
+    private int binarySearchTargetIndex(int[] arr, int startIndex, int endIndex, int target) {
+
+        int mid;
+
+        while (startIndex <= endIndex) {
+
+            mid = (startIndex + endIndex) / 2;
+
+            if (arr[mid] == target) return mid;
+            else if (arr[mid] > target) endIndex = mid - 1;
+            else startIndex = mid + 1;
+        }
+
+        return -1;
+
+    }
+
+}
+
+----------------------------------------------------------------------------------------------------

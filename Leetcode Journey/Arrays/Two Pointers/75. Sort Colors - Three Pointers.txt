@@ -1,0 +1,123 @@
+
+Date: 4th May 2K23 - 02:10 PM
+
+Problem#: 75. Sort Colors
+
+URL: https://leetcode.com/problems/sort-colors
+
+Keywords: Two Pointers, Three Pointers, Counting Sort
+
+----------------------------------------------------------------------------------------------------
+
+Notes:
+
+Two pointers is a common technique to solve problems that involve iterating over a sequence from both ends simultaneously.
+
+In the case of the "Sort Colors" problem, we can use three pointers to track the current position of the 0's, 1's, and 2's in the array.
+
+By swapping elements based on their values, we can move the 0's to the front, the 2's to the end, and the 1's in the middle.
+
+----------------------------------------------------------------------------------------------------
+
+Clean & Short Approach: Using 3 Pointers with Mid-Pointer acting as the key element to partition the array into three segments
+
+Code:
+
+class Solution {
+    
+    public void sortColors(int[] nums) {
+        
+        usingMidPointer(nums);
+
+        // using3Pointers(nums);
+
+        // usingCountingSort(nums);
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public void usingMidPointer(int[] nums) {
+        /*
+            Time:       O(n)
+            Space:      O(1)
+            Approach:   Using 3 Pointers with Mid-Pointer acting as the key element to partition the array into three segments
+        */
+
+        int low = 0, mid = 0, high = nums.length - 1;
+        
+        while (mid <= high) {
+
+            if (nums[mid] == 0) {
+                nums[mid] = nums[low];
+                nums[low] = 0;          //  SWAPPING - Temp var not required since swap value is always constant 0.
+                low++;
+                mid++;
+            } else if (nums[mid] == 2) {
+                nums[mid] = nums[high];
+                nums[high] = 2;          //  SWAPPING - Temp var not required since swap value is always constant 2.
+                high--;
+            } else mid++;
+
+        }
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public void using3Pointers(int[] nums) {
+        /*
+            Time:       O(n)
+            Space:      O(1)
+            Approach:   Using 3 Pointers to partition the array into three segments, swapping the elements if necessary, 
+                        and updating the pointers to keep track of the segments containing all 0s, 1s, and 2s.
+        */
+        
+        int leftIndex = 0;
+        int rightIndex = nums.length - 1;
+        int midIndex = rightIndex - 1;
+    
+        while (leftIndex <= midIndex && midIndex <= rightIndex) {
+
+            if (nums[leftIndex] > nums[midIndex]) swap(nums, leftIndex, midIndex);
+
+            if (nums[midIndex] > nums[rightIndex]) swap(nums, midIndex, rightIndex);
+
+            if (nums[leftIndex] == 0) leftIndex++;
+            if (nums[rightIndex] == 2) rightIndex--;
+            if (nums[midIndex] == nums[rightIndex]) midIndex--;
+
+        }
+
+    }
+
+    private void swap(int[] nums, int index1, int index2) {
+
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public void usingCountingSort(int[] nums) {
+        /*
+            Time:       O(n)
+            Space:      O(1)
+            Approach:   Using Counting Sort Technique to count the number of occurrences of each color (0, 1, and 2) and 
+                        then modify the original array in place to reflect the sorted order. 
+        */
+
+        int[] countArr = new int[3];
+        for (int i: nums) countArr[i]++;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i < countArr[0]) nums[i] = 0;
+            else if (i < countArr[0] + countArr[1]) nums[i] = 1;
+            else nums[i] = 2;
+        }
+    }
+
+}
+
+----------------------------------------------------------------------------------------------------

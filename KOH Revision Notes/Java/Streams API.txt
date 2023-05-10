@@ -1,0 +1,204 @@
+
+Date: 10th Apr. 2K23 - 11:45 AM..!!
+
+KOH Notes for Streams API in Java:
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Short n Crisp Notes:
+--------------------
+
+1. Java Streams provide a way to process collections of data in a functional way.
+2. Streams are not data structures and do not store elements. Instead, they provide a way to process and manipulate data.
+3. Streams can be created from collections, arrays, and other sources using the stream() method.
+4. Intermediate operations can be applied to streams to transform, filter, or sort the data.
+5. Terminal operations are used to produce a result or side-effect, such as printing or collecting the data.
+6. Streams can be parallelized to take advantage of multi-core processors, using the parallelStream() method.
+7. Stream operations can be lazy, meaning they are only executed when a terminal operation is called.
+8. Stream operations are often expressed using lambda expressions or method references.
+9. Common intermediate operations include map(), filter(), and sorted().
+10. Common terminal operations include forEach(), reduce(), and collect().
+11. Streams can be infinite, meaning they can generate an endless stream of data.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Stream:
+-------
+
+Stream is a sequence of elements supporting sequential and parallel aggregate operations.
+
+Stream is not a data type or a collection by itself. Sequence of elements are created out of a source, like a collection object, and transformed using different operations connected as pipelines and ends with a final operation.
+
+Source – is an entity that stores or generates data. For example, it can be a collection or a random number generator.
+
+Operations – Intermediate and terminal are two types of operations in a stream. Intermediate operation returns a new stream and terminal operation consumes a stream.
+
+Stream – So the stream starts from a source and followed by one or more intermediate operations and ends with a terminal operation.
+
+Example Stream: following code prints strings greater than length 5 by iterating a collection.
+
+Collection fruitList = Arrays.asList("Apple", "Orange","Strawberry");
+fruitList.stream().filter(element -> element.length() > 5)
+	.forEach(element -> System.out.println(element));
+	
+	
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Streams Operations:
+-------------------
+
+As stated above, Java stream operation are of two types intermediate and terminal. The intermediate operations are classified as stateful or stateless based on their ability to process elements independently.
+
+If each of the element can be processed independently without retaining any information for processing other elements, then they are stateless. If any information is retained for processing of other elements, then they are stateful.
+
+
+Stateless & Stateful Streams Intermediary Operations:
+
+Stateless Intermediate Operations 	-> Every individual element can be processed without the need for sharing information between them for processing.
+Stateful Intermediate Operations	-> Elements cannot be processed individually, they need to be compared with one another thus requiring information to be retained.
+Terminal operations 				-> consumes the stream pipeline. It does not produce another stream like intermediate operations. It produces a result or a side-effect.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Side Effect:
+------------
+
+In Java streams, a side-effect is any operation that modifies state outside the stream pipeline. For example, consider the following code snippet:
+
+List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+int sum = 0;
+
+list.stream()
+    .filter(n -> n % 2 == 0)
+    .forEach(n -> sum += n);
+	
+Here, we have a list of integers and we create a stream from it. We then use the filter() intermediate operation to keep only the even numbers in the stream, and finally use the forEach() terminal operation to add each even number to the sum variable. This modification of the sum variable is a side-effect.
+
+Another example of a side-effect is printing to the console using the System.out.println() method inside a stream pipeline. This does not produce a result, but it does modify the state of the console output, which is a side-effect.
+
+Operations like forEach() and peek() can only be executed using a side-effect. It can be useful for simple System.out.println for debugging small Java programs.
+
+It's generally a good practice to avoid side-effects in stream pipelines, and instead use terminal operations that produce a result, such as collect() or reduce().
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Lazy Stream Processing:
+-----------------------
+
+It's a common misconception to think that all intermediate operations are executed sequentially before the terminal operation is executed. However, this is not the case with Java streams, as intermediate operations are executed lazily only when the terminal operation requires it.
+
+In the case of filter and findFirst, filter is executed lazily, which means that it only processes the elements that are required by the next operation, which is findFirst. When findFirst is executed, it requests the first element that matches the condition from filter, and filter starts processing the elements only until it finds the first match.
+
+
+In summary, the lazy initialization of intermediate operations means that the stream elements are not actually processed until a terminal operation is called. This allows for more efficient and optimized code because only the necessary operations are performed on the stream elements. The order in which the intermediate operations are executed is determined by the terminal operation and the elements that are required to satisfy it.
+
+
+When a terminal operation, such as the forEach method, is executed on a Java stream, each stream pipeline is executed lazily for every element in the stream until all the pipelines have been successfully completed in a single flow. After that, the next element in the stream is processed by all the stream pipelines in the same manner. This ensures that the intermediate operations are not executed unnecessarily for elements that are not needed by the terminal operation, resulting in more efficient and optimized code.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+PERFECT EXAMPLE:
+----------------
+
+Consider below example to understand how the lazy initialization works.
+
+
+private void streamsFlowCheck1() {
+
+	List<Integer> numbers = Arrays.asList(1,1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+	Stream<Integer> stream = numbers.stream()
+			.peek(x -> System.out.println("\nPeek1 -> x: " + x))
+			.filter(n -> {
+				boolean b = n % 2 == 0;
+				System.out.println("\nFilter -> n: " + n + " | b: " + b);
+				return b;
+			})
+			.peek(x -> System.out.println("\nPeek2 -> x: " + x))
+			.map(n -> {
+				int i = n * n;
+				System.out.println("\nMap -> n: " + n + " | i: " + i);
+				return i;
+			})
+			.peek(x -> System.out.println("\nPeek3 -> x: " + x))
+			.limit(3);
+
+	List<Integer> list = new ArrayList<>();
+	stream.forEach(x -> {
+		list.add(x);
+		System.out.println("\nForeach -> x: " + x);
+	});
+
+	System.out.println("\nList: ");
+	list.forEach(System.out::println);
+
+}
+	
+	
+
+
+Let's break down the code step by step and explain how the lazy initialization works:
+
+First, we define a list of integers and assign it to the variable numbers.
+List<Integer> numbers = Arrays.asList(1,1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+Then, we create a stream from this list using the stream() method.
+Stream<Integer> stream = numbers.stream()
+
+Next, we use the peek() intermediate operation to print out the current element of the stream. This operation does not modify the stream in any way, but it allows us to see what's happening at each step of the stream processing.
+.peek(x -> System.out.println("\nPeek1 -> x: " + x))
+
+We then use the filter() intermediate operation to filter out only the even numbers from the stream. This operation returns a new stream with only the filtered elements.
+.filter(n -> {
+    boolean b = n % 2 == 0;
+    System.out.println("\nFilter -> n: " + n + " | b: " + b);
+    return b;
+})
+
+We use another peek() operation to print out the filtered elements from the stream.
+.peek(x -> System.out.println("\nPeek2 -> x: " + x))
+
+We use the map() intermediate operation to square each of the filtered elements. This operation returns a new stream with the mapped elements.
+.map(n -> {
+    int i = n * n;
+    System.out.println("\nMap -> n: " + n + " | i: " + i);
+    return i;
+})
+
+We use another peek() operation to print out the mapped elements from the stream.
+.peek(x -> System.out.println("\nPeek3 -> x: " + x))
+
+Finally, we use the limit() intermediate operation to limit the stream to only the first three elements. This operation returns a new stream with only the limited elements.
+.limit(3);
+
+At this point, no intermediate operations have actually been executed yet because we haven't called a terminal operation. The stream pipeline is just a set of instructions for how to process the stream.
+
+We then call the forEach() terminal operation on the stream to iterate over each element of the stream and print it out. This is the point where all of the intermediate operations are executed, but only for the elements that are required to satisfy the limit() operation.
+
+List<Integer> list = new ArrayList<>();
+stream.forEach(x -> {
+    list.add(x);
+    System.out.println("\nForeach -> x: " + x);
+});
+
+Finally, we print out the contents of the list variable, which contains the first three squared even numbers from the original list.
+System.out.println("\nList: ");
+list.forEach(System.out::println);
+
+
+In summary, the lazy initialization of intermediate operations means that the stream elements are not actually processed until a terminal operation is called. This allows for more efficient and optimized code because only the necessary operations are performed on the stream elements. The order in which the intermediate operations are executed is determined by the terminal operation and the elements that are required to satisfy it.
+
+
+When a terminal operation, such as the forEach method, is executed on a Java stream, each stream pipeline is executed lazily for every element in the stream until all the pipelines have been successfully completed in a single flow. After that, the next element in the stream is processed by all the stream pipelines in the same manner. This ensures that the intermediate operations are not executed unnecessarily for elements that are not needed by the terminal operation, resulting in more efficient and optimized code.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
