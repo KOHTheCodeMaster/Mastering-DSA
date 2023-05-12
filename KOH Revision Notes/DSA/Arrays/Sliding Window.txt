@@ -1,114 +1,107 @@
 
-Date: 5th May 2K23 - 12:22 PM..!!
+Start Date:      5th May 2K23 - 12:22 PM
+Last Modified:  12th May 2K23 - 01:53 PM
 
-KOH Notes for Sliding Window
+Title: Sliding Window
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
-Short n Crisp Notes:
+Short & Crisp Notes:
 --------------------
 
+Definition: The Sliding Window technique is a commonly used algorithmic pattern for efficiently processing arrays or lists by maintaining a window of elements.
 
-Definition
-----------
+Basic Idea: The technique involves using two pointers to define a window and sliding the window over the array or list to process the elements within the window.
 
-Sliding Window technique is a problem-solving approach that involves using a fixed-size/dynamic window to iterate through an array or sequence (contiguous data structure).
+Data Structure: The Sliding Window technique can be applied to arrays, lists, strings, and other sequential data structures.
 
+Window Size: The window size can be fixed or variable, depending on the problem requirements.
 
-Basic Idea
-----------
+Problem-solving: The Sliding Window technique is useful for solving problems that involve finding subarrays or sublists with specific properties, such as maximum or minimum sum, longest subarray with a given sum, longest substring with unique characters, etc.
 
-The idea behind the Sliding Window technique is to use two pointers to maintain a window of a fixed size as it moves through the array or sequence.
+Optimization: The technique aims to optimize time complexity by avoiding redundant computations through reusing previous computations.
 
-The window starts from the beginning of the array or sequence, and the two pointers move towards the end, adjusting the window size as necessary.
+Time Complexity: The Sliding Window technique generally achieves linear time complexity, O(n), by processing each element only once.
 
+Space Complexity: The space complexity depends on the problem requirements and additional data structures used. It can range from O(1) to O(n) in most cases.
 
-Characteristics
----------------
+Complementary Techniques: The Sliding Window technique can be combined with other techniques like Two Pointers, Binary Search, and Dynamic Programming for solving complex problems.
 
-The Sliding Window technique is typically used for problems that involve finding a subarray or subsequence of a certain size that satisfies certain conditions.
-
-Space Complexity -> It is a space-efficient algorithm since it only requires O(1) space.
-
-It works well only when iterating with Contiguous/Sequential Data Structures, including arrays, strings, and linked lists.
-
-Limitation / Disadvantage -> it may not work well for problems that require finding overlapping subarrays or substrings.
-
-
-Applications
-------------
+Use Cases:
+- Finding the maximum or minimum sum of subarrays or sublists.
+- Finding the longest subarray or sublist with a given sum or property.
+- Finding the longest substring with unique characters.
+- Finding the number of subarrays or sublists satisfying certain conditions.
+- Finding the median or average of all subarrays of a given size.
 
 
-The Sliding Window technique can be used to solve a wide range of problems, including:
-- Finding the maximum or minimum sum subarray of a fixed size.									-->		LeetCode #209: 	Minimum Size Subarray Sum
-- Finding the longest subarray or substring of a fixed size that satisfies certain conditions.	-->		LeetCode #3: 	Longest Substring Without Repeating Characters
-- Finding all subarrays or substrings of a fixed size that satisfy certain conditions.			-->		LeetCode #438: 	Find All Anagrams in a String
-- Finding the number of distinct elements in all subarrays or substrings of a fixed size.		-->		LeetCode #992: 	Subarrays with K Different Integers
+----------------------------------------------------------------------------------------------------
 
+Example: LeetCode Problem #209. Minimum Size Subarray Sum
+Given an array of positive integers and a target sum, find the minimum size of a contiguous subarray whose sum is greater than or equal to the target.
 
-Implementation
---------------
+Algorithm: Sliding Window - finding the minimum size subarray with a given sum
 
-The Sliding Window technique can be implemented using two pointers, which maintain the start and end of the window.
+1.  Initialize the window's left and right pointers to the start of the array or list.
+    left = 0, right = 0
+2.  Initialize variables to track the minimum window size and current window sum.
+    minSize = infinity, windowSum = 0
+3.  Iterate the right pointer over the array or list:
+    - Add the current element to the window sum.
+    - If the window sum is greater than or equal to the target sum, do the following:
+        - Update the minimum window size if necessary.
+        - Subtract the leftmost element from the window sum.
+        - Move the left pointer to the right by one.
+4. Repeat step 3 until the right pointer reaches the end of the array or list.
+5. Return the minimum window size. If no valid window is found, return 0.
 
-The window size is adjusted by moving the pointers, which can be done in O(1) time.
+Time Complexity: O(n) | Space Complexity: O(1)
 
-The algorithm typically runs in O(n) time, where n is the length of the array or sequence.
+Java Code Solution:
 
+public int minSubArrayLen(int target, int[] nums) {
+    /*
+        Time Complexity: O(n)
+        Space Complexity: O(1)
+        Approach: Sliding Window
+    */
 
-Algorithm
----------
+    int left = 0;
+    int minSize = Integer.MAX_VALUE;
+    int windowSum = 0;
 
-Let's consider an example problem to see how the Sliding Window technique can be applied. The problem is to find the maximum sum subarray of a given array of integers.
+    for (int right = 0; right < nums.length; right++) {
+        windowSum += nums[right];
 
-1. Initialize two pointers, left and right, to the first element of the array.
-2. Initialize a variable sum to zero.
-3. Initialize a variable maxSum to negative infinity.
-4. While right is less than the length of the array:
-	● Add the value of the element at right to sum.
-	● If sum is greater than maxSum, update maxSum to sum.
-	● If sum is negative, reset sum to zero and increment left.
-	● Increment right.
-5. Return maxSum.
+        while (windowSum >= target) {
+            minSize = Math.min(minSize, right - left + 1);
+            windowSum -= nums[left];
+            left++;
+        }
+    }
 
+    return minSize != Integer.MAX_VALUE ? minSize : 0;
+}
 
-Example
--------
+----------------------------------------------------------------------------------------------------
 
-Example Problem: Maximum Sum Subarray
+LeetCode Problems:
 
-Let's consider an example problem to see how the Sliding Window technique can be applied. The problem is to find the maximum sum subarray of a given array of integers.
+#3:     Longest Substring Without Repeating Characters - https://leetcode.com/problems/longest-substring-without-repeating-characters/
+#76:    Minimum Window Substring - https://leetcode.com/problems/minimum-window-substring/
+#209:   Minimum Size Subarray Sum - https://leetcode.com/problems/minimum-size-subarray-sum/
+#239:   Sliding Window Maximum - https://leetcode.com/problems/sliding-window-maximum/
+#424:   Longest Repeating Character Replacement - https://leetcode.com/problems/longest-repeating-character-replacement/
+#567:   Permutation in String - https://leetcode.com/problems/permutation-in-string/
+#632:   Smallest Range Covering Elements from K Lists - https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/
 
-Given an array of integers and a fixed size k, find the maximum sum of any subarray of size k.
-Using the Sliding Window technique, we can maintain a window of size k and slide it through the array, keeping track of the maximum sum of the subarray seen so far.
-The algorithm runs in O(n) time, where n is the length of the array.
-
-
-Common Mistakes
----------------
-
-Not considering all possible cases when adjusting the size of the sliding window.
-Forgetting to update the maximum or minimum value when moving the sliding window.
-Not checking for edge cases, such as when the size of the sliding window is greater than the length of the array or sequence.
-
+----------------------------------------------------------------------------------------------------
 
 Resources
 ---------
 
-Some good resources for learning about the Sliding Window technique include:
 1. YouTube - Sliding Window Technique - Algorithmic Mental Models
    URL: https://www.youtube.com/watch?v=MK-NZ4hN7rs
-   
-2. LeetCode problems that use the Sliding Window technique:
-    - LeetCode #209: 	Minimum Size Subarray Sum
-    - LeetCode #3: 		Longest Substring Without Repeating Characters
-    - LeetCode #438: 	Find All Anagrams in a String
-    - LeetCode #992: 	Subarrays with K Different Integers
-	
-3. "Cracking the Coding Interview" by Gayle Laakmann McDowell
 
-4. "Introduction to Algorithms" by Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein
-
-
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 

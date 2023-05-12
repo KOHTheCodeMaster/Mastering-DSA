@@ -1,55 +1,106 @@
 
-Date: 3rd May 2K23 - 10:18 PM..!!
+Start Date:      3rd May 2K23 - 10:18 PM
+Last Modified:  12th May 2K23 - 01:53 PM
 
-KOH Notes for Two Pointers.
+Title: Two Pointers
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
-Short n Crisp Notes:
+Short & Crisp Notes:
 --------------------
 
-1. Two Pointers is a technique used for solving problems that involve iterating over an array or list using two pointers or indices.
+Definition: Two Pointers is a technique used for iterating over a sorted array or list using two pointers or indices.
 
-2. The basic idea behind Two Pointers is to use two pointers to iterate through the array or list in parallel, usually starting at the beginning and end, or at two different ends.
-   The pointers typically move through the array or sequence at different rates, with one pointer moving faster than the other.
+Basic Idea: Use two pointers to traverse the array or list in parallel, typically starting at different ends or positions.
 
-3. Two Pointers can only be applied to SORTED arrays, lists or collections.
+Data Structure: Two Pointers technique is applicable to sorted arrays, lists, or collections.
 
-4. When using Two Pointers, it's important to keep track of the indices of the pointers, and to make sure that they covers edge cases but don't go out of bounds.
+Index Tracking: Keep track of pointer indices to handle edge cases and prevent out-of-bounds errors.
 
-5. Two pointers can be used to solve a variety of problems, including finding pairs of elements that meet certain criteria, searching for a subarray with a specific sum, and merging two sorted arrays.
+Problem-solving: Two Pointers can be used for finding pairs, searching for subarrays with specific sums, merging sorted arrays, and more.
 
-6. Two pointers are often used in conjunction with sorting algorithms, such as merge sort or quicksort.
+Relationship with Sorting: Two Pointers often complement sorting algorithms like merge sort or quicksort.
 
-7. The Two Pointers technique can often reduce the time complexity of a problem from O(n^2) to O(n) or O(n log n), making it much more efficient.
+Time Complexity: Two Pointers technique reduces time complexity from O(n^2) to O(n) or O(n log n), improving efficiency.
 
-8. Two Pointers can be used to optimize space complexity by performing operations in place instead of creating new data structures.
+Space Complexity: O(1) since only two pointers or indices are used.
 
-9. Two Pointers can be used in combination with other techniques to solve more complex problems.
-- binary search, 
-- sliding windows, 
-- sorting algorithms like merge sort or quicksort, etc. 
+Complementary Techniques: Combine Two Pointers with binary search, sliding windows, and sorting algorithms for solving complex problems.
 
-10. Two Pointers technique can be used to solve a wide variety of problems, including:
-- finding pairs with a given sum, 
-- finding the longest subarray with a given sum, 
-- finding duplicates, 
-- finding the longest substring without repeating characters, 
-- removing duplicates from a sorted array or list, 
-- sliding windows - such as finding the maximum sum of a subarray of size k, 
-- reversing elements of an array or list, such as reversing a subarray of size k.
+Use Cases:
+- Finding pairs with a given sum,
+- Finding the longest subarray with a given sum,
+- Finding duplicates,
+- Finding the longest substring without repeating characters,
+- Removing duplicates from a sorted array or list,
+- Sliding windows - such as finding the maximum sum of a subarray of size k,
+- Reversing elements of an array or list, such as reversing a subarray of size k.
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
-LeetCode #1: Two Sum
---------------------
+Example: LeetCode Problem# 167. Two Sum II - Input Array Is Sorted
+Given a sorted array, find two elements that add up to a given target sum.
 
-URL: https://leetcode.com/problems/two-sum/description/
+Algorithm: Two Pointers - finding the pair with a given sum in a sorted array
 
-The Two Pointers technique is not well suited for solving LeetCode problem 1, Two Sum, because the input array is not sorted.
+1.  Initialize two pointers "leftIndex" and "rightIndex" to the start and end of the array respectively.
+    leftIndex = 0, rightIndex = length of numbers - 1
+2. While leftIndex < rightIndex, do the following:
+    A. Check if the sum of numbers[leftIndex] and numbers[rightIndex] equals the target. If yes, break the loop.
+    B. If the sum is greater than the target, decrement rightIndex by 1.
+    C. If the sum is less than the target, increment leftIndex by 1.
+3.  Return an array of two integers, the indices of the two elements whose sum equals the target.
+    return [leftIndex + 1, rightIndex + 1]  //  Adding + 1 since the indices are 1-based in the problem.
+4.  End of Algorithm.
+
+The result array will contain the indices of the pair in the numbers array that adds up to the target.
+Time Complexity: O(n)   |   Space Complexity: O(1)
+
+Java Code Solution:
+
+public int[] findPairWithSum(int[] numbers, int target) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(1)
+        Approach:           Using Two Pointers
+    */
+
+    int leftIndex = 0;
+    int rightIndex = numbers.length - 1;
+
+    while (leftIndex < rightIndex) {
+        if (numbers[leftIndex] + numbers[rightIndex] == target) break;
+        else if (numbers[leftIndex] + numbers[rightIndex] > target) rightIndex--;
+        else leftIndex++;
+    }
+
+    return new int[] { leftIndex + 1, rightIndex + 1};
+
+}
+
+----------------------------------------------------------------------------------------------------
+
+LeetCode Problems:
+
+#1:     Two Sum - https://leetcode.com/problems/two-sum/
+#15:    3Sum - https://leetcode.com/problems/3sum/
+#16:    3Sum Closest - https://leetcode.com/problems/3sum-closest/
+#26:    Remove Duplicates from Sorted Array - https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+#27:    Remove Element - https://leetcode.com/problems/remove-element/
+#42:    Trapping Rain Water - https://leetcode.com/problems/trapping-rain-water/
+#88:    Merge Sorted Array - https://leetcode.com/problems/merge-sorted-array/
+#167:   Two Sum II - https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
+#345:   Reverse Vowels of a String - https://leetcode.com/problems
+
+----------------------------------------------------------------------------------------------------
+
+Extra Notes:
+------------
+
+The Two Pointers technique is not well suited for solving LeetCode Problem #1: Two Sum, because the input array is not sorted.
 
 The Two Pointers technique is typically used for problems where the input array is sorted, and we need to find a specific element or a pair of elements that meet certain criteria. For example, finding a pair of elements in a sorted array that add up to a given target sum can be solved using the Two Pointers technique in O(n) time complexity.
 
 However, for an unsorted array like the one in LeetCode problem 1, we cannot use the Two Pointers technique alone. We need to use some Auxilary Data Structure, such as a Hash Table or HashMap.
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------

@@ -1,0 +1,56 @@
+
+Start Date:     11th May 2K23 - 03:42 PM
+Last Modified:  12th May 2K23 - 01:53 PM
+
+Title: KOH Notes Template
+
+----------------------------------------------------------------------------------------------------
+
+Short & Crisp Notes:
+--------------------
+
+Definition:
+
+Basic Idea:
+
+Data Structure:
+
+Extra Point 1:
+
+Extra Point 2:
+
+Time Complexity:
+
+Space Complexity:
+
+Problem-solving:
+
+Complementary Techniques:
+
+Use Cases:
+- Use Case 1
+- Use Case 2
+- Use Case 3
+...
+
+----------------------------------------------------------------------------------------------------
+
+Example:
+
+Algorithm: [Algorithm Name]
+
+Step 1: [Description of the first step]
+Step 2: [Description of the second step]
+...
+Step N: [Description of the Nth step]
+
+Java Code Solution:
+
+----------------------------------------------------------------------------------------------------
+
+LeetCode Problems:
+
+ #: LeetCode Problem Title      -   URL
+#1: Two Sum                     -   https://leetcode.com/problems/two-sum
+
+----------------------------------------------------------------------------------------------------

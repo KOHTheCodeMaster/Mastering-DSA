@@ -1,0 +1,57 @@
+
+Date: 11 May 2K23 - 03:42 PM..!!
+
+Title: KOH Notes Template
+
+----------------------------------------------------------------------------------------------------
+
+Short & Crisp Notes:
+--------------------
+
+This section is about providing a summary of the main points covered in the template.
+Its purpose is to offer a quick overview before delving into the details. It should be kept concise and clear.
+
+Definition: In this section, the aim is to give a brief explanation or definition of the topic being discussed. The goal is to provide a clear understanding of what the topic is about. Simple language should be used, and unnecessary jargon should be avoided.
+
+Basic Idea: This section expands on the main concept or idea behind the topic. It explains the fundamental principles or key features that define it. Examples or illustrations can be used to grasp the concept more easily.
+
+Data Structure: The purpose of this section is to describe the data structure associated with the topic. It explains how it works, its components, and any relevant operations or functionalities it supports. It may also mention the advantages or use cases where this data structure is commonly applied.
+
+Extra Point 1: (Index Tracking) If index tracking is a specific technique or feature related to the topic, this section explains what it is and how it is used. Examples or scenarios may be provided to illustrate when index tracking becomes useful or necessary.
+
+Extra Point 2: (Relationship with Sorting) If there is a relationship between the topic and sorting algorithms, this section describes it. It explains how the topic complements or interacts with sorting techniques. Examples or scenarios may be provided to illustrate situations where both concepts are used together.
+
+Time Complexity: This section explains the time complexity analysis of the topic. It discusses the efficiency in terms of the input size and how it affects the performance of the algorithm or operation. Big O notation should be used to represent the time complexity.
+
+Space Complexity: This section explains the space complexity analysis of the topic. It describes how much memory or space is required to implement or execute the algorithm or operation. Again, Big O notation should be used to represent the space complexity.
+
+Problem-solving: This section discusses how the topic can be applied to solve problems or address specific challenges. It explains the approach or algorithm involved in problem-solving using this topic. Step-by-step explanations or pseudocode may be provided if applicable.
+
+Complementary Techniques: If there are any additional techniques or strategies that work well in conjunction with the topic, this section mentions them. It explains how these complementary techniques enhance or optimize the performance or functionality of the topic. Examples or use cases may be provided to illustrate when they are commonly used together.
+
+Use Cases: This section provides practical examples or applications of the topic. It includes specific scenarios or problems where the topic can be utilized effectively. Each use case is listed clearly and concisely.
+
+----------------------------------------------------------------------------------------------------
+
+Example: LeetCode Problem#: Title
+One liner problem statement.
+
+Algorithm: [Algorithm Name] - one liner short description
+
+Step 1: [Description of the first step]
+Step 2: [Description of the second step]
+...
+Step N: [Description of the Nth step]
+
+
+Java Code Solution:
+
+----------------------------------------------------------------------------------------------------
+
+LeetCode Problems: In this section, specific LeetCode problems related to the topic are listed.
+The problem number, problem title, and a URL to the problem description are provided.
+This allows to explore and practice their understanding of the topic by solving these problems.
+
+ #: LeetCode Problem Title      -   URL
+
+----------------------------------------------------------------------------------------------------
