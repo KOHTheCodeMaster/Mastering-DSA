@@ -3,10 +3,10 @@ Date: 10th Apr. 2K23 - 11:45 AM..!!
 
 KOH Notes for Streams API in Java:
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
-Short n Crisp Notes:
+Short & Crisp Notes:
 --------------------
 
 1. Java Streams provide a way to process collections of data in a functional way.
@@ -21,7 +21,7 @@ Short n Crisp Notes:
 10. Common terminal operations include forEach(), reduce(), and collect().
 11. Streams can be infinite, meaning they can generate an endless stream of data.
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 Stream:
@@ -44,7 +44,7 @@ fruitList.stream().filter(element -> element.length() > 5)
 	.forEach(element -> System.out.println(element));
 	
 	
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 Streams Operations:
@@ -62,7 +62,7 @@ Stateful Intermediate Operations	-> Elements cannot be processed individually, t
 Terminal operations 				-> consumes the stream pipeline. It does not produce another stream like intermediate operations. It produces a result or a side-effect.
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 Side Effect:
@@ -86,7 +86,7 @@ Operations like forEach() and peek() can only be executed using a side-effect. I
 It's generally a good practice to avoid side-effects in stream pipelines, and instead use terminal operations that produce a result, such as collect() or reduce().
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 Lazy Stream Processing:
@@ -103,7 +103,7 @@ In summary, the lazy initialization of intermediate operations means that the st
 When a terminal operation, such as the forEach method, is executed on a Java stream, each stream pipeline is executed lazily for every element in the stream until all the pipelines have been successfully completed in a single flow. After that, the next element in the stream is processed by all the stream pipelines in the same manner. This ensures that the intermediate operations are not executed unnecessarily for elements that are not needed by the terminal operation, resulting in more efficient and optimized code.
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 PERFECT EXAMPLE:
@@ -201,4 +201,4 @@ In summary, the lazy initialization of intermediate operations means that the st
 When a terminal operation, such as the forEach method, is executed on a Java stream, each stream pipeline is executed lazily for every element in the stream until all the pipelines have been successfully completed in a single flow. After that, the next element in the stream is processed by all the stream pipelines in the same manner. This ensures that the intermediate operations are not executed unnecessarily for elements that are not needed by the terminal operation, resulting in more efficient and optimized code.
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------

@@ -1,0 +1,149 @@
+
+Start Date:     13th May 2K23 - 07:46 AM
+Last Modified:  13th May 2K23 - 08:23 AM
+
+Title: Kadane's Algorithm
+
+----------------------------------------------------------------------------------------------------
+
+Short & Crisp Notes:
+--------------------
+
+Definition: Kadane's Algorithm is an efficient algorithm for finding the maximum sum of a contiguous subarray within an array of integers.
+
+Basic Idea: The algorithm scans the array from left to right, keeping track of the maximum subarray sum and the current sum encountered so far.
+
+Data Structure: Kadane's Algorithm is applicable to arrays or lists of integers.
+
+Local Maxima: At each index, compare the current element with the sum of the current element and the maximum subarray sum ending at the previous index.
+
+Global Maxima: Update the maximum subarray sum if the local maximum is greater than the global maximum.
+
+Time Complexity:    O(n)    |    Space Complexity:    O(1)
+
+Edge Cases: Kadane's Algorithm handles arrays with all negative elements by returning the least negative element as the maximum subarray sum.
+
+Variations: Kadane's Algorithm can be modified to return the subarray with the maximum sum instead of just the sum itself.
+
+Applications: Kadane's Algorithm is used in various fields, such as financial analysis, image processing, and data analysis, where finding the maximum subarray sum is important.
+
+Complementary Techniques: Kadane's Algorithm can be combined with other techniques like Dynamic Programming for solving complex problems.
+
+Use Cases:
+- Finding the maximum sum of a contiguous subarray.
+- Finding the maximum sum subarray with specific properties (e.g., non-empty, positive elements, etc.).
+- Solving problems related to maximum subarray sum.
+- Kadane's Algorithm can be extended to solve problems like finding the maximum product subarray or the maximum circular subarray sum.
+
+----------------------------------------------------------------------------------------------------
+
+Example: LeetCode Problem #53. Maximum Subarray
+Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+
+Algorithm: Kadane's Algorithm - finding the maximum sum subarray
+
+1.  Initialize variables to track the maximum sum and current sum.
+    maxSum = Integer.MIN_VALUE, currentSum = 0
+2.  Iterate through the array:
+    - Add the current element to the currentSum.
+    - If the currentSum > maxSum, update the maxSum with currentSum.
+    - If the currentSum < 0 (becomes negative), reset it to 0.
+3.  Repeat step 2 until the end of the array.
+4.  Return the maxSum.
+
+Time Complexity: O(n) | Space Complexity: O(1)
+
+Java Code Solution:
+
+public int maxSubArray(int[] nums) {
+    int maxSum = nums[0];
+    int currentSum = nums[0];
+
+    for (int currentNum : nums) {
+        currentSum += currentNum;
+        maxSum = Math.max(maxSum, currentSum);
+        currentSum = Math.max(currSu, 0);
+    }
+
+    return maxSum;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Modified Kadane's Algorithm:
+
+"By updating currentSum based on the maximum subarray ending at each position, the algorithm effectively "cuts off" any negative contribution to the sum."
+
+Using the omission of an explicit check for negative sums does not impact the correctness or accuracy of the algorithm.
+
+Algorithm:
+
+1.  Initialize variables maxSum and currSum to the first element of the array.
+    maxSum = nums[0], currentSum = nums[0]
+2.  Iterate through the array starting from the second element:
+    - If the (currentSum + currentNum) > currentNum, update the currentSum.
+    - Otherwise, set the currentSum to the currentNum.
+    - Update the maximum sum if the currentSum is greater.
+3.  Return the maximum sum.
+Time Complexity: O(n) | Space Complexity: O(1)
+
+Explanation using the Example [2, -3, 1]:
+
+1.  Initially, currentSum is set to the first element, which is 2.
+2.  Moving to the second element, -3, adding it to currentSum gives -1.
+3.  Instead of resetting currentSum to -3 (starting a new subarray), the algorithm keeps the value -1 because it is greater than -3.
+4.  Moving to the third element, 1, adding it to currentSum gives 0.
+5.  Since 1 is greater than 0, the algorithm updates currentSum to 1, keeping the subarray [2, -3, 1].
+6.  However, the maxSum remains 2 because it represents the maximum sum encountered so far.
+
+In this example, the negative contribution of -3 is effectively "cut off" by updating currentSum based on the maximum subarray ending at each position.
+Although currentSum becomes 0, the algorithm recognizes that including 1 alone is a better choice, resulting in the correct maxSum value of 2.
+
+Java Code Solution:
+
+public int usingKadaneAlgoModified(int[] nums) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(1)
+        Approach:           Modified Kadane's' Algorithm - implicitly handling negative sum.
+    */
+    int result = nums[0];
+    int windowSum = nums[0];
+
+    for (int i = 1; i < nums.length; i++) {
+        windowSum = Math.max(nums[i], windowSum + nums[i]);
+        result = Math.max(result, windowSum);
+    }
+
+    return result;
+}
+
+----------------------------------------------------------------------------------------------------
+
+LeetCode Problems:
+
+#53: Maximum Subarray - https://leetcode.com/problems/maximum-subarray/
+#325: Maximum Size Subarray Sum Equals k - https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
+#560: Subarray Sum Equals K - https://leetcode.com/problems/subarray-sum-equals-k/
+#974: Subarray Sums Divisible by K - https://leetcode.com/problems/subarray-sums-divisible-by-k/
+#1191: K-Concatenation Maximum Sum - https://leetcode.com/problems/k-concatenation-maximum-sum/
+#1493: Longest Subarray of 1's After Deleting One Element - https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/
+#1695: Maximum Erasure Value - https://leetcode.com/problems/maximum-erasure-value/
+
+----------------------------------------------------------------------------------------------------
+
+Resources:
+
+YouTube - Kadane's Algorithm - The Maximum Subarray Problem
+URL: https://www.youtube.com/watch?v=2MmGzdiKR9Y
+
+YouTube - Sliding Window Technique - Algorithmic Mental Models
+URL: https://www.youtube.com/watch?v=MK-NZ4hN7rs
+
+GeeksforGeeks - Kadane's Algorithm for Maximum Subarray Sum
+URL: https://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
+
+LeetCode Discuss - A collection of Kadane's Algorithm problems on LeetCode
+URL: https://leetcode.com/discuss/general-discussion/458695/dynamic-programming-patterns#KadanesAlgorithm
+
+----------------------------------------------------------------------------------------------------

@@ -3,9 +3,9 @@ Date: 8th Apr. 2K23 - 02:42 PM..!!
 
 KOH Notes for Memory Allocation in Java.
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
-Short n Crisp Notes:
+Short & Crisp Notes:
 --------------------
 
 1. Java uses two types of memory: stack and heap.
@@ -17,7 +17,7 @@ Short n Crisp Notes:
 7. Memory fragmentation occurs when there is not enough contiguous free space in the heap to satisfy a memory allocation request, even though the total amount of free space is sufficient.
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 Memory Allocation:
@@ -28,7 +28,7 @@ Memory Allocation:
 2. Java uses automatic garbage collection to free up memory that is no longer being used, but if memory is being used faster than the garbage collector can free it up, the program can eventually run out of memory and crash due to an out-of-memory error.
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 HEAP Memory:
@@ -47,7 +47,7 @@ HEAP Memory:
    To avoid memory leaks and ensure proper memory usage, it's important to release objects when they're no longer needed.
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 STACK Memory:
@@ -61,7 +61,7 @@ The reference to an object created on the heap is stored on the stack as a point
 
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 Static Instance:
@@ -72,7 +72,7 @@ Static Instance:
 2. Accessing static variables requires synchronization, which can add overhead to the execution time.
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 Non-static Instance:
@@ -87,7 +87,7 @@ Non-static Instance:
 4. If a class has non-static instance member of another class, the object of the inner class is created on the heap and a reference to that object is stored on the stack as a pointer.
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 Garbage Collection & Memory Error:
@@ -107,7 +107,7 @@ Garbage Collection & Memory Error:
 	-	Amazing Explanation..!! :D
 	
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 Memory Fragmentaion:
@@ -122,7 +122,7 @@ Additionally, when a program deallocates memory, it creates more small free bloc
 In extreme cases, memory leaks can occur, where a program fails to deallocate memory that it no longer needs, leading to a gradual loss of available memory and potential crashes.
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 Memory Leaks:
@@ -135,4 +135,4 @@ In Java, memory leaks can occur when objects are not properly released by the ga
 To prevent memory leaks in Java, it's important to ensure that objects are properly released when they are no longer needed. This can be done by explicitly assigning null to object references or by using the try-with-resources statement to automatically close resources after they are used. Proper coding practices and regular testing can also help identify and prevent memory leaks in Java programs.
 
 
------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
