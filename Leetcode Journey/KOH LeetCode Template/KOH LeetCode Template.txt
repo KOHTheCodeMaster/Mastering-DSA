@@ -1,0 +1,161 @@
+
+Date: 4th May 2K23 - 02:10 PM
+
+LeetCode Problem #: 1. Two Sum
+
+URL: https://leetcode.com/problems/sort-colors
+
+Keywords: Two Pointers, Binary Search, Kadane's Algorithm, ...
+
+----------------------------------------------------------------------------------------------------
+
+Problem: Provide a brief description of the problem with example.
+
+Feasible Solutions:
+
+1. Naive - one liner description.
+2. Bruteforce - one liner description.
+3. Two Pointers - one liner description.
+4. Binary Search - one liner description.
+5. Kadane's Algorithm - one liner description.
+6. Modified/Optimised Alternative Solution if any.
+...
+
+Optimised Solution: Short, Clean & Optimised Approach from the above feasible solutions.
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Summarize the key insights or lessons learned from this problem.
+- This can be a list of important concepts, techniques, or patterns that you've applied.
+
+Notes:
+- Additional notes 1.
+- Additional notes 2.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Name of the approach
+
+Description: Explain the approach in a few sentences.
+
+Time Complexity: Analyze the time complexity of the approach.
+
+Space Complexity: Analyze the space complexity of the approach.
+
+Pseudocode: Write the pseudocode for the approach.
+
+Java Code: Write the Java Code for the approach.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: ...
+...
+...
+Approach N: ...
+
+----------------------------------------------------------------------------------------------------
+
+LeetCode Solution including all the possible approaches:
+(Sample LeetCode Problem#: 75. Sort Colors)
+
+Code:
+
+class Solution {
+
+    public void sortColors(int[] nums) {
+
+        usingMidPointer(nums);
+
+        // using3Pointers(nums);
+
+        // usingCountingSort(nums);
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public void usingMidPointer(int[] nums) {
+        /*
+            Time:       O(n)
+            Space:      O(1)
+            Approach:   Using 3 Pointers with Mid-Pointer acting as the key element to partition the array into three segments
+        */
+
+        int low = 0, mid = 0, high = nums.length - 1;
+
+        while (mid <= high) {
+
+            if (nums[mid] == 0) {
+                nums[mid] = nums[low];
+                nums[low] = 0;          //  SWAPPING - Temp var not required since swap value is always constant 0.
+                low++;
+                mid++;
+            } else if (nums[mid] == 2) {
+                nums[mid] = nums[high];
+                nums[high] = 2;          //  SWAPPING - Temp var not required since swap value is always constant 2.
+                high--;
+            } else mid++;
+
+        }
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public void using3Pointers(int[] nums) {
+        /*
+            Time:       O(n)
+            Space:      O(1)
+            Approach:   Using 3 Pointers to partition the array into three segments, swapping the elements if necessary,
+                        and updating the pointers to keep track of the segments containing all 0s, 1s, and 2s.
+        */
+
+        int leftIndex = 0;
+        int rightIndex = nums.length - 1;
+        int midIndex = rightIndex - 1;
+
+        while (leftIndex <= midIndex && midIndex <= rightIndex) {
+
+            if (nums[leftIndex] > nums[midIndex]) swap(nums, leftIndex, midIndex);
+
+            if (nums[midIndex] > nums[rightIndex]) swap(nums, midIndex, rightIndex);
+
+            if (nums[leftIndex] == 0) leftIndex++;
+            if (nums[rightIndex] == 2) rightIndex--;
+            if (nums[midIndex] == nums[rightIndex]) midIndex--;
+
+        }
+
+    }
+
+    private void swap(int[] nums, int index1, int index2) {
+
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public void usingCountingSort(int[] nums) {
+        /*
+            Time:       O(n)
+            Space:      O(1)
+            Approach:   Using Counting Sort Technique to count the number of occurrences of each color (0, 1, and 2) and
+                        then modify the original array in place to reflect the sorted order.
+        */
+
+        int[] countArr = new int[3];
+        for (int i: nums) countArr[i]++;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i < countArr[0]) nums[i] = 0;
+            else if (i < countArr[0] + countArr[1]) nums[i] = 1;
+            else nums[i] = 2;
+        }
+    }
+
+}
+
+----------------------------------------------------------------------------------------------------
