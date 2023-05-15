@@ -1,0 +1,248 @@
+
+Date: 15th May 2023 - 10:44 PM
+
+Problem#: 15. 3Sum
+
+URL: https://leetcode.com/problems/3sum/
+
+Keywords: Two Pointers, Three Pointers, Sorting, Array
+
+----------------------------------------------------------------------------------------------------
+
+Problem Description:
+Given an array nums of n integers, find all unique triplets in the array which gives the sum of zero.
+
+Example:
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+
+----------------------------------------------------------------------------------------------------
+
+Approaches:
+
+1. Brute Force
+2. Three Pointers (Sorting)
+
+Optimized Solution: Three Pointers (Sorting)
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Sorting the array can help in applying the two-pointer approach efficiently with third pointer.
+- Removing duplicates in the result set can be achieved by skipping duplicate elements during the iteration.
+- Care should be taken to avoid duplicate triplets in the result set.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Brute Force
+
+Description:
+- Generate all possible triplets from the array.
+- Check if the sum of each triplet is zero.
+- Keep track of unique triplets and return them.
+
+Algo:
+- Initialize an empty list to store the result.
+- Iterate over each element in the array up to the (n-2)th index.
+- For each element, iterate over the remaining elements from the next index to the (n-1)th index.
+- For each pair of elements, iterate over the remaining elements from the (i+2)th index to the last index.
+- Check if the sum of the triplet is zero.
+- If it is zero and the triplet is unique, add it to the result list.
+- Return the result list.
+
+Time Complexity: O(n^3), where n is the length of the array.
+
+Space Complexity: O(1), as we are not using any extra space apart from the result list.
+
+Java Code:
+
+public List<List<Integer>> solutionUsingBruteForce(int[] nums) {
+    /*
+        Time Complexity:    O(n^3)
+        Space Complexity:   O(1)
+        Approach:           Bruteforce - Fails for Long Input with Time Limit Exceeded Error.
+    */
+
+    List<List<Integer>> result = new ArrayList<>();
+
+    for (int i = 0; i < nums.length - 2; i++) {
+
+        for (int j = i + 1; j < nums.length - 1; j++) {
+
+            for (int k = j + 1; k < nums.length; k++) {
+
+                if (nums[i] + nums[j] + nums[k] == 0) {
+
+                    List<Integer> triplet = Arrays.asList(nums[i], nums[j], nums[k]);
+                    Collections.sort(triplet);
+
+                    if (!result.contains(triplet)) result.add(triplet);
+
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Three Pointers - using three pointers to find unique triplets that sum up to zero in the given array
+
+Description:
+- Sort the array in ascending order.
+- Iterate over the array using the left pointer.
+- For each element at the left pointer, use two additional pointers (mid and right) to find the remaining two elements that sum up to the negation of the current element.
+- Adjust the pointers based on the sum of the three elements:
+  - If the sum is less than zero, increment the mid pointer.
+  - If the sum is greater than zero, decrement the right pointer.
+  - If the sum is equal to zero, add the triplet to the result list and skip duplicates by incrementing the mid pointer and decrementing the right pointer.
+- Continue until the left pointer reaches the third-to-last element.
+
+Time Complexity: O(n^2)
+- Sorting the array takes O(n log n) time.
+- The outer loop runs in O(n) time.
+- The inner loop runs in O(n) time in the worst case when the array has all distinct elements.
+- The worst-case time complexity of the updated code is O(n^2), where n is the length of the input array.
+
+Space Complexity: O(1)
+- The space complexity is constant as we are not using any extra space proportional to the input size.
+
+Note: The code handles duplicates to avoid duplicate triplets in the result list by skipping duplicates and adjusting the pointers accordingly.
+
+Java Code:
+
+private List<List<Integer>> solutionUsing3Pointers(int[] nums) {
+    /*
+        Time Complexity:    O(n^2)
+        Space Complexity:   O(1)
+        Approach:           Three Pointers - using three pointers to find unique triplets that sum up to zero in the given array
+    */
+
+    List<List<Integer>> resultList = new ArrayList<>();
+
+    Arrays.sort(nums);
+
+    for (int leftIndex = 0; leftIndex < nums.length - 2; leftIndex++) {
+
+        if (nums[leftIndex] > 0) break;
+        if (leftIndex > 0 && nums[leftIndex] == nums[leftIndex - 1]) continue; // Skip duplicates for leftIndex
+
+        int midIndex = leftIndex + 1;
+        int rightIndex = nums.length - 1;
+
+        while (midIndex < rightIndex) {
+
+            int sum = nums[leftIndex] + nums[midIndex] + nums[rightIndex];
+
+            if (sum < 0) midIndex++;
+            else if (sum > 0) rightIndex--;
+            else {
+
+                resultList.add(Arrays.asList(nums[leftIndex], nums[midIndex], nums[rightIndex]));
+
+                // Optimize by Skipping duplicates and adjust indices accordingly
+                while (midIndex < rightIndex && nums[midIndex] == nums[midIndex + 1]) midIndex++;
+                while (midIndex < rightIndex && nums[rightIndex] == nums[rightIndex - 1]) rightIndex--;
+
+                midIndex++;
+                rightIndex--;
+            }
+        }
+    }
+
+    return resultList;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution:
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        return solutionUsing3Pointers(nums);
+
+        // return solutionUsingBruteForce(nums);    //  Time Limit Reached.
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    private List<List<Integer>> solutionUsing3Pointers(int[] nums) {
+        /*
+            Time Complexity:    O(n^2)
+            Space Complexity:   O(1)
+            Approach:           Three Pointers - using three pointers to find unique triplets that sum up to zero in the given array
+        */
+
+        List<List<Integer>> resultList = new ArrayList<>();
+
+        Arrays.sort(nums);
+
+        for (int leftIndex = 0; leftIndex < nums.length - 2; leftIndex++) {
+
+            if (nums[leftIndex] > 0) break;
+            if (leftIndex > 0 && nums[leftIndex] == nums[leftIndex - 1]) continue; // Skip duplicates for leftIndex
+
+            int midIndex = leftIndex + 1;
+            int rightIndex = nums.length - 1;
+
+            while (midIndex < rightIndex) {
+
+                int sum = nums[leftIndex] + nums[midIndex] + nums[rightIndex];
+
+                if (sum < 0) midIndex++;
+                else if (sum > 0) rightIndex--;
+                else {
+
+                    resultList.add(Arrays.asList(nums[leftIndex], nums[midIndex], nums[rightIndex]));
+
+                    // Optimize by Skipping duplicates and adjust indices accordingly
+                    while (midIndex < rightIndex && nums[midIndex] == nums[midIndex + 1]) midIndex++;
+                    while (midIndex < rightIndex && nums[rightIndex] == nums[rightIndex - 1]) rightIndex--;
+
+                    midIndex++;
+                    rightIndex--;
+                }
+            }
+        }
+
+        return resultList;
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public List<List<Integer>> solutionUsingBruteForce(int[] nums) {
+        /*
+            Time Complexity:    O(n^3)
+            Space Complexity:   O(1)
+            Approach:           Bruteforce - Fails for Long Input with Time Limit Exceeded Error.
+        */
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        for (int i = 0; i < nums.length - 2; i++) {
+
+            for (int j = i + 1; j < nums.length - 1; j++) {
+
+                for (int k = j + 1; k < nums.length; k++) {
+
+                    if (nums[i] + nums[j] + nums[k] == 0) {
+
+                        List<Integer> triplet = Arrays.asList(nums[i], nums[j], nums[k]);
+                        Collections.sort(triplet);
+
+                        if (!result.contains(triplet)) result.add(triplet);
+
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+}
+
+----------------------------------------------------------------------------------------------------
