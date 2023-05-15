@@ -5,43 +5,203 @@ Problem#: 75. Sort Colors
 
 URL: https://leetcode.com/problems/sort-colors
 
-Keywords: Two Pointers, Three Pointers, Counting Sort
+Keywords: Two Pointers, Dutch National Flag Algorithm, Counting Sort
 
 ----------------------------------------------------------------------------------------------------
+
+Problem Description:
+Given an array nums containing only 0's, 1's, and 2's, sort the array in-place so that the numbers are arranged in ascending order.
+
+Example:     Input: [2,0,2,1,1,0]    Output: [0,0,1,1,2,2]
+
+----------------------------------------------------------------------------------------------------
+
+Feasible Solutions:
+
+1. Naive (Counting Sort)
+2. Two Pointers (Dutch National Flag Algorithm)
+3. Counting Sort
+4: Three-Pointer Partitioning
+
+Optimized Solution: Two Pointers (Dutch National Flag Algorithm)
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- The problem requires sorting an array of 0s, 1s, and 2s in-place.
+- The Dutch National Flag Algorithm, also known as the Three-Pointer Partitioning technique, is an efficient approach to solve this problem.
+- The algorithm uses three pointers to partition the array into segments for 0s, 1s, and 2s.
+- By swapping elements and updating the pointers, the algorithm achieves the desired sorting in a single pass through the array.
 
 Notes:
-
-Two pointers is a common technique to solve problems that involve iterating over a sequence from both ends simultaneously.
-
-In the case of the "Sort Colors" problem, we can use three pointers to track the current position of the 0's, 1's, and 2's in the array.
-
-By swapping elements based on their values, we can move the 0's to the front, the 2's to the end, and the 1's in the middle.
+- The Dutch National Flag Algorithm is particularly useful when dealing with problems that involve partitioning or sorting elements based on multiple distinct values.
+- The algorithm's time complexity is O(n), where n is the length of the array, making it an efficient solution for sorting the given array.
+- The space complexity of the algorithm is O(1), as it uses only a constant amount of extra space.
 
 ----------------------------------------------------------------------------------------------------
 
-Clean & Short Approach: Using 3 Pointers with Mid-Pointer acting as the key element to partition the array into three segments
+Approach 1: Naive (Counting Sort)
 
-Code:
+Description:
+- Initialize three counters count0, count1, and count2 to count the occurrences of 0s, 1s, and 2s, respectively.
+- Iterate over the array and increment the corresponding counter based on the current element's value.
+- Overwrite the elements in the array with 0s up to count0 times, followed by 1s up to count1 times, and finally 2s up to count2 times.
+
+Time Complexity: O(n), where n is the length of the array.
+
+Space Complexity: O(1), as we are using a fixed-size counter array.
+
+Java Code:
+
+public void sortColors(int[] nums) {
+    int count0 = 0, count1 = 0, count2 = 0;
+    int i = 0;
+
+    for (int num : nums) {
+        if (num == 0) count0++;
+        else if (num == 1) count1++;
+        else if (num == 2) count2++;
+    }
+
+    while (count0-- > 0) nums[i++] = 0;
+    while (count1-- > 0) nums[i++] = 1;
+    while (count2-- > 0) nums[i++] = 2;
+
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Two Pointers (Dutch National Flag Algorithm)
+
+Description:
+- The Dutch National Flag Algorithm partitions the array into three segments:
+- The elements before the low pointer are all 0s, the elements between the low and mid pointers are all 1s,
+- and the elements after the high pointer are all 2s. By appropriately swapping elements and moving the pointers,
+- it achieves the desired sorting order in a single pass through the array.
+
+Algo:
+- Initialize three pointers: `low`, `mid`, and `high`.
+- Iterate over the array using the `mid` pointer.
+- If `nums[mid]` is 0, swap it with `nums[low]` and increment both `low` and `mid`.
+- If `nums[mid]` is 2, swap it with `nums[high]` and decrement `high`.
+- If `nums[mid]` is 1, increment `mid` without swapping.
+- Continue until `mid` is less than or equal to `high`.
+
+Time Complexity: O(n), where n is the length of the array.
+
+Space Complexity: O(1), as we are using constant extra space.
+
+Java Code:
+
+public void sortColors(int[] nums) {
+    int low = 0, mid = 0, high = nums.length - 1;
+
+    while (mid <= high) {
+        if (nums[mid] == 0) {
+            swap(nums, low, mid);
+            low++;
+            mid++;
+        } else if (nums[mid] == 2) {
+            swap(nums, mid, high);
+            high--;
+        } else mid++;
+    }
+}
+
+private void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Counting Sort
+
+Description:
+- This approach applies the traditional counting sort algorithm,
+- where it counts the occurrences of each color (0, 1, and 2) in the array
+- and then modifies the original array in place to reflect the sorted order.
+
+Time Complexity: O(n), where n is the length of the array.
+
+Space Complexity: O(1), as we are using constant extra space.
+
+Java Code:
+
+public void usingCountingSort(int[] nums) {
+    int[] countArr = new int[3];
+    for (int i: nums) countArr[i]++;
+
+    for (int i = 0; i < nums.length; i++) {
+        if (i < countArr[0]) nums[i] = 0;
+        else if (i < countArr[0] + countArr[1]) nums[i] = 1;
+        else nums[i] = 2;
+    }
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 4: Three-Pointer Partitioning
+
+Description:
+- The algorithm iterates through the array and swaps elements if necessary,
+- while updating the pointers accordingly to maintain the desired partitioning.
+
+Time Complexity: O(n), where n is the length of the array.
+
+Space Complexity: O(1), as we are using constant extra space.
+
+Java Code:
+
+public void using3Pointers(int[] nums) {
+    int leftIndex = 0;
+    int rightIndex = nums.length - 1;
+    int midIndex = rightIndex - 1;
+
+    while (leftIndex <= midIndex && midIndex <= rightIndex) {
+        if (nums[leftIndex] > nums[midIndex]) swap(nums, leftIndex, midIndex);
+        if (nums[midIndex] > nums[rightIndex]) swap(nums, midIndex, rightIndex);
+
+        if (nums[leftIndex] == 0) leftIndex++;
+        if (nums[rightIndex] == 2) rightIndex--;
+        if (nums[midIndex] == nums[rightIndex]) midIndex--;
+    }
+}
+
+private void swap(int[] nums, int index1, int index2) {
+
+    int temp = nums[index1];
+    nums[index1] = nums[index2];
+    nums[index2] = temp;
+
+}
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution:
 
 class Solution {
     
     public void sortColors(int[] nums) {
         
-        usingMidPointer(nums);
+        // usingNaiveApproach(nums);
 
-        // using3Pointers(nums);
+        usingDutchNationalFlagAlgorithm(nums);
 
         // usingCountingSort(nums);
+
+        // using3PointersPartitioning(nums);
 
     }
 
 //  ----------------------------------------------------------------------------------------------------
 
-    public void usingMidPointer(int[] nums) {
+    public void usingDutchNationalFlagAlgorithm(int[] nums) {
         /*
             Time:       O(n)
             Space:      O(1)
-            Approach:   Using 3 Pointers with Mid-Pointer acting as the key element to partition the array into three segments
+            Approach:   Using Two Pointers with Mid-Pointer acting as the key element to partition the array into three segments
         */
 
         int low = 0, mid = 0, high = nums.length - 1;
@@ -64,7 +224,7 @@ class Solution {
 
 //  ----------------------------------------------------------------------------------------------------
 
-    public void using3Pointers(int[] nums) {
+    public void using3PointersPartitioning(int[] nums) {
         /*
             Time:       O(n)
             Space:      O(1)
@@ -116,6 +276,31 @@ class Solution {
             else if (i < countArr[0] + countArr[1]) nums[i] = 1;
             else nums[i] = 2;
         }
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public void usingNaiveApproach(int[] nums) {
+        /*
+            Time:       O(n)
+            Space:      O(1)
+            Approach:   Count the frequencies of 0s, 1s, and 2s in the array, and then
+                        overwrite the array with the appropriate number of occurrences of each element in ascending order.
+        */
+
+        int count0 = 0, count1 = 0, count2 = 0;
+        int i = 0;
+
+        for (int num : nums) {
+            if (num == 0) count0++;
+            else if (num == 1) count1++;
+            else if (num == 2) count2++;
+        }
+
+        while (count0-- > 0) nums[i++] = 0;
+        while (count1-- > 0) nums[i++] = 1;
+        while (count2-- > 0) nums[i++] = 2;
+
     }
 
 }
