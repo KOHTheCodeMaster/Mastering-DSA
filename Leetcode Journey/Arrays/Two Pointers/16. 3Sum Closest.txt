@@ -1,0 +1,432 @@
+
+Date: 16th May 2023 - 01:28 PM
+
+Problem #: 16. 3Sum Closest
+
+URL: https://leetcode.com/problems/3sum-closest
+
+Keywords: Two Pointers, Sorting, Array, Closest Sum
+
+----------------------------------------------------------------------------------------------------
+
+Problem Description:
+Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers.
+
+Example:
+Input: nums = [ -1,2,1,-4], target = 1
+Output: 2
+Explanation: The sum that is closest to the target is 2 (-1 + 2 + 1 = 2).
+
+----------------------------------------------------------------------------------------------------
+
+Feasible Approaches:
+
+1. Brute Force
+2. Sliding Window - (NOT FEASIBLE / INCOMPLETE)
+3. Two Pointers with Minimum Difference (Sorting)
+4. Two Pointers (Sorting)
+
+Optimized Solution: Two Pointers (Sorting)
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Sorting the array helps in applying the two-pointer approach efficiently.
+- Tracking the closest sum allows finding the sum that is closest to the target.
+- Be careful with edge cases and handling duplicates if required.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Brute Force
+
+Description:
+- Generate all possible triplets from the array.
+- Calculate the sum of each triplet and track the closest sum to the target.
+- Return the closest sum.
+
+Algorithm:
+- Initialize variables closestSum to hold the closest sum and minDiff to hold the minimum difference.
+- Iterate over the array from 0 to nums.length - 2.
+- For each element nums[i], iterate over the remaining elements from i + 1 to nums.length - 1.
+- For each pair of elements nums[i] and nums[j], iterate over the remaining elements from j + 1 to nums.length.
+- Calculate the sum = nums[i] + nums[j] + nums[k].
+- Calculate the difference = Math.abs(sum - target).
+- If the difference is smaller than minDiff, update minDiff and closestSum with the current sum.
+- Continue iterating until all possible triplets are checked.
+- Return closestSum as the closest sum to the target.
+
+Note: The above code snippet assumes that the given `nums` array has at least 3 elements. Additional checks may be added to handle edge cases where the length of the array is less than 3.
+
+Time Complexity: O(n^3), where n is the length of the array.
+
+Space Complexity: O(1), as we are using a constant amount of extra space.
+
+Java Code:
+
+private int threeSumClosest(int[] nums, int target) {
+    int closestSum = Integer.MAX_VALUE;
+    int minDiff = Integer.MAX_VALUE;
+
+    for (int i = 0; i < nums.length - 2; i++) {
+        for (int j = i + 1; j < nums.length - 1; j++) {
+            for (int k = j + 1; k < nums.length; k++) {
+                int sum = nums[i] + nums[j] + nums[k];
+                int diff = Math.abs(sum - target);
+
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestSum = sum;
+                }
+            }
+        }
+    }
+
+    return closestSum;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Sliding Window - (NOT FEASIBLE / INCOMPLETE)
+
+Description:
+This approach attempts to use the sliding window technique to find the closest sum to the target. However, it is incomplete and not feasible for solving the problem.
+
+Algorithm:
+- Sort the given array nums.
+- Iterate over the array from 0 to nums.length - 2.
+- For each element nums[i], calculate the sum of nums[i], nums[i+1], and nums[i+2].
+- Calculate the difference between the sum and the target.
+- Check if the difference is zero, indicating that the sum is equal to the target. If so, update the result and break the loop.
+- If the difference is smaller than the minimum target difference, update the minimum target difference and the result.
+- Return the result.
+
+Time Complexity: O(n), where n is the length of the array.
+
+Space Complexity: O(1), as we are using a constant amount of extra space.
+
+Note:
+- The below code snippet is incomplete and does not provide the correct solution for finding the closest sum to the target.
+- It is included here only for reference and understanding purposes.
+
+Java Code:
+
+private int incompleteUsingSlidingWindow(int[] nums, int target) {
+    int result = Integer.MAX_VALUE;
+    int minTargetDiff = Integer.MAX_VALUE;
+
+    Arrays.sort(nums);
+
+    for (int i = 0; i < nums.length - 2; i++) {
+        int sum = nums[i] + nums[i + 1] + nums[i + 2];
+        int targetDiff = sum < target ? target - sum : sum - target;
+
+        if (targetDiff == 0) {
+            result = sum;
+            break;
+        }
+
+        if (minTargetDiff > targetDiff) {
+            minTargetDiff = targetDiff;
+            result = sum;
+        }
+    }
+
+    return result;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Two Pointers with Minimum Difference
+
+Description:
+- Sort the array in ascending order.
+- Iterate over the array and for each element, use two pointers to find the closest sum to the target.
+- Update the closest sum if a closer sum is found.
+
+Algorithm:
+- Sort the array nums in ascending order.
+- Initialize variables closestSum to hold the closest sum and minDiff to hold the minimum difference.
+- Iterate over the array from 0 to nums.length - 2.
+- For each element nums[i], initialize two pointers: leftIndex = i + 1 and rightIndex = nums.length - 1.
+- While leftIndex < rightIndex:
+  - Calculate the sum = nums[i] + nums[leftIndex] + nums[rightIndex].
+  - Calculate the difference = Math.abs(sum - target).
+  - If the difference is 0, it means we found an exact match and we can return the sum.
+  - If the difference is smaller than minDiff, update minDiff and closestSum with the current sum.
+  - If sum < target, increment leftIndex.
+  - If sum > target, decrement rightIndex.
+- Return closestSum as the closest sum to the target.
+
+Time Complexity: O(n^2), where n is the length of the array.
+
+Space Complexity: O(1), as we are using a constant amount of extra space.
+
+Java Code:
+
+private int usingTwoPointersWithMinDiff(int[] nums, int target) {
+    /*
+        Time Complexity:    O(n^2)
+        Space Complexity:   O(1)
+        Approach:           Two Pointers
+    */
+
+    int closestSum = Integer.MAX_VALUE;
+    int minDiff = Integer.MAX_VALUE;
+
+    Arrays.sort(nums);
+
+    for (int i = 0; i < nums.length - 2; i++) {
+
+        //  Nums: [-5, -5, -4, 0, 0, 3, 3, 4, 5]    |   Target: -2
+        int leftIndex = i + 1;
+        int rightIndex = nums.length - 1;
+
+        while (leftIndex < rightIndex) {
+
+            int sum = nums[i] + nums[leftIndex] + nums[rightIndex];
+            int diff = Math.abs(sum - target);
+
+            if (diff == 0) {
+                closestSum = sum;
+                break;
+            }
+
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestSum = sum;
+            }
+
+            if (sum < target) leftIndex++;
+            else rightIndex--;
+
+        }
+    }
+
+    return closestSum;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 4: Two Pointers (Sorting)
+
+Description:
+This approach utilizes the two-pointer technique to find the triplet that gives the closest sum to the target.
+
+Algorithm:
+- Initialize the closestSum variable with the sum of the first three elements in the sorted array nums.
+- Sort the array nums in ascending order.
+- Iterate over the array from 0 to nums.length - 2.
+- For each element nums[i], set two pointers, leftIndex and rightIndex, pointing to the next and last elements respectively.
+- While leftIndex is less than rightIndex, calculate the sum of nums[i], nums[leftIndex], and nums[rightIndex].
+- If the absolute difference between the sum and the target is smaller than the absolute difference between closestSum and the target, update closestSum with the sum.
+- Move the leftIndex pointer to the right if the sum is less than the target.
+- Move the rightIndex pointer to the left if the sum is greater than the target.
+- If the sum is equal to the target, break the loop as we have found the closest possible sum.
+- Return closestSum as the result.
+
+Time Complexity: O(n^2), where n is the length of the array.
+
+Space Complexity: O(1), as we are using a constant amount of extra space.
+
+Java Code:
+
+private int usingTwoPointers(int[] nums, int target) {
+    /*
+        Time Complexity:    O(n^2)
+        Space Complexity:   O(1)
+        Approach:           Two Pointers
+    */
+
+    int closestSum = nums[0] + nums[1] + nums[2];
+
+    Arrays.sort(nums);
+
+    for (int i = 0; i < nums.length - 2; i++) {
+
+        int leftIndex = i + 1;
+        int rightIndex = nums.length - 1;
+
+        while (leftIndex < rightIndex) {
+
+            int sum = nums[i] + nums[leftIndex] + nums[rightIndex];
+
+            if (Math.abs(sum - target) < Math.abs(closestSum - target)) closestSum = sum;
+
+            if (sum < target) leftIndex++;
+            else if (sum > target) rightIndex--;
+            else break;
+
+        }
+    }
+
+    return closestSum;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution:
+
+class Solution {
+
+    public int threeSumClosest(int[] nums, int target) {
+
+        return usingTwoPointers(nums, target);
+
+        // return usingTwoPointersWithMinDiff(nums, target);
+
+        // return usingBruteForce(nums, target);
+
+        // return incompleteUsingSlidingWindow(nums, target);
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    private int usingTwoPointers(int[] nums, int target) {
+        /*
+            Time Complexity:    O(n^2)
+            Space Complexity:   O(1)
+            Approach:           Two Pointers
+        */
+
+        int closestSum = nums[0] + nums[1] + nums[2];
+
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 2; i++) {
+
+            int leftIndex = i + 1;
+            int rightIndex = nums.length - 1;
+
+            while (leftIndex < rightIndex) {
+
+                int sum = nums[i] + nums[leftIndex] + nums[rightIndex];
+
+                if (Math.abs(sum - target) < Math.abs(closestSum - target)) closestSum = sum;
+
+                if (sum < target) leftIndex++;
+                else if (sum > target) rightIndex--;
+                else break;
+
+            }
+        }
+
+        return closestSum;
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    private int usingTwoPointersWithMinDiff(int[] nums, int target) {
+        /*
+            Time Complexity:    O(n^2)
+            Space Complexity:   O(1)
+            Approach:           Two Pointers
+        */
+
+        int closestSum = Integer.MAX_VALUE;
+        int minDiff = Integer.MAX_VALUE;
+
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 2; i++) {
+
+            //  Nums: [-5, -5, -4, 0, 0, 3, 3, 4, 5]    |   Target: -2
+            int leftIndex = i + 1;
+            int rightIndex = nums.length - 1;
+
+            while (leftIndex < rightIndex) {
+
+                int sum = nums[i] + nums[leftIndex] + nums[rightIndex];
+                int diff = Math.abs(sum - target);
+
+                if (diff == 0) {
+                    closestSum = sum;
+                    break;
+                }
+
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestSum = sum;
+                }
+
+                if (sum < target) leftIndex++;
+                else rightIndex--;
+
+            }
+        }
+
+        return closestSum;
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    private int usingBruteForce(int[] nums, int target) {
+        /*
+            Time Complexity:    O(n^3)
+            Space Complexity:   O(1)
+            Approach:           Brute Force
+        */
+
+        int closestSum = Integer.MAX_VALUE;
+        int minDiff = Integer.MAX_VALUE;
+
+        for (int i = 0; i < nums.length - 2; i++) {
+
+            for (int j = i + 1; j < nums.length - 1; j++) {
+
+                for (int k = j + 1; k < nums.length; k++) {
+
+                    int sum = nums[i] + nums[j] + nums[k];
+                    int diff = Math.abs(sum - target);
+
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestSum = sum;
+                    }
+                }
+            }
+        }
+
+        return closestSum;
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    private int incompleteUsingSlidingWindow(int[] nums, int target) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(1)
+            Approach:           Sliding Window - Attempt for O(n) but failed.
+            Note:               Fails for nums: [-5, -5, -4, 0, 0, 3, 3, 4, 5] | Target: -2
+        */
+
+        int result = Integer.MAX_VALUE;
+        int minTargetDiff = Integer.MAX_VALUE;
+
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 2; i++) {
+
+            int sum = nums[i] + nums[i + 1] + nums[i + 2];
+            int targetDiff = sum < target ? target - sum : sum - target;
+
+            System.out.println("\nNums: " + Arrays.toString(nums) + "\nS: " + sum + " | TD: " +
+                targetDiff + " | MTD: " + minTargetDiff + " | R: " + result);
+
+            if (targetDiff == 0) {
+                result = sum;
+                break;
+            }
+
+            if (minTargetDiff > targetDiff) {
+                minTargetDiff = targetDiff;
+                result = sum;
+            }
+        }
+
+        return result;
+    }
+
+}
+
+----------------------------------------------------------------------------------------------------

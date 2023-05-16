@@ -18,7 +18,7 @@ Output: [[-1,-1,2],[-1,0,1]]
 
 ----------------------------------------------------------------------------------------------------
 
-Approaches:
+Feasible Approaches:
 
 1. Brute Force
 2. Three Pointers (Sorting)
