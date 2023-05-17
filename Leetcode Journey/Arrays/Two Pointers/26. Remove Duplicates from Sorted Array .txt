@@ -1,0 +1,467 @@
+
+Date: 17th May 2023 - 01:33 PM
+
+LeetCode Problem #: 26. Remove Duplicates from Sorted Array
+
+URL: https://leetcode.com/problems/remove-duplicates-from-sorted-array
+
+Keywords: Two Pointers, Swapping, In-Place,  Array
+
+----------------------------------------------------------------------------------------------------
+
+Problem Description:
+- Given a sorted array nums, remove the duplicates in-place such that each element appears only once and returns the new length.
+- Try not to allocate extra space for another array; do this by modifying the input array in-place with O(1) extra memory.
+
+Example:
+Input: nums = [1,1,2]
+Output: 2
+Explanation: The first two elements of the original array are 1 and 2.
+
+----------------------------------------------------------------------------------------------------
+
+Feasible Approaches:
+
+1. Two Pointers Swap In-Place - the original array is modified in-place
+2. Two Pointers Count Unique Elements - uses an extra variable to keep track of the number of unique elements
+3. Two Pointers Naive - it uses more conditional statements to swap elements
+4. Brute Force - uses nested loops and swaps elements to remove duplicates but has a higher time complexity than the other approaches
+5. Frequency Map - using Linked Hash Map to count occurrences of unique elements
+
+Optimized Solution: Two Pointers Swap In-Place
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Using two pointers to remove duplicates from a sorted array is a common approach that can be optimized to run in O(n) time with O(1) extra memory.
+- The two pointers can be used to keep track of the current position of the unique elements and the position to check for duplicates.
+- The time complexity of the optimized approach is O(n), and the space complexity is O(1).
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Two Pointers Swap In-Place
+
+Description: This approach uses two pointers to remove duplicates from a sorted array in-place, and also swaps the elements to put them in their correct position.
+
+Algorithm:
+1. Initialize two pointers leftIndex and rightIndex to the start of the array.
+2. Iterate through the array with the rightIndex pointer until it reaches the end of the array.
+3. If the element at the rightIndex pointer is different from the element at the leftIndex pointer, increment the leftIndex pointer and swap the element at the rightIndex pointer with the element at the new leftIndex position.
+4. Repeat step 3 until the rightIndex pointer reaches the end of the array.
+5. Return the number of unique elements, which is leftIndex + 1.
+
+Note: The original array is modified in-place.
+
+Time Complexity: O(n), where n is the length of the input array.
+
+Space Complexity: O(1), as we are modifying the input array in-place and using constant extra space for the two pointers.
+
+Java Code:
+
+public int usingTwoPointersSwapInPlace(int[] nums) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(1)
+        Approach:           Two Pointers
+    */
+
+    int leftIndex = 0;
+    int rightIndex;
+
+    for (rightIndex = 1; rightIndex < nums.length; rightIndex++) {
+
+        if (nums[leftIndex] != nums[rightIndex]) {
+            leftIndex++;
+            nums[leftIndex] = nums[rightIndex];
+        }
+    }
+
+    return leftIndex + 1;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Two Pointers Count Unique Elements
+
+Description:
+- This approach uses two pointers to remove duplicates from a sorted array in-place,
+- and counts the number of unique elements as it iterates through the array.
+
+Algorithm:
+1. Initialize three variables: uniqueElements, leftIndex and rightIndex to 1, 0, and 0 respectively.
+2. Iterate through the array with the rightIndex pointer until it reaches the end of the array.
+3. If the element at the rightIndex pointer is different from the element at the rightIndex - 1 pointer, increment the leftIndex pointer, put the unique element at the leftIndex position, and increment the uniqueElements count.
+4. Repeat step 3 until the rightIndex pointer reaches the end of the array.
+5. Return the number of unique elements.
+
+Note: The original array is modified in-place.
+
+Time Complexity: O(n), where n is the length of the input array.
+
+Space Complexity: O(1), as we are modifying the input array in-place and using constant extra space for the three pointers.
+
+Java Code:
+
+public int usingTwoPointersCountUniqueElements(int[] nums) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(1)
+        Approach:           Two Pointers Count Unique Elements
+    */
+
+    int uniqueElementsCount = 1;
+    int leftIndex = 0;
+    int rightIndex = 0;
+
+    while (++rightIndex < nums.length) {
+
+        if (nums[rightIndex] != nums[rightIndex - 1]) {
+            nums[++leftIndex] = nums[rightIndex];
+            uniqueElementsCount++;
+        }
+
+    }
+
+    return uniqueElementsCount;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Two Pointers Naive
+
+Description:
+- This approach uses two pointers to remove duplicates from a sorted array in-place.
+- It explicitly handles cases where the input array has only two elements and they are not equal.
+
+Algorithm:
+1. Initialize the variable uniqueElements to 2 if the input array has exactly two elements and they are not equal, otherwise set it to 1.
+2. Initialize the pointers leftIndex to 1 and rightIndex to 2.
+3. Iterate through the array using the rightIndex pointer until it reaches the end of the array.
+4. Check if the element at the leftIndex is less than or equal to the element at the leftIndex - 1. If true, it means we have encountered a duplicate element.
+    - If the element at the rightIndex is equal to the element at the leftIndex - 1, skip it by incrementing the rightIndex pointer.
+    - Otherwise, swap the elements at the leftIndex and rightIndex positions, increment the leftIndex and rightIndex pointers, and increment the uniqueElements count.
+5. If the element at the leftIndex is greater than the element at the leftIndex - 1, it means we have encountered a new unique element. Increment the uniqueElements count, leftIndex, and rightIndex pointers.
+6. If the rightIndex reaches the end of the array and the element at the leftIndex is greater than the element at the leftIndex - 1, increment the uniqueElements count.
+7. Return the uniqueElements count.
+
+Note: The original array is modified in-place.
+
+Time Complexity: O(n), where n is the length of the input array.
+
+Space Complexity: O(1), as we are modifying the input array in-place and using constant extra space for the pointers.
+
+Java Code:
+
+public int usingTwoPointersNaive(int[] nums) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(1)
+        Approach:           Two Pointers
+    */
+
+    int uniqueElements = nums.length == 2 && nums[0] != nums[1] ? 2 : 1;
+    int leftIndex = 1;
+    int rightIndex = 2;
+
+    while (rightIndex < nums.length) {
+
+        if (nums[leftIndex] <= nums[leftIndex - 1]) {
+
+            if (nums[rightIndex] == nums[leftIndex - 1]) {  //  Skip Duplicate rightIndex Elements
+                rightIndex++;
+                continue;
+            }
+
+            swap(nums, leftIndex++, rightIndex++);
+            uniqueElements++;
+
+        } else {
+
+            uniqueElements++;
+            leftIndex++;
+            rightIndex++;
+
+            if (rightIndex == nums.length && nums[leftIndex] > nums[leftIndex - 1]) uniqueElements++;
+        }
+    }
+
+    return uniqueElements;
+}
+
+private void swap(int[] nums, int index1, int index2) {
+    int temp = nums[index1];
+    nums[index1] = nums[index2];
+    nums[index2] = temp;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach: Brute Force
+
+Description:
+- This approach uses a brute force method to remove duplicates from a sorted array.
+- It iterates through the array and checks for duplicate elements,
+- and if found, shifts the subsequent elements to the left to remove the duplicate.
+
+Algorithm:
+
+1. Initialize length to the length of the input array.
+2. Iterate through the array with the outer loop from i = 0 to i = length - 1.
+3. Iterate through the remaining elements in the array with the inner loop from j = i + 1 to j = length - 1.
+4. If the element at index i is equal to the element at index j,
+    - shift all subsequent elements in the array one position to the left to remove the duplicate element,
+    - decrement length,
+    - and decrement j to avoid skipping the next element.
+5. Repeat steps 3-4 until the inner loop reaches the end of the array.
+6. Return the new length of the array after duplicates have been removed.
+
+Note: The original array is modified in-place.
+
+Time Complexity: O(n^2), where n is the length of the input array. The nested loops result in a quadratic time complexity due to the shifting of elements.
+
+Space Complexity: O(1), as we are modifying the input array in-place and using constant extra space.
+
+Java Code:
+
+public int usingBruteForce(int[] nums) {
+
+    int length = nums.length;
+
+    for (int i = 0; i < length; i++) {
+
+        for (int j = i + 1; j < length; j++) {
+
+            if (nums[i] == nums[j]) {
+
+                for (int k = j; k < length - 1; k++) nums[k] = nums[k + 1];
+
+                length--;
+                j--;
+
+            }
+        }
+    }
+
+    return length;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach: Frequency Map
+
+Description: This approach uses a frequency map to count the occurrences of each element in the array. It then rebuilds the array using the unique elements based on the frequency map.
+
+Algorithm:
+1. Create a LinkedHashMap called freqMap to store the elements as keys and their frequencies as values.
+2. Iterate through the input array and update the frequency map by incrementing the count for each element.
+3. Initialize an index variable to 0.
+4. Iterate through the entries of the freqMap using a for-each loop.
+5. Update the element in the input array at the current index with the key of the entry.
+6. Increment the index.
+7. Return the size of the freqMap, which represents the number of unique elements in the array.
+
+Note: This approach uses extra space to store the frequency map.
+
+Time Complexity: O(n), where n is the length of the input array. Generating the frequency map takes O(n) time, and rebuilding the array takes O(n) time as well.
+
+Space Complexity: O(n), as the frequency map can store up to n elements in the worst case if all elements are unique.
+
+Java Code:
+
+public int usingLinkedHashMap(int[] nums) {
+
+    int index = 0;
+    LinkedHashMap<Integer, Integer> freqMap = generateFreqMap(nums);
+
+    for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) nums[index++] = entry.getKey();
+
+    return freqMap.keySet().size();
+}
+
+private LinkedHashMap<Integer, Integer> generateFreqMap(int[] nums) {
+
+    LinkedHashMap<Integer, Integer> freqMap = new LinkedHashMap<>();
+
+    for (int key : nums) {
+        if (freqMap.containsKey(key)) freqMap.put(key, freqMap.get(key) + 1);
+        else freqMap.put(key, 1);
+    }
+
+    return freqMap;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution:
+
+class Solution {
+
+    public int removeDuplicates(int[] nums) {
+
+        return usingTwoPointersSwapInPlace(nums);
+
+        // return usingTwoPointersCountUniqueElements(nums);
+
+        // return usingTwoPointersNaive(nums);
+
+        // return usingBruteForce(nums);
+
+        // return usingLinkedHashMap(nums);
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public int usingTwoPointersSwapInPlace(int[] nums) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(1)
+            Approach:           Two Pointers
+        */
+
+        int leftIndex = 0;
+        int rightIndex;
+
+        for (rightIndex = 1; rightIndex < nums.length; rightIndex++) {
+
+            if (nums[leftIndex] != nums[rightIndex]) {
+                leftIndex++;
+                nums[leftIndex] = nums[rightIndex];
+            }
+        }
+
+        return leftIndex + 1;
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public int usingTwoPointersCountUniqueElements(int[] nums) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(1)
+            Approach:           Two Pointers
+        */
+
+        int uniqueElements = 1;
+        int leftIndex = 0;
+        int rightIndex = 0;
+
+        while (++rightIndex < nums.length) {
+
+            if (nums[rightIndex] != nums[rightIndex - 1]) {
+                nums[++leftIndex] = nums[rightIndex];
+                uniqueElements++;
+            }
+
+        }
+
+        return uniqueElements;
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public int usingTwoPointersNaive(int[] nums) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(1)
+            Approach:           Two Pointers
+        */
+
+        int uniqueElements = nums.length == 2 && nums[0] != nums[1] ? 2 : 1;
+        int leftIndex = 1;
+        int rightIndex = 2;
+
+        while (rightIndex < nums.length) {
+
+            if (nums[leftIndex] <= nums[leftIndex - 1]) {
+
+                if (nums[rightIndex] == nums[leftIndex - 1]) {  //  Skip Duplicate rightIndex Elements
+                    rightIndex++;
+                    continue;
+                }
+
+                swap(nums, leftIndex++, rightIndex++);
+                uniqueElements++;
+
+            } else {
+
+                uniqueElements++;
+                leftIndex++;
+                rightIndex++;
+
+                if (rightIndex == nums.length && nums[leftIndex] > nums[leftIndex - 1]) uniqueElements++;
+            }
+        }
+
+        return uniqueElements;
+    }
+
+    private void swap(int[] nums, int index1, int index2) {
+
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public int usingBruteForce(int[] nums) {
+        /*
+            Time Complexity:    O(n^2)
+            Space Complexity:   O(1)
+            Approach:           Brute Force
+        */
+
+        int length = nums.length;
+
+        for (int i = 0; i < length; i++) {
+
+            for (int j = i + 1; j < length; j++) {
+
+                if (nums[i] == nums[j]) {
+
+                    for (int k = j; k < length - 1; k++) nums[k] = nums[k + 1];
+
+                    length--;
+                    j--;
+
+                }
+            }
+        }
+
+        return length;
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public int usingLinkedHashMap(int[] nums) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(n)
+            Approach:           Frequency Map
+        */
+
+        int index = 0;
+        LinkedHashMap<Integer, Integer> freqMap = generateFreqMap(nums);
+
+        for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) nums[index++] = entry.getKey();
+
+        return freqMap.keySet().size();
+    }
+
+    private LinkedHashMap<Integer, Integer> generateFreqMap(int[] nums) {
+
+        LinkedHashMap<Integer, Integer> freqMap = new LinkedHashMap<>();
+
+        for (int key : nums) {
+            if (freqMap.containsKey(key)) freqMap.put(key, freqMap.get(key) + 1);
+            else freqMap.put(key, 1);
+        }
+
+        return freqMap;
+    }
+
+}
+
+----------------------------------------------------------------------------------------------------
