@@ -33,7 +33,26 @@ Notes:
 
 ----------------------------------------------------------------------------------------------------
 
-Approach 1: Naive (Counting Sort)
+Approach 1:
+
+Description:
+-
+-
+
+
+Algorithm:
+-
+-
+
+Note:
+
+Time Complexity:
+
+Space Complexity:
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Naive (Counting Sort)
 
 Description: Explain the approach in a few sentences.
 
@@ -42,12 +61,6 @@ Time Complexity: Analyze the time complexity of the approach.
 Space Complexity: Analyze the space complexity of the approach.
 
 Java Code: Write the Java Code for the approach.
-
-----------------------------------------------------------------------------------------------------
-
-Approach 2: Two Pointers (Dutch National Flag Algorithm)
-...
-...
 
 ----------------------------------------------------------------------------------------------------
 

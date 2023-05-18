@@ -306,7 +306,7 @@ class Solution {
 
         // return usingBruteForce(nums);
 
-        // return usingLinkedHashMap(nums);
+        // return usingFrequencyMap(nums);
 
     }
 
@@ -435,7 +435,7 @@ class Solution {
 
 //  ----------------------------------------------------------------------------------------------------
 
-    public int usingLinkedHashMap(int[] nums) {
+    public int usingFrequencyMap(int[] nums) {
         /*
             Time Complexity:    O(n)
             Space Complexity:   O(n)

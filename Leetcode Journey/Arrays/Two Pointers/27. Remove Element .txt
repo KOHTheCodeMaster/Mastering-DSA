@@ -1,0 +1,392 @@
+
+Date: 18th May 2K23 - 11:07 PM
+
+LeetCode Problem #: 27. Remove Element
+
+URL: https://leetcode.com/problems/remove-element
+
+Keywords: Two Pointers, In-Place Swap, Array Traversal
+
+Dev: KOH (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+Given an array nums and a value val, remove all instances of that value in-place and return the new length.
+
+Example:
+Input: nums = [3,2,2,3], val = 3
+Output: 2
+Explanation: return length = 2, with the first two elements of nums being 2.
+
+Feasible Solutions:
+
+1. Naive Approach (Count and Shift)
+2. Two Pointers Swap
+3. Two Pointers Forward Scan
+4. Separate and Combine Arrays
+
+Optimized Solution: Two Pointers Swap
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- The Two Pointers technique can efficiently remove elements in-place from an array.
+- Swapping elements instead of shifting them can result in a more optimized solution.
+- Be mindful of the specific requirements of the problem and choose the appropriate approach accordingly.
+
+Notes:
+- Handle edge cases like empty array or all elements being equal to the target value.
+- Validate input values and handle null or empty arrays.
+- Keep track of the new length of the modified array using the appropriate variable (count, leftIndex, etc.) and return it at the end.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Count & Shift
+
+Description:
+This approach uses a count variable to keep track of the number of elements that are not equal to the target value. It iterates through the array and if an element is not equal to the target value, it replaces the element at the current count position with the non-target element. Finally, it returns the count value as the new length of the modified array.
+
+Algorithm:
+1. Initialize a count variable to 0.
+2. Iterate through each element, x, in the nums array.
+   - If x is not equal to the target value, update nums[count] with x and increment count.
+3. Return the value of count.
+
+Note:
+- This approach modifies the original array in-place.
+- The elements in the modified array from index 0 to count-1 are the elements that are not equal to the target value.
+
+Time Complexity: O(n), where n is the length of the input array. We iterate through the array once.
+
+Space Complexity: O(1), as we only use a constant amount of extra space for the count variable.
+
+Java Code:
+
+public int usingCountAndShift(int[] nums, int val) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(1)
+        Approach:           Count & Shift
+    */
+
+    int count = 0;
+
+    for (int x : nums) if (x != val) nums[count++] = x;
+
+    return count;
+}
+
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Two Pointers - Swap Left & Right
+
+Description:
+- This approach uses two pointers, leftIndex and rightIndex, to iterate through the array from both ends.
+- The leftIndex pointer starts from the beginning of the array, and the rightIndex pointer starts from the end of the array.
+- The idea is to swap the current element at leftIndex with the element at rightIndex if the element at leftIndex is equal to the target value.
+- By doing this, we effectively move the target values to the end of the array.
+- We continue this process until the leftIndex becomes greater than the rightIndex, indicating that all the elements have been processed.
+- Finally, we return the value of leftIndex, which represents the new length of the modified array.
+
+Algorithm:
+1. Initialize leftIndex to 0 and rightIndex to nums.length - 1.
+2. While leftIndex is less than or equal to rightIndex, do:
+   - If nums[leftIndex] is equal to val:
+     - Assign nums[leftIndex] the value of nums[rightIndex].
+     - Decrement rightIndex by 1.
+   - Otherwise, increment leftIndex by 1.
+3. Return the value of leftIndex.
+
+Note:
+- This approach modifies the original array in-place.
+- The elements in the modified array from index 0 to leftIndex-1 are the elements that are not equal to the target value.
+
+Alternative Way:
+- There's an alternative and optimized way to reduce no. of swaps using the commented line //if (nums[rightIndex] != val) swap(nums, leftIndex++, rightIndex);
+- It provides an alternative way to swap elements in the array.
+- Both this line and the next line nums[leftIndex] = nums[rightIndex]; achieve the same result of moving the target values to the end of the array.
+- The purpose of this line is to avoid unnecessary swaps when the element at rightIndex is also equal to the target value.
+- By adding the condition nums[rightIndex] != val, the swap operation is only performed when it is necessary, reducing the number of swaps.
+
+Time Complexity: O(n), where n is the length of the input array. We iterate through the array once.
+
+Space Complexity: O(1), as we only use a constant amount of extra space for the leftIndex and rightIndex variables.
+
+Java Code:
+
+private int usingTwoPointersSwapLeftRight(int[] nums, int val) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(1)
+        Approach:           Two Pointers - iterate through the array from both ends
+    */
+
+    int leftIndex = 0;
+    int rightIndex = nums.length - 1;
+
+    while (leftIndex <= rightIndex) {
+
+        if (nums[leftIndex] == val) {
+
+            if (nums[rightIndex] != val) swap(nums, leftIndex++, rightIndex); //  Using either this (Optimized) or the below line both works fine.
+            // nums[leftIndex] = nums[rightIndex];
+
+            rightIndex--;
+
+        } else leftIndex++;
+
+    }
+
+    return leftIndex;
+}
+
+private void swap(int[] nums, int index1, int index2) {
+
+    int temp = nums[index1];
+    nums[index1] = nums[index2];
+    nums[index2] = temp;
+
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Two Pointers - Forward Scan
+
+Description:
+- This approach, named `usingTwoPointersForwardScan`, utilizes two pointers, `leftIndex` and `rightIndex`, to scan the array from left to right.
+- The `leftIndex` pointer represents the current position where a non-target element can be placed, while the `rightIndex` pointer helps in iterating through the array.
+- The idea is to move the non-target elements to the left side of the array while maintaining their relative order.
+- When an element at `leftIndex` is equal to the target value, we look for the next non-target element using the `rightIndex` pointer.
+- If a non-target element is found at `rightIndex`, we swap it with the element at `leftIndex` to move it towards the left side of the array.
+- We continue this process until we reach the end of the array, represented by the condition `rightIndex < nums.length`.
+- Finally, we return the value of `leftIndex`, which represents the new length of the modified array.
+
+Algorithm:
+1. Initialize `leftIndex` and `rightIndex` to 0.
+2. While `leftIndex` is less than or equal to `rightIndex` and `rightIndex` is within the array bounds, do:
+   - If `nums[leftIndex]` is equal to `val`:
+     - If `nums[rightIndex]` is not equal to `val`, swap `nums[leftIndex]` with `nums[rightIndex]` using the `swap` method, and increment `leftIndex` by 1.
+   - Otherwise, increment `leftIndex` by 1.
+   - Increment `rightIndex` by 1.
+3. Return the value of `leftIndex`.
+
+Note:
+- This approach modifies the original array in-place.
+- The elements in the modified array from index 0 to `leftIndex`-1 are the elements that are not equal to the target value.
+
+Time Complexity: O(n), where n is the length of the input array. We iterate through the array once.
+
+Space Complexity: O(1), as we only use a constant amount of extra space for the `leftIndex` and `rightIndex` variables.
+
+Java Code:
+
+private int usingTwoPointersForwardScan(int[] nums, int val) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(1)
+        Approach:           Two Pointers - scan the array from left to right
+    */
+
+    int leftIndex = 0;
+    int rightIndex = 0;
+
+    while (leftIndex <= rightIndex && rightIndex < nums.length) {
+
+        if (nums[leftIndex] == val) {
+
+            if (nums[rightIndex] != val) swap(nums, leftIndex++, rightIndex);
+
+        } else leftIndex++;
+
+        rightIndex++;
+    }
+
+    return leftIndex;
+}
+
+private void swap(int[] nums, int index1, int index2) {
+
+    int temp = nums[index1];
+    nums[index1] = nums[index2];
+    nums[index2] = temp;
+
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 4: Separate and Combine Arrays
+
+Description:
+- This approach, named `usingSeparateAndCombineArrays`, involves separating the elements into two arrays: one for non-target elements and another for target elements.
+- We create a new array called `arr` to hold the separated elements.
+- First, we initialize `leftIndex` to 0 and `rightIndex` to the last index of `arr` (i.e., `nums.length - 1`).
+- We iterate through the `nums` array and check if each element is equal to the target value.
+- If it is not, we assign it to `arr[leftIndex]` and increment `leftIndex`.
+- Otherwise, we assign it to `arr[rightIndex]` and decrement `rightIndex`.
+- Next, we copy the elements from `arr` back into the original `nums` array.
+- Finally, we return `rightIndex + 1`, which represents the new length of the modified array.
+
+Algorithm:
+1. Create a new array `arr` with the same length as `nums`.
+2. Initialize `leftIndex` to 0 and `rightIndex` to `nums.length - 1`.
+3. Iterate through `nums` array using index `i`:
+   - If `nums[i]` is not equal to `val`, assign `nums[i]` to `arr[leftIndex]` and increment `leftIndex`.
+   - Otherwise, assign `nums[i]` to `arr[rightIndex]` and decrement `rightIndex`.
+4. Copy the elements from `arr` back to `nums` array.
+5. Return `rightIndex + 1`.
+
+Note:
+- This approach requires extra space for the `arr` array.
+- The elements in the modified array from index 0 to `rightIndex` represent non-target elements.
+
+Time Complexity: O(n), where n is the length of the input array. We iterate through the array once.
+
+Space Complexity: O(n), as we create an additional array of the same size as the input array.
+
+Java Code:
+
+private int usingSeparateAndCombineArrays(int[] nums, int val) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(n)
+        Approach:           Using Separate Array
+    */
+
+    int[] arr = new int[nums.length];
+    int leftIndex = 0;
+    int rightIndex = nums.length - 1;
+
+    for (int i = 0; i < nums.length; i++)
+        if (nums[i] != val) arr[leftIndex++] = nums[i];
+        else arr[rightIndex--] = val;
+
+    for (int i = 0; i < nums.length; i++) nums[i] = arr[i];
+
+    return rightIndex + 1;
+}
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution:
+
+class Solution {
+
+    public int removeElement(int[] nums, int val) {
+
+        return usingCountAndShift(nums, val);
+
+        // return usingTwoPointersSwapLeftRight(nums, val);
+
+        // return usingTwoPointersForwardScan(nums, val);
+
+        // return usingExtraArray(nums, val);
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    public int usingCountAndShift(int[] nums, int val) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(1)
+            Approach:           Count & Shift
+        */
+
+        int count = 0;
+
+        for (int x : nums) if (x != val) nums[count++] = x;
+
+        return count;
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    private int usingTwoPointersSwapLeftRight(int[] nums, int val) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(1)
+            Approach:           Two Pointers - iterate through the array from both ends
+        */
+
+        int leftIndex = 0;
+        int rightIndex = nums.length - 1;
+
+        while (leftIndex <= rightIndex) {
+
+            if (nums[leftIndex] == val) {
+
+                //if (nums[rightIndex] != val) swap(nums, leftIndex++, rightIndex); //  Using this or below line both works.
+                nums[leftIndex] = nums[rightIndex];
+
+                rightIndex--;
+
+            } else leftIndex++;
+
+        }
+
+        return leftIndex;
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    private int usingTwoPointersForwardScan(int[] nums, int val) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(1)
+            Approach:           Two Pointers both initialized at starting index
+        */
+
+        int leftIndex = 0;
+        int rightIndex = 0;
+
+        while (leftIndex <= rightIndex && rightIndex < nums.length) {
+
+            if (nums[leftIndex] == val) {
+
+                if (nums[rightIndex] != val) swap(nums, leftIndex++, rightIndex);
+
+            } else leftIndex++;
+
+            rightIndex++;
+        }
+
+        return leftIndex;
+    }
+
+    private void swap(int[] nums, int index1, int index2) {
+
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+
+    }
+
+//  ----------------------------------------------------------------------------------------------------
+
+    private int usingSeparateAndCombineArrays(int[] nums, int val) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(n)
+            Approach:           Using Separate Array
+        */
+
+        int[] arr = new int[nums.length];
+        int leftIndex = 0;
+        int rightIndex = nums.length - 1;
+
+        for (int i = 0; i < nums.length; i++)
+            if (nums[i] != val) arr[leftIndex++] = nums[i];
+            else arr[rightIndex--] = val;
+
+        for (int i = 0; i < nums.length; i++) nums[i] = arr[i];
+
+        return rightIndex + 1;
+    }
+
+}
+
+----------------------------------------------------------------------------------------------------
