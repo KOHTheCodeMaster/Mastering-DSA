@@ -7,6 +7,10 @@ URL: https://leetcode.com/problems/remove-duplicates-from-sorted-array
 
 Keywords: Two Pointers, Swapping, In-Place,  Array
 
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
 ----------------------------------------------------------------------------------------------------
 
 Problem Description:

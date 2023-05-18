@@ -7,6 +7,10 @@ URL: https://leetcode.com/problems/3sum/
 
 Keywords: Two Pointers, Three Pointers, Sorting, Array
 
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
 ----------------------------------------------------------------------------------------------------
 
 Problem Description:

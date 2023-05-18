@@ -7,6 +7,10 @@ URL: https://leetcode.com/problems/3sum-closest
 
 Keywords: Two Pointers, Sorting, Array, Closest Sum
 
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
 ----------------------------------------------------------------------------------------------------
 
 Problem Description:

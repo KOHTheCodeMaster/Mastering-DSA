@@ -7,6 +7,10 @@ URL: https://leetcode.com/problems/merge-sorted-array
 
 Keywords: Two Pointers, Mid-pointer, Merge Sort
 
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
 ----------------------------------------------------------------------------------------------------
 
 Notes:
