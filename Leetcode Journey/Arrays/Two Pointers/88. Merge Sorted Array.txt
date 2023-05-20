@@ -1,11 +1,11 @@
 
-Date: 5th May 2K23 - 01:00 AM..!!
+Date: 21st May 2K23 - 12:20 AM..!!
 
 Problem#: 88. Merge Sorted Array
 
 URL: https://leetcode.com/problems/merge-sorted-array
 
-Keywords: Two Pointers, Mid-pointer, Merge Sort
+Keywords: Two Pointers, In-place Merge, Sorting
 
 Dev: K.O.H..!! (Harshit Gupta)
 
@@ -13,27 +13,37 @@ GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
 
 ----------------------------------------------------------------------------------------------------
 
-Notes:
-------
+Problem:
+Given two sorted arrays `nums1` and `nums2`, merge `nums2` into `nums1` as one sorted array.
 
-When merging two sorted arrays, we can use a two-pointer approach to merge them into a single sorted array.
+Example:
+Input:
+nums1 = [1,2,3,0,0,0], m = 3
+nums2 = [2,5,6],       n = 3
 
-We can use two pointers to keep track of the current index in each array we are iterating over.
+Output:
+[1,2,2,3,5,6]
 
-We can move the pointers based on certain conditions, such as comparing the values at the current indices.
+Feasible Solutions:
 
-We can start from either end of the arrays depending on which side has more empty space or which one is longer.
+1. Two Pointers
+2. Copy and Merge
 
-In some cases, it may be necessary to use a temporary array to store elements temporarily while we merge the two arrays.
-
-We can use an extra array to store one of the arrays temporarily if we don't have enough empty space in the first array
-to accommodate both arrays but using an extra array increases the space complexity of the solution.
-
-The time complexity of the solution using the Two Pointers technique is generally O(m+n), where m and n are the lengths of the arrays being merged.
-
-Depending on the problem, we may need to start iterating from either end of the arrays or from the middle.
+Optimized Solution: Two Pointers
 
 ----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Merging two sorted arrays can be efficiently done using the Two Pointers technique.
+- In-place merging allows us to avoid using additional space.
+
+Notes:
+- The given solution modifies `nums1` in-place, assuming that it has enough space to accommodate all the elements from both arrays.
+- When merging two sorted arrays, we can use a two-pointer approach to merge them into a single sorted array.
+- In some cases, it may be necessary to use a temporary array to store elements temporarily while we merge the two arrays.
+- We can use an extra array to store one of the arrays temporarily if we don't have enough empty space in the first array
+- To accommodate both arrays but using an extra array increases the space complexity of the solution.
+- The time complexity of the solution using the Two Pointers technique is generally O(m+n), where m and n are the lengths of the arrays being merged.
 
 New Topics Learnt:
 ------------------
@@ -50,28 +60,118 @@ len : total no. of components to be copied.
 
 ----------------------------------------------------------------------------------------------------
 
-Clean & Short Code Approach: using Mid-pointer.
+Approach 1: Two Pointers
 
-Code:
+Description:
+- This approach utilizes the Two Pointers technique to merge two sorted arrays in place.
+- We start from the end of both arrays and compare elements to determine their placement in the merged array.
+- We iterate until one of the arrays is fully processed.
+- If there are remaining elements in `nums2`, we copy them to the beginning of `nums1`.
+
+Algorithm:
+1. Initialize three pointers: `index1` pointing to the last element of `nums1`, `index2` pointing to the last element of `nums2`, and `tempIndex` pointing to the last empty position of the merged array.
+2. While `index1` and `index2` are greater than or equal to 0, do the following:
+   - If `nums1[index1]` is greater than `nums2[index2]`, assign `nums1[index1]` to `nums1[tempIndex]`, decrement both `index1` and `tempIndex`.
+   - Otherwise, assign `nums2[index2]` to `nums1[tempIndex]`, decrement both `index2` and `tempIndex`.
+3. After the above loop, if there are still elements remaining in `nums2`, copy them to the beginning of `nums1` using `System.arraycopy`.
+4. The merged array `nums1` will now contain the sorted elements from both `nums1` and `nums2`.
+
+Note:
+- This solution assumes that `nums1` has enough space to accommodate all the elements from both `nums1` and `nums2` (i.e., `nums1.length >= m + n`).
+
+Time Complexity: O(m + n), The algorithm iterates through both `nums1` and `nums2` once, performing comparisons and assignments in constant time.
+
+Space Complexity: O(1)
+
+Java Code:
+
+public void mergeSortedArraysInPlace(int[] nums1, int m, int[] nums2, int n) {
+    /*
+        Time:   O(m + n)
+        Space:  O(1)
+        Approach: Two Pointers
+    */
+
+    int index1 = m - 1;
+    int index2 = n - 1;
+    int tempIndex = m + n - 1;
+
+    while (index1 >= 0 && index2 >= 0) nums1[tempIndex--] = nums1[index1] > nums2[index2] ? nums1[index1--] : nums2[index2--];
+
+    System.arraycopy(nums2, 0, nums1, 0, index2 + 1);
+
+}
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Copy and Merge
+
+Description:
+- This approach involves creating a copy of `nums1` and merging the elements from both arrays in a new array.
+- We use three pointers to keep track of the current position in the copied `nums1`, `nums2`, and the merged array.
+- We compare the elements at the respective positions and place the smaller element in the merged array.
+- After the loop, if there are any remaining elements in either array, we copy them to the merged array.
+
+Algorithm:
+1. Create a copy of `nums1` up to index `m` and store it in a new array called `tempNums`.
+2. Initialize three pointers: `index1` pointing to the start of `tempNums`, `index2` pointing to the start of `nums2`, and `tempIndex` pointing to the start of the merged array.
+3. Iterate until both `index1` and `index2` are less than `m` and `n` respectively:
+   - Compare `tempNums[index1]` and `nums2[index2]`.
+   - If `tempNums[index1]` is smaller or equal, assign it to the merged array at `tempIndex` and increment `index1` and `tempIndex`.
+   - Otherwise, assign `nums2[index2]` to the merged array at `tempIndex` and increment `index2` and `tempIndex`.
+4. After the above loop, if there are any remaining elements in `tempNums` or `nums2`, copy them to the merged array starting from `tempIndex`.
+5. The merged array will contain the sorted elements from both `nums1` and `nums2`.
+
+Note:
+- This solution creates a copy of `nums1`, so it requires additional space of size `m`.
+- The time complexity of this approach is O(m + n) since we iterate through both `tempNums` and `nums2`.
+- The space complexity is O(m) to store the copy of `nums1`.
+
+Java Clean Code:
+
+public void usingTempArray(int[] nums1, int m, int[] nums2, int n) {
+    /*
+        Time:   O(m + n)
+        Space:  O(m)
+        Approach: Using Temp Array
+    */
+
+    int[] tempNums = Arrays.copyOf(nums1, m);
+    int index1 = 0;
+    int index2 = 0;
+    int tempIndex = 0;
+
+    while (index1 < m && index2 < n)
+        if (tempNums[index1] <= nums2[index2]) nums1[tempIndex++] = tempNums[index1++];
+        else nums1[tempIndex++] = nums2[index2++];
+
+    if (index1 < m) System.arraycopy(tempNums, index1, nums1, tempIndex, m - index1);
+
+    if (index2 < n) System.arraycopy(nums2, index2, nums1, tempIndex, n - index2);
+
+}
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution:
 
 class Solution {
 
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         
-        solution3(nums1, m, nums2, n);
+        mergeSortedArraysInPlace(nums1, m, nums2, n);
 
-        // solution2(nums1, m, nums2, n);
-        // solution1(nums1, m, nums2, n);
+        // mergeUsingTempArray(nums1, m, nums2, n);
 
     }
 
 //  ----------------------------------------------------------------------------------------------------
 
-    public void solution3(int[] nums1, int m, int[] nums2, int n) {
+    public void mergeSortedArraysInPlace(int[] nums1, int m, int[] nums2, int n) {
         /*
             Time:   O(m + n)
             Space:  O(1)
-            Approach: Clean & Optimized - Two Pointers Technique - Filling nums1 Array from end.
+            Approach: Two Pointers
         */
 
         int index1 = m - 1;
@@ -79,99 +179,33 @@ class Solution {
         int tempIndex = m + n - 1;
 
         while (index1 >= 0 && index2 >= 0) nums1[tempIndex--] = nums1[index1] > nums2[index2] ? nums1[index1--] : nums2[index2--];
+
         System.arraycopy(nums2, 0, nums1, 0, index2 + 1);
 
     }
 
 //  ----------------------------------------------------------------------------------------------------
 
-    public void solution2(int[] nums1, int m, int[] nums2, int n) {
-        /*
-            Time:   O(m + n)
-            Space:  O(1)
-            Approach: Two Pointers Technique - Filling nums1 Array from end.
-        */
-
-        int index1 = m - 1;
-        int index2 = n - 1;
-        int tempIndex = m + n - 1;
-
-        for (int i = m + n - 1; i >= 0; i--, tempIndex--) {
-            
-            if (index2 == -1) {
-                while (index1 >= 0) nums1[tempIndex--] = nums1[index1--];
-                break;
-            }
-
-            if (index1 == -1) {
-                while (index2 >= 0) nums1[tempIndex--] = nums2[index2--];
-                break;
-            }
-
-            int x1 = nums1[index1];
-            int x2 = nums2[index2];
-
-            if (x1 > x2) {
-                nums1[tempIndex] = x1;
-                index1--;
-            } else {
-                nums1[tempIndex] = x2;
-                index2--;
-            }
-
-        }
-
-    }
-
-//  ----------------------------------------------------------------------------------------------------
-
-    public void solution1(int[] nums1, int m, int[] nums2, int n) {
+    public void mergeUsingTempArray(int[] nums1, int m, int[] nums2, int n) {
         /*
             Time:   O(m + n)
             Space:  O(m)
-            Approach: Two Pointers Technique - Filling nums1 Array from start.
+            Approach: Using Temp Array
         */
 
-        if (nums2.length == 0) return;
-        if (nums1.length == 0) {
-            nums1 = Arrays.copyOf(nums2, m + n); //  When nums1 is empty array, Merge it by copying nums2.
-            return;
-        }
-
+        int[] tempNums = Arrays.copyOf(nums1, m);
         int index1 = 0;
         int index2 = 0;
         int tempIndex = 0;
 
-        int[] tempNums = Arrays.copyOf(nums1, m);
+        while (index1 < m && index2 < n)
+            if (tempNums[index1] <= nums2[index2]) nums1[tempIndex++] = tempNums[index1++];
+            else nums1[tempIndex++] = nums2[index2++];
 
-        for (int i = 0; i < m + n; i++) {
+        if (index1 < m) System.arraycopy(tempNums, index1, nums1, tempIndex, m - index1);
 
-            if (tempIndex == m) {
-                while (index2 < n) nums1[index1++] = nums2[index2++];   //  Populate nums1 with remaining elements from nums2.
-                break;
-            }
-
-            if (index2 == n) {
-                while (tempIndex < m) nums1[index1++] = tempNums[tempIndex++];   //  Populate nums1 with remaining elements from tempNums.
-                break;
-            }
-
-            int x2 = nums2[index2];
-            int temp = tempNums[tempIndex];
-
-            if (x2 < temp) {
-                nums1[index1] = x2;
-                index2++;
-            } else {
-                nums1[index1] = temp;
-                tempIndex++;
-            }
-
-            index1++;
-        }
+        if (index2 < n) System.arraycopy(nums2, index2, nums1, tempIndex, n - index2);
 
     }
-
-}
 
 ----------------------------------------------------------------------------------------------------
