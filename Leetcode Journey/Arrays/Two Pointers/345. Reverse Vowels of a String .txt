@@ -1,0 +1,122 @@
+
+Date: 23rd May 2023 - 11:33 PM
+
+LeetCode Problem #: 345. Reverse Vowels of a String
+
+URL: https://leetcode.com/problems/reverse-vowels-of-a-string
+
+Keywords: Two Pointers, String Manipulation, Character Array
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+Write a function that takes a string as input and reverse only the vowels of the string.
+
+Example:
+Input: s = "hello"
+Output: "holle"
+
+Feasible Solutions:
+
+1. Two-Pointer Approach
+
+Optimized Solution: Two-Pointer Approach
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- The Two-Pointer technique can efficiently reverse vowels in a string.
+- Swapping characters in-place can be done using two pointers starting from both ends of the string.
+- Be mindful of handling edge cases, such as an empty string or no vowels in the string.
+
+Notes:
+- Convert the string to a character array for easier manipulation.
+- Identify vowels using a helper function or by checking against a set of vowel characters.
+- Swap the vowels encountered by the two pointers until they meet in the middle.
+- Return the modified string by converting the character array back to a string.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Two Pointers
+
+Description:
+- This approach utilizes the Two Pointers technique to reverse the vowels of a string.
+- It iterates through the string with two pointers, one starting from the left and the other starting from the right.
+- It swaps vowels encountered by the pointers until they meet in the middle.
+
+Algorithm:
+1. Convert the input string `str` to a character array `resultArr` for easier manipulation.
+2. Initialize two pointers, `leftIndex` pointing to the start of the string and `rightIndex` pointing to the end of the string.
+3. Iterate while `leftIndex` is less than or equal to `rightIndex`:
+   - Get the characters at `leftIndex` and `rightIndex` and store them in `leftChar` and `rightChar` variables, respectively.
+   - If `leftChar` is not a vowel, update `resultArr[leftIndex]` with `leftChar` and increment `leftIndex` by 1.
+   - If `rightChar` is not a vowel, update `resultArr[rightIndex]` with `rightChar` and decrement `rightIndex` by 1.
+   - If both `leftChar` and `rightChar` are vowels, swap them by updating `resultArr[leftIndex]` with `rightChar` and `resultArr[rightIndex]` with `leftChar`. Then, increment `leftIndex` by 1 and decrement `rightIndex` by 1.
+4. Return the modified string by converting `resultArr` back to a string using the `String` constructor.
+
+Note:
+- The helper function `isNotVowel` checks if a character is not a vowel by comparing it with the vowels string "aeiouAEIOU".
+- The implementation assumes that the input string `str` is not null.
+
+Time Complexity: O(n), where n is the length of the input string.
+- The algorithm iterates through the string once using two pointers.
+
+Space Complexity: O(n), where n is the length of the input string.
+- The character array `resultArr` requires O(n) space to store the modified string.
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution:
+
+class Solution {
+
+    public String reverseVowels(String s) {
+
+        return usingTwoPointers(s);
+
+    }
+
+    private String usingTwoPointers(String str) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(n)
+            Approach:           Two Pointers
+        */
+
+        char[] resultArr = str.toCharArray();
+
+        int leftIndex = 0;
+        int rightIndex = str.length() - 1;
+
+        while (leftIndex <= rightIndex) {
+
+            char leftChar = str.charAt(leftIndex);
+            char rightChar = str.charAt(rightIndex);
+
+            if (isNotVowel(leftChar)) resultArr[leftIndex++] = leftChar;
+            else if (isNotVowel(rightChar)) resultArr[rightIndex--] = rightChar;
+            else {
+                resultArr[leftIndex++] = rightChar;
+                resultArr[rightIndex--] = leftChar;
+            }
+
+        }
+
+        return new String(resultArr);
+
+    }
+
+    private boolean isNotVowel(char alphabet) {
+
+        final String VOWELS = "aeiouAEIOU";
+        return VOWELS.indexOf(alphabet) == -1;
+
+    }
+
+}
+
+----------------------------------------------------------------------------------------------------
