@@ -143,7 +143,7 @@ URL: https://www.youtube.com/watch?v=MK-NZ4hN7rs
 GeeksforGeeks - Kadane's Algorithm for Maximum Subarray Sum
 URL: https://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
 
-LeetCode Discuss - A collection of Kadane's Algorithm problems on LeetCode
+LeetCode Discuss - practice.unsorted.A collection of Kadane's Algorithm problems on LeetCode
 URL: https://leetcode.com/discuss/general-discussion/458695/dynamic-programming-patterns#KadanesAlgorithm
 
 ----------------------------------------------------------------------------------------------------
