@@ -1,0 +1,304 @@
+
+Date: 26th Feb 2K24 - 09:32 AM..!!
+
+Problem#: 1. Two Sum
+
+URL: https://leetcode.com/problems/two-sum
+
+Keywords: Array, Hash Table
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given an array of integers `nums` and an integer `target`, return the indices of the two numbers such that they add up to `target`.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+You can return the answer in any order.
+
+Example:
+
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1] - Because nums[0] + nums[1] == 9, we return [0, 1].
+
+
+Feasible Solutions:
+
+1. Hash Map - Single Pass
+2. Hash Map - Two Pass
+3. Brute Force
+
+Optimized Solution: Hash Map - Single Pass
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Utilizing a hash map for a single pass can achieve the optimal solution with O(n) time complexity.
+- Hash maps allow constant time lookups, significantly improving efficiency.
+
+Notes:
+- The single-pass hash map approach is the most efficient, achieving O(n) time complexity.
+- The two-pass hash map approach involves generating a hash map in the first pass and then searching for the complement in the second pass.
+- Brute force involves checking every pair of elements in the array, resulting in a time complexity of O(n^2).
+
+New Topics Learnt:
+- Efficient usage of hash maps for single-pass traversal.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Hash Map - Single Pass
+
+Description:
+- This approach utilizes a hash map to store the index of each element as we iterate through the array.
+- We check if the current element's complement is already in the hash map.
+
+Algorithm:
+1. Initialize an empty hash map (`numIndexMap`).
+2. Iterate through each element `nums[i]`.
+3. Calculate the complement `x = target - nums[i]`.
+4. Check if `x` is in the hash map. If yes, return `[i, numIndexMap.get(x)]`.
+5. Otherwise, add the current element and its index to the hash map.
+
+Code:
+
+private int[] solutionUsingHashMapSinglePass(int[] nums, int target) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(n)
+        Approach:           Hash Map - Single Pass
+    */
+
+    int[] resultArr = new int[2];
+    Map<Integer, Integer> numIndexMap = new HashMap<>();
+
+    for (int i = 0; i < nums.length; i++) {
+        int x = target - nums[i];
+        if (numIndexMap.containsKey(x)) {
+            resultArr[0] = i;
+            resultArr[1] = numIndexMap.get(x);
+            break;
+        }
+        numIndexMap.put(nums[i], i);
+    }
+
+    return resultArr;
+}
+
+Time Complexity: O(n)
+We iterate through the array once, and each operation inside the loop (checking and inserting into the hash map) takes constant time.
+
+Space Complexity: O(n)
+The space complexity is O(n) because, in the worst case, we might need to store all elements of the array in the hash map.
+
+----------------------------------------------------------------------------------------------------
+
+
+Approach 2: Hash Map - Two Pass
+
+Description:
+- This approach involves generating a hash map in the first pass and then searching for the complement in the second pass.
+
+Algorithm:
+1. Generate a hash map (`numIndexMap`) in the first pass.
+2. Iterate through the array in the second pass.
+3. For each element, calculate the complement `rightNum = target - nums[leftPointer]`.
+4. Check if `rightNum` is in the hash map. If yes, return `[leftPointer, rightPointer]`.
+5. Increment `leftPointer` if no match is found.
+
+Code:
+
+private int[] solutionUsingHashMapTwoPass(int[] nums, int target) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(n)
+        Approach:           Hash Map - Two Pass
+    */
+
+    int[] resultArr = new int[2];
+    Map<Integer, Integer> numIndexMap = generateNumIndexMap(nums);
+
+    int leftPointer = 0;
+
+    while (leftPointer < nums.length - 1) {
+        int rightNum = target - nums[leftPointer];
+        Integer rightPointer = numIndexMap.get(rightNum);
+
+        if (rightPointer != null && rightPointer != leftPointer) {
+            resultArr[0] = leftPointer;
+            resultArr[1] = rightPointer;
+            break;
+        } else leftPointer++;
+    }
+
+    return resultArr;
+}
+
+Time Complexity: O(n)
+The first pass involves generating the hash map, which takes O(n) time.
+The second pass involves iterating through the array, and each operation inside the loop takes constant time.
+
+Space Complexity: O(n)
+The space complexity is O(n) because the hash map needs to store all elements of the array.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Brute Force
+
+Description:
+- This approach involves checking every pair of elements in the array to find the pair that adds up to the target.
+
+Algorithm:
+1. Iterate through each element `nums[i]`.
+2. For each element, iterate through the rest of the elements `nums[j]` to check if `nums[i] + nums[j] == target`.
+3. If found, return `[i, j]`.
+
+Code:
+
+private int[] solutionUsingBruteForce(int[] nums, int target) {
+    /*
+        Time:       O(n^2)
+        Space:      O(1)
+        Approach:   Brute Force
+    */
+
+    int[] resultArr = new int[2];
+
+    for (int i = 0; i < nums.length; i++) {
+        for (int j = i + 1; j < nums.length; j++) {
+            if (nums[i] + nums[j] == target) {
+                resultArr[0] = i;
+                resultArr[1] = j;
+                break;
+            }
+        }
+    }
+
+    return resultArr;
+}
+
+Time Complexity: O(n^2)
+We have nested loops, resulting in checking every pair of elements in the array.
+
+Space Complexity: O(1)
+This approach uses a constant amount of extra space.
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution in Java:
+
+class Solution {
+
+    public int[] twoSum(int[] nums, int target) {
+
+        return solutionUsingHashMapSinglePass(nums, target);
+
+        // return solutionUsingHashMapTwoPass(nums, target);
+
+        // return solutionUsingBruteForce(nums, target);
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private int[] solutionUsingHashMapSinglePass(int[] nums, int target) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(n)
+            Approach:           HashMap - Single Pass
+        */
+
+        int [] resultArr = new int[2];
+        HashMap<Integer, Integer> numIndexMap = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+
+            int x = target - nums[i];  //  Since, target = nums[i] + x
+
+            if (numIndexMap.containsKey(x)) {
+                resultArr[0] = i;
+                resultArr[1] = numIndexMap.get(x);
+                break;
+            }
+
+            numIndexMap.put(nums[i], i);
+
+        }
+
+        return resultArr;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private int[] solutionUsingHashMapTwoPass(int[] nums, int target) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(n)
+            Approach:           HashMap - Two Pass
+        */
+
+        int [] resultArr = new int[2];
+        HashMap<Integer, Integer> numIndexMap = generateNumIndexMap(nums);
+
+        int leftPointer = 0;
+
+        while (leftPointer < nums.length - 1) {
+
+            int rightNum = target - nums[leftPointer];  //  Since, target = leftNum + rightNum
+            Integer rightPointer = numIndexMap.get(rightNum);
+
+            if (rightPointer != null && rightPointer != leftPointer) {
+                resultArr[0] = leftPointer;
+                resultArr[1] = rightPointer;
+                break;
+            } else leftPointer++;
+
+        }
+
+        return resultArr;
+
+    }
+
+    private HashMap<Integer, Integer> generateNumIndexMap(int[] nums) {
+
+        HashMap<Integer, Integer> numIndexMap = new HashMap<>();
+
+        for (int index = 0; index < nums.length; index++) numIndexMap.put(nums[index], index);
+
+        return numIndexMap;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private int[] solutionUsingBruteForce(int[] nums, int target) {
+        /*
+            Time:       O(n^2)
+            Space:      O(1)
+            Approach:   Brute Force
+        */
+
+        int [] resultArr = new int[2];
+
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] + nums[j] == target) {
+                    resultArr[0] = i;
+                    resultArr[1] = j;
+                    break;
+                }
+            }
+        }
+
+        return resultArr;
+
+    }
+
+}
+
+----------------------------------------------------------------------------------------------------
