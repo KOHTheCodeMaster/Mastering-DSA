@@ -31,7 +31,8 @@ Feasible Solutions:
 
 1. Hash Map - Single Pass
 2. Hash Map - Two Pass
-3. Brute Force
+3. Brute Force - Regular
+4. Brute Force - Two Pointers
 
 Optimized Solution: Hash Map - Single Pass
 
@@ -189,17 +190,99 @@ This approach uses a constant amount of extra space.
 
 ----------------------------------------------------------------------------------------------------
 
-Complete LeetCode Solution in Java:
+Approach 4: Two Pointers - Implicit Quadratic Behavior
 
+Description: This approach involves using two pointers (i and j) to traverse the array and find the pair of elements that add up to the target.
+
+Algorithm:
+
+1. Initialize two pointers, i at the start and j at the end of the array.
+2. While i is less than j:
+3. Check if nums[i] + nums[j] == target.
+4. If yes, return [i, j] as the result.
+5. If no, decrement j.
+6. If j becomes equal to i, reset j to the end of the array and increment i.
+
+Code:
+
+private int[] solutionUsingTwoPointers(int[] nums, int target) {
+    /*
+        Time Complexity:    O(n^2) - Implicit Quadratic Behavior
+        Space Complexity:   O(1)
+        Approach:           Brute Force - Two Pointers
+    */
+    int [] resultArr = new int[2];
+    int leftPointer = 0;
+    int rightPointer = nums.length - 1;
+
+    while (leftPointer < nums.length) {
+        if (nums[leftPointer] + nums[rightPointer] == target) {
+            resultArr[0] = leftPointer;
+            resultArr[1] = rightPointer;
+            break;
+        }
+
+        rightPointer--;
+
+        if (leftPointer == rightPointer) {
+            leftPointer++;  //  Increment leftPointer by 1 towards right
+            rightPointer = nums.length - 1; //  Reset rightPointer to the end of the nums
+        }
+    }
+    return resultArr;
+}
+
+
+Time Complexity: O(n^2) - Implicit Quadratic Behavior
+
+    Provided Code:
+
+    ```java
+    while (i < length - 1) {
+        // ...
+        if (j == i) {
+            j = length - 1;
+            ++i;
+        }
+        // ...
+    }
+    ```
+
+Explanation:
+
+- The while loop appears to be linear at first glance (`O(n)`) due to the condition `i < length - 1`.
+- However, the inner logic of resetting `j` for each increment of `i` results in a hidden quadratic behavior.
+- For each increment of `i`, `j` is iterated from `length - 1` to `i`, contributing to \( \frac{n \times (n - 1)}{2} \) iterations overall.
+- This leads to a quadratic time complexity, as the total number of iterations becomes proportional to \( O(n^2) \).
+
+Key Takeaways:
+
+- Carefully examine inner loop structures and conditions to avoid overlooking hidden quadratic behavior.
+- The structure that resets an iterator within a loop can lead to a higher-than-apparent time complexity.
+
+Advice:
+
+- When assessing time complexity, consider not only the outer loop condition but also the inner logic and its impact on the overall iteration count.
+
+This concept is an excellent example of how the apparent structure of code may not always reflect the true algorithmic efficiency. 
+
+Space Complexity: O(1)
+This approach uses a constant amount of extra space.
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution in Java:
 class Solution {
 
     public int[] twoSum(int[] nums, int target) {
 
-        return solutionUsingHashMapSinglePass(nums, target);
+        // return solutionUsingHashMapSinglePass(nums, target); //  Optimised
 
         // return solutionUsingHashMapTwoPass(nums, target);
 
         // return solutionUsingBruteForce(nums, target);
+
+        return solutionUsingTwoPointers(nums, target);
 
     }
 
@@ -298,6 +381,42 @@ class Solution {
         return resultArr;
 
     }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private int[] solutionUsingTwoPointers(int[] nums, int target) {
+        /*
+            Time Complexity:    O(n^2) - Implicit Quadratic Behavior
+            Space Complexity:   O(1)
+            Approach:           Brute Force - Two Pointers
+        */
+
+        int [] resultArr = new int[2];
+        int leftPointer = 0;
+        int rightPointer = nums.length - 1;
+
+        while (leftPointer < nums.length) {
+
+            if (nums[leftPointer] + nums[rightPointer] == target) {
+                resultArr[0] = leftPointer;
+                resultArr[1] = rightPointer;
+                break;
+            }
+
+            rightPointer--;
+
+            if (leftPointer == rightPointer) {
+                leftPointer++;  //  Increment leftPointer by 1 towards right
+                rightPointer = nums.length - 1; //  Reset rightPointer to the end of the nums
+            }
+
+        }
+
+        return resultArr;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
 
 }
 
