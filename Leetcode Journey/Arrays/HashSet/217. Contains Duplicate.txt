@@ -1,0 +1,324 @@
+
+Date: 29th Feb 2K24 - 09:41 PM..!!
+
+Problem#: 217. Contains Duplicate
+
+URL: https://leetcode.com/problems/contains-duplicate
+
+Keywords: Array, Hash Table
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given an array of integers `nums`, find if the array contains any duplicates.
+Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.
+
+Example:
+
+Input: nums = [1,2,3,1]
+Output: true - Because 1 appears twice.
+
+Feasible Solutions:
+
+1. Using Set - Stream API Implementation
+2. Using Set (Different Implementation)
+3. Using Sorting
+4. Using Map
+
+Optimized Solution: Using Set (Different Implementation)
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Utilizing a set provides an efficient way to check for duplicates in linear time.
+- Sorting the array allows for duplicate elements to be adjacent, simplifying the checking process.
+- A map can be used to keep track of element occurrences, but set implementation is simpler in this case.
+
+Notes:
+- The set-based solution is the most efficient for this problem.
+
+New Topics Learnt:
+- Efficient usage of sets to check for duplicates.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Using Set - Stream API Implementation
+
+Description:
+- This approach uses the `Set` interface along with the Stream API to check for duplicate elements in the array.
+
+Algorithm:
+1. Convert the array to a set using the Stream API.
+2. Check if the size of the set is equal to the length of the array.
+3. If not equal, return true (indicating duplicates).
+4. If equal, return false (no duplicates).
+
+Code:
+
+```java
+private boolean solutionUsingSet(int[] nums) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(n)
+        Approach:           Using Set
+    */
+
+    Set<Integer> set = Arrays.stream(nums).boxed().collect(Collectors.toSet());
+    return nums.length != set.size();
+}
+```
+
+Time Complexity: O(n)
+We iterate through the array once, and each set operation takes constant time.
+
+Space Complexity: O(n)
+The space complexity is O(n) because, in the worst case, we might need to store all elements of the array in the set.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Using Set - (Different Implementation)
+
+Description:
+- This approach uses a different implementation of a set to check for duplicate elements in the array.
+
+Algorithm:
+1. Create a set and add each element from the array to the set.
+2. If adding an element to the set fails (indicating a duplicate), return true.
+3. If the loop completes without duplicates, return false.
+
+Code:
+
+```java
+private boolean solutionUsingSet2(int[] nums) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(n)
+        Approach:           Using Set
+    */
+
+    boolean appearedTwice = false;
+    Set<Integer> set = new HashSet<>();
+
+    for (int x : nums) {
+        if (set.contains(x)) {
+            appearedTwice = true;
+            break;
+        } else set.add(x);
+    }
+
+    return appearedTwice;
+}
+```
+
+Time Complexity: O(n)
+We iterate through the array once, and each set operation takes constant time.
+
+Space Complexity: O(n)
+The space complexity is O(n) because, in the worst case, we might need to store all elements of the array in the set.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Using Sorting
+
+Description:
+- This approach involves sorting the array, making duplicate elements adjacent.
+
+Algorithm:
+1. Sort the array.
+2. Iterate through the sorted array and check if adjacent elements are equal.
+3. If found, return true.
+4. If no duplicates are found after the loop, return false.
+
+Code:
+
+```java
+private boolean solutionUsingSorting(int[] nums) {
+    /*
+        Time Complexity:    O(n Log(n))
+        Space Complexity:   O(n)
+        Approach:           Using Sorting
+    */
+
+    boolean appearedTwice = false;
+
+    Arrays.sort(nums);
+
+    for (int i = 0; i < nums.length - 1; i++) {
+        if (nums[i] == nums[i + 1]) {
+            appearedTwice = true;
+            break;
+        }
+    }
+
+    return appearedTwice;
+}
+```
+
+Time Complexity: O(n Log(n))
+The sorting operation dominates the time complexity.
+
+Space Complexity: O(n)
+The space complexity is O(n) due to the sorted array.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 4: Using Map
+
+Description:
+- This approach utilizes a map to keep track of element occurrences.
+
+Algorithm:
+1. Create a HashMap (`numAppearedTwiceMap`) to store each element's occurrence.
+2. Iterate through each element `nums[i]` in the array:
+   - Check if `nums[i]` is already present in `numAppearedTwiceMap`.
+     - If yes, set `appearedTwice` to true and break the loop.
+     - If not, add `nums[i]` to `numAppearedTwiceMap` with a value of true.
+3. Return the value of `appearedTwice` as the result.
+
+Code:
+
+private boolean solutionUsingMap(int[] nums) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(n)
+        Approach:           Using Map
+    */
+
+    boolean appearedTwice = false;
+    Map<Integer, Boolean> numAppearedTwiceMap = new HashMap<>();
+
+    for (int i = 0; i < nums.length; i++) {
+        appearedTwice = numAppearedTwiceMap.getOrDefault(nums[i], false);
+        if (appearedTwice) break;
+        numAppearedTwiceMap.put(nums[i], true);
+    }
+
+    return appearedTwice;
+}
+
+```
+
+This approach efficiently determines whether there are duplicate elements in the array by keeping track of the elements
+using a HashMap. If an element has already appeared, we return `true`; otherwise, we return `false`.
+
+Time Complexity: O(n)
+We iterate through the array once, and each map operation takes constant time.
+
+Space Complexity: O(n)
+The space complexity is O(n) because, in the worst case, we might need to store all elements of the array in the map.
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution in Java:
+
+```java
+class Solution {
+
+    public boolean containsDuplicate(int[] nums) {
+
+        return solutionUsingSet(nums);
+
+        // return solutionUsingSet2(nums);
+
+        // return solutionUsingSorting(nums);
+
+        // return solutionUsingMap(nums);
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private boolean solutionUsingSet(int[] nums) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(n)
+            Approach:           Using Set
+        */
+
+        int setSize = Arrays.stream(nums).boxed().collect(Collectors.toSet()).size();
+        return nums.length != setSize;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private boolean solutionUsingSet2(int[] nums) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(n)
+            Approach:           Using Set
+        */
+
+        boolean appearedTwice = false;
+        Set<Integer> set = new HashSet<>();
+
+        for (int x : nums) {
+            if (set.contains(x)) {
+                appearedTwice = true;
+                break;
+            } else set.add(x);
+        }
+
+        return appearedTwice;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private boolean solutionUsingSorting(int[] nums) {
+        /*
+            Time Complexity:    O(n Log(n))
+            Space Complexity:   O(n)
+            Approach:           Using Sorting
+        */
+
+        boolean appearedTwice = false;
+
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == nums[i + 1]) {
+                appearedTwice = true;
+                break;
+            }
+        }
+
+        return appearedTwice;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private boolean solutionUsingMap(int[] nums) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(n)
+            Approach:           Using Map
+        */
+
+        boolean appearedTwice = false;
+        Map<Integer, Boolean> numAppearedTwiceMap = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+
+            appearedTwice = numAppearedTwiceMap.getOrDefault(nums[i], false);
+            if (appearedTwice) break;
+
+            numAppearedTwiceMap.put(nums[i], true);
+
+        }
+
+        return appearedTwice;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+}
+
+----------------------------------------------------------------------------------------------------
