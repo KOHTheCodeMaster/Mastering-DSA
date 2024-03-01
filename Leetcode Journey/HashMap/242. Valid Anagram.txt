@@ -1,0 +1,129 @@
+
+Date: 1st Mar. 2K24 - 11:31 AM..!!
+
+Problem#: 242. Valid Anagram
+
+URL: https://leetcode.com/problems/valid-anagram
+
+Keywords: String, HashMap
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given two strings `s` and `t`, return `true` if `t` is an anagram of `s` and `false` otherwise.
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+Example:
+Input: s = "anagram", t = "nagaram"
+Output: true
+
+Feasible Solutions:
+1. Compare Character Frequency (HashMap)
+
+Optimized Solution: Compare Character Frequency (HashMap)
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Utilizing a HashMap to compare character frequencies can efficiently determine if two strings are anagrams.
+- Comparing character frequencies ensures that both strings contain the same characters in the same quantity.
+
+Notes:
+- The HashMap-based approach involves creating a frequency map for each string and comparing the maps for equality.
+
+New Topics Learnt:
+- Efficient usage of HashMap for comparing character frequencies.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Compare Character Frequency (HashMap)
+
+Description:
+- This approach involves creating a frequency map for each string and comparing the maps for equality.
+
+Algorithm:
+1. Create a HashMap (`charFreqMapS`) to store the frequency of each character in string `s`.
+2. Create a HashMap (`charFreqMapT`) to store the frequency of each character in string `t`.
+3. Compare `charFreqMapS` and `charFreqMapT` for equality.
+4. Return `true` if the maps are equal; otherwise, return `false`.
+
+Code:
+
+```java
+private boolean solutionUsingMap(String s, String t) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(n)
+        Approach:           Compare Character Frequency (HashMap)
+    */
+
+    Map<Integer, Integer> charFreqMapS = generateCharFreqMap(s);
+    Map<Integer, Integer> charFreqMapT = generateCharFreqMap(t);
+
+    return charFreqMapS.equals(charFreqMapT);
+}
+
+private Map<Integer, Integer> generateCharFreqMap(String str) {
+    Map<Integer, Integer> charFreqMap = new HashMap<>();
+
+    for (char c : str.toCharArray()) {
+        Integer x = (int) c;
+        if (charFreqMap.containsKey(x)) charFreqMap.put(x, charFreqMap.get(x) + 1);
+        else charFreqMap.put(x, 1);
+    }
+
+    return charFreqMap;
+}
+```
+
+Time Complexity: O(n)
+The algorithm iterates through each character in both strings, and HashMap operations take constant time.
+
+Space Complexity: O(n)
+The space complexity is O(n) because, in the worst case, we might need to store all characters in the HashMap.
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution in Java:
+
+```java
+class Solution {
+
+    public boolean isAnagram(String s, String t) {
+        return solutionUsingMap(s, t);
+    }
+
+    private boolean solutionUsingMap(String s, String t) {
+        /*
+            Time Complexity:    O(n)
+            Space Complexity:   O(n)
+            Approach:           Compare Character Frequency (HashMap)
+        */
+
+        Map<Integer, Integer> charFreqMapS = generateCharFreqMap(s);
+        Map<Integer, Integer> charFreqMapT = generateCharFreqMap(t);
+
+        return charFreqMapS.equals(charFreqMapT);
+    }
+
+    private Map<Integer, Integer> generateCharFreqMap(String str) {
+        Map<Integer, Integer> charFreqMap = new HashMap<>();
+
+        for (char c : str.toCharArray()) {
+            Integer x = (int) c;
+            if (charFreqMap.containsKey(x)) charFreqMap.put(x, charFreqMap.get(x) + 1);
+            else charFreqMap.put(x, 1);
+        }
+
+        return charFreqMap;
+    }
+
+}
+```
+
+----------------------------------------------------------------------------------------------------
