@@ -24,20 +24,24 @@ Output: true
 
 Feasible Solutions:
 1. Compare Character Frequency (HashMap)
+2. Sorting
+3. Compare Character Frequency (Array)
 
-Optimized Solution: Compare Character Frequency (HashMap)
+Optimized Solution: Compare Character Frequency (Array)
 
 ----------------------------------------------------------------------------------------------------
 
 Key Takeaways:
 - Utilizing a HashMap to compare character frequencies can efficiently determine if two strings are anagrams.
 - Comparing character frequencies ensures that both strings contain the same characters in the same quantity.
+- Sorting is an alternative approach, but it has a higher time complexity of O(n log(n)).
 
 Notes:
 - The HashMap-based approach involves creating a frequency map for each string and comparing the maps for equality.
 
 New Topics Learnt:
 - Efficient usage of HashMap for comparing character frequencies.
+- Efficient usage of array frequency for character comparison.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -47,20 +51,23 @@ Description:
 - This approach involves creating a frequency map for each string and comparing the maps for equality.
 
 Algorithm:
-1. Create a HashMap (`charFreqMapS`) to store the frequency of each character in string `s`.
-2. Create a HashMap (`charFreqMapT`) to store the frequency of each character in string `t`.
-3. Compare `charFreqMapS` and `charFreqMapT` for equality.
-4. Return `true` if the maps are equal; otherwise, return `false`.
+1. Check if the lengths of both strings are equal. If not, return false.
+2. Create a HashMap (`charFreqMapS`) to store the frequency of each character in string `s`.
+3. Create a HashMap (`charFreqMapT`) to store the frequency of each character in string `t`.
+4. Compare `charFreqMapS` and `charFreqMapT` for equality.
+5. Return `true` if the maps are equal; otherwise, return `false`.
 
 Code:
 
 ```java
 private boolean solutionUsingMap(String s, String t) {
     /*
-        Time Complexity:    O(n)
-        Space Complexity:   O(n)
+        Time Complexity:    O(n) - Iterate through both strings once
+        Space Complexity:   O(1) - Map Size - Total Lowercase English Letters (26)
         Approach:           Compare Character Frequency (HashMap)
     */
+
+    if (s.length() != t.length()) return false;
 
     Map<Integer, Integer> charFreqMapS = generateCharFreqMap(s);
     Map<Integer, Integer> charFreqMapT = generateCharFreqMap(t);
@@ -68,13 +75,12 @@ private boolean solutionUsingMap(String s, String t) {
     return charFreqMapS.equals(charFreqMapT);
 }
 
-private Map<Integer, Integer> generateCharFreqMap(String str) {
-    Map<Integer, Integer> charFreqMap = new HashMap<>();
+private Map<Character, Integer> generateCharFreqMap(String str) {
+    Map<Character, Integer> charFreqMap = new HashMap<>();
 
-    for (char c : str.toCharArray()) {
-        Integer x = (int) c;
-        if (charFreqMap.containsKey(x)) charFreqMap.put(x, charFreqMap.get(x) + 1);
-        else charFreqMap.put(x, 1);
+    for (Character c : str.toCharArray()) {
+        if (charFreqMap.containsKey(c)) charFreqMap.put(c, charFreqMap.get(c) + 1);
+        else charFreqMap.put(c, 1);
     }
 
     return charFreqMap;
@@ -84,8 +90,87 @@ private Map<Integer, Integer> generateCharFreqMap(String str) {
 Time Complexity: O(n)
 The algorithm iterates through each character in both strings, and HashMap operations take constant time.
 
-Space Complexity: O(n)
-The space complexity is O(n) because, in the worst case, we might need to store all characters in the HashMap.
+Space Complexity: O(1) - Map Size - Total Lowercase English Letters (26)
+Since the character frequency map will have a fixed size of 26 for lowercase English letters,
+the space complexity becomes constant. In Big O notation, constants are typically dropped,
+so for this specific case, the space complexity can be considered O(1).
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Sorting
+
+Description:
+- This approach involves sorting both strings and comparing them.
+
+Algorithm:
+1. Check if the lengths of both strings are equal. If not, return false.
+2. Convert strings to character arrays and sort them.
+3. Compare the sorted arrays.
+
+Code:
+
+```java
+private boolean solutionUsingSorting(String s, String t) {
+    /*
+        Time Complexity:    O(n Log(n)) - Sorting Dominates overall time complexity.
+        Space Complexity:   O(1) - Array Size - Total Lowercase English Letters (26)
+        Approach:           Sorting
+    */
+
+    if (s.length() != t.length()) return false;
+
+    char[] arrS = s.toCharArray();
+    char[] arrT = t.toCharArray();
+
+    Arrays.sort(arrS);
+    Arrays.sort(arrT);
+
+    return Arrays.equals(arrS, arrT);
+}
+```
+
+Time Complexity: O(n Log(n)) - Sorting step dominates the overall time complexity.
+
+Space Complexity: O(1) - Array Size - Total Lowercase English Letters (26)
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Compare Character Frequency (Array)
+
+Description:
+- This approach utilizes an array to keep track of character frequency.
+
+Algorithm:
+1. Check if the lengths of both strings are equal. If not, return false.
+2. Generate character frequency arrays for both strings.
+3. Compare the character frequency arrays.
+
+Code:
+
+```java
+private boolean solutionUsingArrayFreq(String s, String t) {
+    /*
+        Time Complexity:    O(n) - Iterate through both strings once
+        Space Complexity:   O(1) - Array Size - Total Lowercase English Letters (26)
+        Approach:           Compare Character Frequency (Array)
+    */
+
+    if (s.length() != t.length()) return false;
+
+    int[] arrFreqS = new int[26];
+    int[] arrFreqT = new int[26];
+
+    for (char c : s.toCharArray()) arrFreqS[c - 'a']++;
+    for (char c : t.toCharArray()) arrFreqT[c - 'a']++;
+
+    return Arrays.equals(arrFreqS, arrFreqT);
+}
+```
+
+Time Complexity: O(n) - Iterate through both strings once.
+
+Space Complexity: O(1) - Array Size - Total Lowercase English Letters (26)
+The space required for the arrays is constant since the lowercase English letters have a fixed size.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -95,34 +180,89 @@ Complete LeetCode Solution in Java:
 class Solution {
 
     public boolean isAnagram(String s, String t) {
-        return solutionUsingMap(s, t);
+
+        // return solutionUsingMap(s, t);
+
+        // return solutionUsingSorting(s, t);
+
+        return solutionUsingArrayFreq(s, t);
+
     }
+
+    // ----------------------------------------------------------------------------------------------------
 
     private boolean solutionUsingMap(String s, String t) {
         /*
-            Time Complexity:    O(n)
-            Space Complexity:   O(n)
+            Time Complexity:    O(n) - Iterate through both strings once
+            Space Complexity:   O(1) - Map Size - Total Lowercase English Letters (26)
             Approach:           Compare Character Frequency (HashMap)
         */
 
-        Map<Integer, Integer> charFreqMapS = generateCharFreqMap(s);
-        Map<Integer, Integer> charFreqMapT = generateCharFreqMap(t);
+        if (s.length() != t.length()) return false;
+
+        Map<Character, Integer> charFreqMapS = generateCharFreqMap(s);
+        Map<Character, Integer> charFreqMapT = generateCharFreqMap(t);
 
         return charFreqMapS.equals(charFreqMapT);
+
     }
 
-    private Map<Integer, Integer> generateCharFreqMap(String str) {
-        Map<Integer, Integer> charFreqMap = new HashMap<>();
+    private Map<Character, Integer> generateCharFreqMap(String str) {
 
-        for (char c : str.toCharArray()) {
-            Integer x = (int) c;
-            if (charFreqMap.containsKey(x)) charFreqMap.put(x, charFreqMap.get(x) + 1);
-            else charFreqMap.put(x, 1);
+        Map<Character, Integer> charFreqMap = new HashMap<>();
+
+        for (Character c : str.toCharArray()) {
+            if (charFreqMap.containsKey(c)) charFreqMap.put(c, charFreqMap.get(c) + 1);
+            else charFreqMap.put(c, 1);
         }
 
         return charFreqMap;
+
     }
 
+    // ----------------------------------------------------------------------------------------------------
+
+    private boolean solutionUsingSorting(String s, String t) {
+        /*
+            Time Complexity:    O(n Log(n)) - Sorting Dominates overall time complexity
+            Space Complexity:   O(1) - Array Size - Total Lowercase English Letters (26)
+            Approach:           Sorting
+        */
+
+        if (s.length() != t.length()) return false;
+
+        char[] arrS = s.toCharArray();
+        char[] arrT = t.toCharArray();
+
+        Arrays.sort(arrS);
+        Arrays.sort(arrT);
+
+        return Arrays.equals(arrS, arrT);
+
+    }
+
+    // ----------------------------------------------------------------------------------------------------
+
+    private boolean solutionUsingArrayFreq(String s, String t) {
+        /*
+            Time Complexity:    O(n) - Iterate through both strings once
+            Space Complexity:   O(1) - Array Size - Total Lowercase English Letters (26)
+            Approach:           Compare Character Frequency (Array)
+        */
+
+        if (s.length() != t.length()) return false;
+
+        int[] arrFreqS = new int[26];
+        int[] arrFreqT = new int[26];
+
+        for (char c : s.toCharArray()) arrFreqS[c - 'a']++;
+        for (char c : t.toCharArray()) arrFreqT[c - 'a']++;
+
+        return Arrays.equals(arrFreqS, arrFreqT);
+
+    }
+
+    // ----------------------------------------------------------------------------------------------------
 }
 ```
 
