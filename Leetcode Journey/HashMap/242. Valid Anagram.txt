@@ -5,7 +5,7 @@ Problem#: 242. Valid Anagram
 
 URL: https://leetcode.com/problems/valid-anagram
 
-Keywords: String, HashMap
+Keywords: String, HashMap, Array, Sorting, Frequency
 
 Dev: K.O.H..!! (Harshit Gupta)
 
@@ -26,6 +26,7 @@ Feasible Solutions:
 1. Compare Character Frequency (HashMap)
 2. Sorting
 3. Compare Character Frequency (Array)
+4. Character Frequency Difference (Array)
 
 Optimized Solution: Compare Character Frequency (Array)
 
@@ -174,9 +175,51 @@ The space required for the arrays is constant since the lowercase English letter
 
 ----------------------------------------------------------------------------------------------------
 
+Approach 4. Character Frequency Difference (Array)
+
+Description:
+- This approach uses a single array to track the frequency of each character in both strings.
+- It then compares the character frequencies to determine if the strings are anagrams.
+
+Algorithm:
+1. Check if the lengths of both strings are equal. If not, return false.
+2. Initialize an array `arrCharFreq` to store the frequency of each lowercase English letter.
+3. Iterate through each character in both strings.
+4. incrementing the count in `arrCharFreq` for characters in string `s` and decrementing for characters in string `t`.
+5. Check if all counts in `arrCharFreq` are zero, indicating an anagram, and return true; otherwise, return false.
+
+Code:
+
+```java
+private boolean solutionUsingCharFrequencyDifference(String s, String t) {
+    /*
+        Time Complexity:    O(n) - Iterate through both strings once
+        Space Complexity:   O(1) - Array Size - Total Lowercase English Letters (26)
+        Approach:           Compare Character Frequency (Array)
+    */
+    if (s.length() != t.length()) return false;
+
+    int[] arrCharFreq = new int[26];
+    for (int i = 0; i < s.length(); i++) {
+        arrCharFreq[s.charAt(i) - 'a']++;
+        arrCharFreq[t.charAt(i) - 'a']--;
+    }
+
+    for (int x : arrCharFreq) if (x != 0) return false;
+    return true;
+}
+```
+
+Time Complexity: O(n) - Iterating through both strings once results in linear time complexity.
+
+Space Complexity: O(1) - The array size is constant (26 lowercase English letters).
+
+----------------------------------------------------------------------------------------------------
+
 Complete LeetCode Solution in Java:
 
 ```java
+
 class Solution {
 
     public boolean isAnagram(String s, String t) {
@@ -185,7 +228,9 @@ class Solution {
 
         // return solutionUsingSorting(s, t);
 
-        return solutionUsingArrayFreq(s, t);
+        // return solutionUsingArrayFreq(s, t);
+
+        return solutionUsingCharFrequencyDifference(s, t);
 
     }
 
@@ -259,6 +304,31 @@ class Solution {
         for (char c : t.toCharArray()) arrFreqT[c - 'a']++;
 
         return Arrays.equals(arrFreqS, arrFreqT);
+
+    }
+
+
+    // ----------------------------------------------------------------------------------------------------
+
+    private boolean solutionUsingCharFrequencyDifference(String s, String t) {
+        /*
+            Time Complexity:    O(n) - Iterate through both strings once
+            Space Complexity:   O(1) - Array Size - Total Lowercase English Letters (26)
+            Approach:           Compare Character Frequency (Array)
+        */
+
+        if (s.length() != t.length()) return false;
+
+        int[] arrCharFreq = new int[26];
+
+        for (int i = 0; i < s.length(); i++) {
+            arrCharFreq[s.charAt(i) - 'a']++;
+            arrCharFreq[t.charAt(i) - 'a']--;
+        }
+
+        for (int x : arrCharFreq) if (x != 0) return false;
+
+        return true;
 
     }
 
