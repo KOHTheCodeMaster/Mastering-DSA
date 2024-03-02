@@ -1,0 +1,379 @@
+
+Date: 2nd Mar. 2K24 - 05:08 PM..!!
+
+Problem#: 49. Group Anagrams
+
+URL: https://leetcode.com/problems/group-anagrams
+
+Keywords: String, Hash Map, Array
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given an array of strings `strs`, group the anagrams together. You can return the answer in any order.
+An Anagram is a word or phrase formed by rearranging the letters of another.
+
+Example:
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["eat","tea","ate"],["tan","nat"],["bat"]]
+
+Feasible Solutions:
+1. Using HashMap
+2. Using Character Frequency Array
+
+Optimized Solution: Using HashMap
+Description:
+- The hashmap approach provides a clean categorization of anagrams without the need for sorting or character frequency arrays.
+
+Optimization:
+- Utilize a hashmap to categorize anagrams based on character frequency maps.
+- This approach avoids the sorting overhead and provides a more straightforward solution.
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Group anagrams efficiently by utilizing hash maps and character frequency arrays.
+- HashMaps are powerful for grouping elements based on specific properties.
+- Understand the characteristics of strings and leverage them for optimized solutions.
+
+Notes:
+- The character frequency array approach uses a 2D array to store the frequency of each character in each word.
+
+New Topics Learnt:
+- Efficiently group anagrams using hash maps and character frequency arrays.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Using HashMap
+
+Description:
+- Categorize anagrams using a hash map where the key is the character frequency map, and the value is a list of anagrams.
+
+Algorithm:
+1. Initialize a hash map (`charFreqMapToWords`) to categorize anagrams.
+2. Iterate through each word in `strs`.
+3. Generate the character frequency map for the word.
+4. Use the character frequency map as a key in `charFreqMapToWords`.
+5. Add the word to the corresponding list in the hash map.
+
+Code:
+
+```java
+private List<List<String>> solutionUsingHashMap(String[] strs) {
+   - /*
+        Time Complexity:    O(n * m)
+        Space Complexity:   O(n * m)
+        Approach:           Using HashMap
+        Note:               n is the number of words and m is the average length of the words.
+    */
+
+    List<List<String>> groupedAnagrams;
+
+    //  Store CharFreqMap as Key & List of words that has the same CharFreqMap as Value
+    Map<Map<Character, Integer>, List<String>> charFreqMapToWords = new HashMap<>();
+
+    for (String currentWord : strs) {
+        Map<Character, Integer> currentWordCharFreqMap = generateCharFreqMap(currentWord);
+
+        //  Get the list of words for CurrentWord's CharFreqMap
+        List<String> wordsWithSameCharFreq = charFreqMapToWords.getOrDefault(currentWordCharFreqMap, new ArrayList<>());
+        wordsWithSameCharFreq.add(currentWord);
+
+        //  Update charFreqMapToWords with currentWord Added to the list for currentWordCharFreqMap
+        charFreqMapToWords.put(currentWordCharFreqMap, wordsWithSameCharFreq);
+    }
+
+    groupedAnagrams = new ArrayList<>(charFreqMapToWords.values());
+    return groupedAnagrams;
+}
+
+private Map<Character, Integer> generateCharFreqMap(String word) {
+    Map<Character, Integer> charFreqMap = new HashMap<>();
+
+    for (Character c : word.toCharArray()) charFreqMap.put(c, charFreqMap.getOrDefault(c, 0) + 1);
+
+    return charFreqMap;
+}
+```
+
+Time Complexity: O(n * m)
+- We iterate through each word in `strs` (n words).
+- For each word, we iterate through its characters (of average length m).
+- Overall time complexity is O(n * m).
+
+Space Complexity: O(n * m)
+- We use a hash map to store anagrams, and the maximum size of the hash map is proportional to the input size.
+- The space complexity is O(n * m).
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Using Character Frequency Array
+
+Description:
+- Categorize anagrams using a 2D array to represent the character frequency array for each word.
+
+Algorithm:
+1. Initialize a list (`groupedAnagrams`) to store the final result.
+2. Generate the character frequency array for each word in `strs`.
+3. Iterate through each word and check for anagrams using the character frequency array.
+4. Mark processed words to avoid redundancy.
+5. Add anagrams to the result list.
+
+Code:
+
+private List<List<String>> solutionUsingCharFreqArr(String[] strs) {
+    /*
+        Time Complexity:    O(n * m)
+        Space Complexity:   O(n * m)
+        Approach:           Using Character Frequency Array
+        Note:               n is the number of words and m is the average length of the words.
+    */
+
+    List<List<String>> groupedAnagrams = new ArrayList<>();
+
+    //  Generate CharFreqArr for all words of strs
+    int[][] charFreqArrays = generateCharFreqArrOfAllWords(strs);
+    boolean[] isProcessed = new boolean[strs.length];
+
+    List<String> currentAnagramGroup = new ArrayList<>();
+    int leftPointer = 0;
+    int rightPointer = 0;
+
+    //  Iterate each word of strs
+    while (leftPointer < strs.length) {
+
+        int[] leftWordFreqArr = charFreqArrays[leftPointer];
+
+        if (isProcessed[leftPointer]) {
+            leftPointer++;
+            rightPointer = leftPointer;
+            continue;
+        } else if (leftPointer == rightPointer) currentAnagramGroup.add(strs[leftPointer]);
+
+        rightPointer++;
+
+        if (rightPointer == strs.length) {
+            //  Move leftPointer by 1 & reset rightPointer with leftPointer
+            isProcessed[leftPointer] = true;
+            leftPointer++;
+            rightPointer = leftPointer;
+
+            groupedAnagrams.add(currentAnagramGroup);
+            currentAnagramGroup = new ArrayList<>();
+
+        } else if (Arrays.equals(leftWordFreqArr, charFreqArrays[rightPointer])) {
+            currentAnagramGroup.add(strs[rightPointer]);
+            isProcessed[rightPointer] = true;
+        }
+
+    }
+
+    return groupedAnagrams;
+}
+
+private int[][] generateCharFreqArrOfAllWords(String[] words) {
+    int[][] arrOfCharFreqArr = new int[words.length][26];
+
+    for (int i = 0; i < words.length; i++) {
+        String currentWord = words[i];
+
+        int[] tempArrCharFreq = new int[26];
+        for (char c : currentWord.toCharArray()) tempArrCharFreq[c - 'a']++;
+
+        arrOfCharFreqArr[i] = tempArrCharFreq;
+    }
+
+    return arrOfCharFreqArr;
+}
+```
+
+Time Complexity: O(n * m)
+- We iterate through each word in `strs` (n words).
+- For each word, we iterate through its characters (of average length m).
+- Overall time complexity is O(n * m).
+
+Space Complexity: O(n * m)
+- We use a 2D array to store character frequency arrays for each word.
+- The space complexity is O(n * m).
+
+----------------------------------------------------------------------------------------------------
+
+Comparing Trade-offs for using HashMap & Arrays:
+
+In the context of the "Group Anagrams" problem and the two approaches (using HashMap and Character Frequency Array), the trade-offs are primarily related to time and space complexities.
+
+Approach 1: Using HashMap
+
+Trade-offs:
+1. Pros (Advantages):
+   - Flexibility in Handling Anagrams: The use of a HashMap allows for flexible handling of anagrams, making it easy to group words with the same character frequency map.
+   - Improved Readability: The use of HashMap operations can lead to cleaner and more readable code.
+
+2. Cons (Disadvantages):
+   - Space Overhead: The HashMap introduces additional space overhead. Each character frequency map is stored as a key, and for large datasets with long words, this can lead to increased space complexity.
+   - Potential Hash Collisions: Although HashMap operations are generally O(1), in the worst case, hash collisions can occur, leading to a performance hit.
+
+Approach 2: Using Character Frequency Array
+
+Trade-offs:
+1. Pros (Advantages):
+   - Simplicity and Predictability: The character frequency array approach is straightforward and doesn't involve complex data structures like HashMap. It can lead to simpler and more predictable code.
+   - Constant Time Array Operations: Accessing and updating elements in an array is typically constant time, providing efficiency.
+
+2. Cons (Disadvantages):
+   - Fixed Size: The character frequency array approach assumes a fixed size (26 for the English alphabet). This might not be suitable for languages with larger character sets.
+   - Space Complexity: Similar to the HashMap approach, the space complexity can be significant for large datasets with long words.
+
+Overall Comparison:
+
+- Space Complexity: Both approaches have the same O(n * m) space complexity, where n is the number of words and m is the average length of the words. The space complexity is dominated by the storage of character frequency maps or arrays.
+
+- Time Complexity: Both approaches have the same O(n * m) time complexity, as they involve iterating through each word and performing operations proportional to the length of the words.
+
+How They Differ:
+- The primary difference lies in the data structures used. The HashMap approach provides flexibility but comes with additional space overhead, while the character frequency array approach is simpler but assumes a fixed-size character set.
+
+Considerations for Choosing:
+- For small to moderately sized datasets, either approach is reasonable. The choice may depend on coding preferences and readability.
+- If space efficiency is a priority, and the character set is known and limited, the character frequency array approach might be preferred.
+- If handling varying character sets or improving readability is crucial, the HashMap approach may be a better fit.
+
+In summary, the choice between these approaches involves balancing the need for flexibility, readability, 
+and space efficiency based on the specific requirements of the problem and the characteristics of the input data.
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution in Java:
+
+```java
+
+class Solution {
+
+    public List<List<String>> groupAnagrams(String[] strs) {
+
+        return solutionUsingHashMap(strs);
+
+        // return solutionUsingCharFreqArr(strs);
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private List<List<String>> solutionUsingHashMap(String[] strs) {
+        /*
+            Time Complexity:    O(n * m)
+            Space Complexity:   O(n * m)
+            Approach:           Using HashMap
+            Note:               n is the number of words and m is the average length of the words.
+        */
+
+        List<List<String>> groupedAnagrams;
+
+        //  Store CharFreqMap as Key & List of words that has the same CharFreqMap as Value
+        Map<Map<Character, Integer>, List<String>> charFreqMapToWords = new HashMap<>();
+
+        for (String currentWord : strs) {
+            Map<Character, Integer> currentWordCharFreqMap = generateCharFreqMap(currentWord);
+
+            //  Get the list of words for CurrentWord's CharFreqMap
+            List<String> wordsWithSameCharFreq = charFreqMapToWords.getOrDefault(currentWordCharFreqMap, new ArrayList<>());
+            wordsWithSameCharFreq.add(currentWord);
+
+            //  Update charFreqMapToWords with currentWord Added to the list for currentWordCharFreqMap
+            charFreqMapToWords.put(currentWordCharFreqMap, wordsWithSameCharFreq);
+        }
+
+        groupedAnagrams = new ArrayList<>(charFreqMapToWords.values());
+        return groupedAnagrams;
+
+    }
+
+    private Map<Character, Integer> generateCharFreqMap(String word) {
+
+        Map<Character, Integer> charFreqMap = new HashMap<>();
+
+        for (Character c : word.toCharArray()) charFreqMap.put(c, charFreqMap.getOrDefault(c, 0) + 1);
+
+        return charFreqMap;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private List<List<String>> solutionUsingCharFreqArr(String[] strs) {
+        /*
+            Time Complexity:    O(n * m)
+            Space Complexity:   O(n * m)
+            Approach:           Using Character Frequency Array
+            Note:               n is the number of words and m is the average length of the words.
+        */
+
+        List<List<String>> groupedAnagrams = new ArrayList<>();
+
+        //  Generate CharFreqArr for all words of strs
+        int[][] charFreqArrays = generateCharFreqArrOfAllWords(strs);
+        boolean[] isProcessed = new boolean[strs.length];
+
+        List<String> currentAnagramGroup = new ArrayList<>();
+        int leftPointer = 0;
+        int rightPointer = 0;
+
+        //  Iterate each word of strs
+        while (leftPointer < strs.length) {
+
+            int[] leftWordFreqArr = charFreqArrays[leftPointer];
+
+            if (isProcessed[leftPointer]) {
+                leftPointer++;
+                rightPointer = leftPointer;
+                continue;
+            } else if (leftPointer == rightPointer) currentAnagramGroup.add(strs[leftPointer]);
+
+            rightPointer++;
+
+            if (rightPointer == strs.length) {
+                //  Move leftPointer by 1 & reset rightPointer with leftPointer
+                isProcessed[leftPointer] = true;
+                leftPointer++;
+                rightPointer = leftPointer;
+
+                groupedAnagrams.add(currentAnagramGroup);
+                currentAnagramGroup = new ArrayList<>();
+
+            } else if (Arrays.equals(leftWordFreqArr, charFreqArrays[rightPointer])) {
+                currentAnagramGroup.add(strs[rightPointer]);
+                isProcessed[rightPointer] = true;
+            }
+
+        }
+
+        return groupedAnagrams;
+    }
+
+    private int[][] generateCharFreqArrOfAllWords(String[] words) {
+
+        int[][] arrOfCharFreqArr = new int[words.length][26];
+
+        for (int i = 0; i < words.length; i++) {
+            String currentWord = words[i];
+
+            int[] tempArrCharFreq = new int[26];
+            for (char c : currentWord.toCharArray()) tempArrCharFreq[c - 'a']++;
+
+            arrOfCharFreqArr[i] = tempArrCharFreq;
+        }
+
+        return arrOfCharFreqArr;
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+}
+```
+
+----------------------------------------------------------------------------------------------------
