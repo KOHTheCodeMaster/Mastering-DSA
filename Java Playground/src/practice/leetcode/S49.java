@@ -25,7 +25,9 @@ public class S49 {
 
 //        return solutionUsingHashMap(strs);
 
-        return solutionUsingHashMapWithCharFreqAsKey(strs);
+//        return solutionUsingHashMapWithCharFreqAsKey(strs);
+
+        return solutionUsingHashMapWithSortedWordAsKey(strs);
 
 //        return solutionUsingCharFreqArr(strs);
 
@@ -123,6 +125,40 @@ public class S49 {
         }
 
         return strKeyCharFreq.toString();
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private List<List<String>> solutionUsingHashMapWithSortedWordAsKey(String[] strs) {
+        /*
+            Time Complexity:    O(n * m)
+            Space Complexity:   O(n * m)
+            Approach:           Using HashMap With Sorted Word As Key
+            Note:               n is the number of words and m is the average length of the words.
+        */
+
+        List<List<String>> groupedAnagrams;
+
+        //  Store strKeyCharFreq as Key & List of words that has the same strKeyCharFreq as Value
+        Map<String, List<String>> sortedWordToWords = new HashMap<>();
+
+        for (String word : strs) {
+
+            char[] wordCharArr = word.toCharArray();
+            Arrays.sort(wordCharArr);
+
+            String sortedWord = new String(wordCharArr);
+
+            if (!sortedWordToWords.containsKey(sortedWord))
+                sortedWordToWords.put(sortedWord, new ArrayList<>());
+
+            sortedWordToWords.get(sortedWord).add(word);
+
+        }
+
+        groupedAnagrams = new ArrayList<>(sortedWordToWords.values());
+        return groupedAnagrams;
 
     }
 

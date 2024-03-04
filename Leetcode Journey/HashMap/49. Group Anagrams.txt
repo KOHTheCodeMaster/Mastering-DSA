@@ -23,9 +23,10 @@ Input: strs = ["eat","tea","tan","ate","nat","bat"]
 Output: [["eat","tea","ate"],["tan","nat"],["bat"]]
 
 Feasible Solutions:
-1. Using HashMap
+1. Using HashMap with Char Freq Map as Key
 2. Using HashMap with Character Frequency as Key
-3. Using Character Frequency Array
+3. Using HashMap with Sorted Word as Key
+4. Using Character Frequency Array
 
 Optimized Solution: Using HashMap
 Description:
@@ -57,13 +58,20 @@ Approach 1: Using HashMap
 
 Description:
 - Categorize anagrams using a hash map where the key is the character frequency map, and the value is a list of anagrams.
+- Anagrams have the same character frequency maps.
 
 Algorithm:
-1. Initialize a hash map (`charFreqMapToWords`) to categorize anagrams.
-2. Iterate through each word in `strs`.
-3. Generate the character frequency map for the word.
-4. Use the character frequency map as a key in `charFreqMapToWords`.
-5. Add the word to the corresponding list in the hash map.
+1. Initialize an empty HashMap, `charFreqMapToWords`, to store anagrams grouped by their character frequency maps.
+2. Iterate through each word, `currentWord`, in the input array, `strs`.
+    - Generate a character frequency map, `currentWordCharFreqMap`, using the `generateCharFreqMap` method for `currentWord`.
+    - Get the list of words, `wordsWithSameCharFreq`, associated with `currentWordCharFreqMap` in `charFreqMapToWords`.
+    - Add `currentWord` to `wordsWithSameCharFreq`.
+    - Update `charFreqMapToWords` with `currentWord` added to the list for `currentWordCharFreqMap`.
+3. After iterating through all words, the `charFreqMapToWords` HashMap contains groups of anagrams.
+4. Initialize an empty list, `groupedAnagrams`, to store the final result.
+5. Iterate through the values (ArrayLists) in `charFreqMapToWords`.
+    - Add each ArrayList to `groupedAnagrams`.
+6. Return `groupedAnagrams` as the output.
 
 Code:
 
@@ -120,12 +128,20 @@ Approach 2: Using HashMap with Char Frequency as Key
 
 
 Description:
-- This approach uses a HashMap to group anagrams based on their character frequencies.
+- This approach groups anagrams using a HashMap. Anagrams with the same character frequency patterns are grouped together.
 
 Algorithm:
-1. Iterate through each word in the array.
-2. Generate a unique string key representing the character frequencies of the word.
-3. Use the HashMap to store words with the same key together.
+1. Initialize an empty HashMap, `strKeyCharFreqToWords`, to store anagrams grouped by their character frequency patterns.
+2. Iterate through each word, `currentWord`, in the input array, `strs`.
+    - Generate a string key representing the character frequency pattern, `currentWordStrKeyCharFreq`, using the `generateStrKeyCharFreq` method for `currentWord`.
+    - Get the list of words, `wordsWithSameStrKeyCharFreq`, associated with `currentWordStrKeyCharFreq` in `strKeyCharFreqToWords`.
+    - Add `currentWord` to `wordsWithSameStrKeyCharFreq`.
+    - Update `strKeyCharFreqToWords` with `currentWord` added to the list for `currentWordStrKeyCharFreq`.
+3. After iterating through all words, the `strKeyCharFreqToWords` HashMap contains groups of anagrams.
+4. Initialize an empty list, `groupedAnagrams`, to store the final result.
+5. Iterate through the values (ArrayLists) in `strKeyCharFreqToWords`.
+    - Add each ArrayList to `groupedAnagrams`.
+6. Return `groupedAnagrams` as the output.
 
 Code:
 
@@ -188,17 +204,123 @@ Space Complexity: O(n * m)
 
 ----------------------------------------------------------------------------------------------------
 
-Approach 3: Using Character Frequency Array
+Approach 3: Using HashMap With Sorted Word As Key
+
+Description:
+- This approach uses a HashMap to group anagrams based on the sorted order of characters.
+
+Algorithm:
+1. Initialize an empty HashMap, `sortedWordToWords`, to store the anagrams grouped by their sorted characters.
+2. Iterate through each word, `word`, in the input array, `strs`.
+    - Convert `word` to a character array, `wordCharArr`.
+    - Sort the characters in `wordCharArr` in ascending order.
+    - Convert the sorted `wordCharArr` back to a string, `sortedWord`.
+3. Check if `sortedWord` is already a key in `sortedWordToWords`.
+    - If not, add `sortedWord` as a key with an empty ArrayList as its value.
+4. Add the original `word` to the ArrayList associated with the key `sortedWord` in `sortedWordToWords`.
+5. After iterating through all words, the `sortedWordToWords` HashMap contains groups of anagrams.
+6. Initialize an empty list, `groupedAnagrams`, to store the final result.
+7. Iterate through the values (ArrayLists) in `sortedWordToWords`.
+    - Add each ArrayList to `groupedAnagrams`.
+8. Return `groupedAnagrams` as the output.
+
+Code:
+
+```java
+private List<List<String>> solutionUsingHashMapWithSortedWordAsKey(String[] strs) {
+    /*
+        Time Complexity:    O(n * m * log(m))
+        Space Complexity:   O(n * m)
+        Approach:           Using HashMap With Sorted Word As Key
+        Note:               n is the number of words, and m is the average length of the words.
+    */
+
+    List<List<String>> groupedAnagrams;
+
+    //  Store sortedWord as Key & List of words that have the same sortedWord as Value
+    Map<String, List<String>> sortedWordToWords = new HashMap<>();
+
+    for (String word : strs) {
+
+        char[] wordCharArr = word.toCharArray();
+        Arrays.sort(wordCharArr);
+
+        String sortedWord = new String(wordCharArr);
+
+        if (!sortedWordToWords.containsKey(sortedWord))
+            sortedWordToWords.put(sortedWord, new ArrayList<>());
+
+        sortedWordToWords.get(sortedWord).add(word);
+
+    }
+
+    groupedAnagrams = new ArrayList<>(sortedWordToWords.values());
+    return groupedAnagrams;
+}
+```
+
+Time Complexity: O(n * m * log(m))
+- The time complexity is proportional to the number of words (n), the average length of the words (m), and the sorting operation.
+
+Space Complexity: O(n * m)
+- The space complexity is determined by the number of words (n) and the average length of the words (m).
+
+----------------------------------------------------------------------------------------------------
+
+Approach 4: Using Character Frequency Array
 
 Description:
 - Categorize anagrams using a 2D array to represent the character frequency array for each word.
 
 Algorithm:
-1. Initialize a list (`groupedAnagrams`) to store the final result.
-2. Generate the character frequency array for each word in `strs`.
-3. Iterate through each word and check for anagrams using the character frequency array.
-4. Mark processed words to avoid redundancy.
-5. Add anagrams to the result list.
+1. Initialize an empty list, `groupedAnagrams`, to store the final result.
+2. Generate character frequency arrays for all words in the input array, `strs`, using the `generateCharFreqArrOfAllWords` method.
+3. Initialize a boolean array, `isProcessed`, to keep track of processed words.
+4. Initialize two pointers, `leftPointer` and `rightPointer`, to iterate through each word in `strs`.
+5. Initialize an empty list, `currentAnagramGroup`, to store the current group of anagrams.
+6. Iterate through each word in `strs` using `leftPointer`.
+    - Get the character frequency array for the left word, `leftWordFreqArr`, using the precomputed array.
+    - Check if `leftPointer` has been processed. If yes, increment `leftPointer` and reset `rightPointer` to `leftPointer`.
+    - If `leftPointer` is equal to `rightPointer`, add the word at `leftPointer` to the `currentAnagramGroup`.
+    - Increment `rightPointer` and check the following conditions:
+        - If `rightPointer` reaches the end of `strs`, move `leftPointer` by 1 and reset `rightPointer` to `leftPointer`.
+        - If the char freq array of the left word is equal to the char freq array of the right word,
+          add the word at `rightPointer` to `currentAnagramGroup` and mark it as processed.
+7. Add `currentAnagramGroup` to `groupedAnagrams`.
+8. Continue steps 6-7 until all words in `strs` are processed.
+9. Return `groupedAnagrams` as the output.
+
+Time Complexity:
+- O(n * m), where n is the number of words, and m is the average length of the words.
+- This is because generating the character frequency array has a linear time complexity.
+
+Space Complexity:
+- O(n * m), where n is the number of words, and m is the average length of the words.
+- This accounts for the character frequency array for each word and the boolean array for processed words.
+
+
+generateCharFreqArrOfAllWords() -> Generating Character Frequency Arrays for All Words
+
+Description:
+- The method `generateCharFreqArrOfAllWords` is responsible for creating an array of character frequency arrays,
+- where each array corresponds to the character frequencies of a word.
+
+Algorithm:
+1. Initialize a 2D array, `arrOfCharFreqArr`, to store the character frequency arrays for all words.
+2. Iterate through each word in the input array, `words`.
+    - Initialize an array, `tempArrCharFreq`, to represent the character frequency array for the current word.
+    - Iterate through each character in the current word.
+        - Increment the corresponding index in `tempArrCharFreq` based on the character's position in the English alphabet.
+    - Add `tempArrCharFreq` to the `arrOfCharFreqArr` at the current index.
+3. Return the resulting 2D array, `arrOfCharFreqArr`.
+
+Time Complexity:
+- O(n * m), where n is the number of words, and m is the average length of the words.
+- This is because, for each word, the method iterates through each character.
+
+Space Complexity:
+- O(n * m), where n is the number of words, and m is the average length of the words.
+- The space complexity accounts for the 2D array storing the character frequency arrays for each word.
 
 Code:
 
@@ -307,12 +429,16 @@ Trade-offs:
 
 Overall Comparison:
 
-- Space Complexity: Both approaches have the same O(n * m) space complexity, where n is the number of words and m is the average length of the words. The space complexity is dominated by the storage of character frequency maps or arrays.
+- Space Complexity:
+Both approaches have the same O(n * m) space complexity, where n is the number of words and m is the average length of the words. The space complexity is dominated by the storage of character frequency maps or arrays.
 
-- Time Complexity: Both approaches have the same O(n * m) time complexity, as they involve iterating through each word and performing operations proportional to the length of the words.
+- Time Complexity:
+Both approaches have the same O(n * m) time complexity, as they involve iterating through each word and performing operations proportional to the length of the words.
 
 How They Differ:
-- The primary difference lies in the data structures used. The HashMap approach provides flexibility but comes with additional space overhead, while the character frequency array approach is simpler but assumes a fixed-size character set.
+- The primary difference lies in the data structures used.
+  The HashMap approach provides flexibility but comes with additional space overhead,
+  while the character frequency array approach is simpler but assumes a fixed-size character set.
 
 Considerations for Choosing:
 - For small to moderately sized datasets, either approach is reasonable. The choice may depend on coding preferences and readability.
@@ -334,7 +460,9 @@ class Solution {
 
         // return solutionUsingHashMap(strs);
 
-        return solutionUsingHashMapWithCharFreqAsKey(strs);
+        // return solutionUsingHashMapWithCharFreqAsKey(strs);
+
+        return solutionUsingHashMapWithSortedWordAsKey(strs);
 
         // return solutionUsingCharFreqArr(strs);
 
@@ -432,6 +560,40 @@ class Solution {
         }
 
         return strKeyCharFreq.toString();
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private List<List<String>> solutionUsingHashMapWithSortedWordAsKey(String[] strs) {
+        /*
+            Time Complexity:    O(n * m)
+            Space Complexity:   O(n * m)
+            Approach:           Using HashMap With Sorted Word As Key
+            Note:               n is the number of words and m is the average length of the words.
+        */
+
+        List<List<String>> groupedAnagrams;
+
+        //  Store strKeyCharFreq as Key & List of words that has the same strKeyCharFreq as Value
+        Map<String, List<String>> sortedWordToWords = new HashMap<>();
+
+        for (String word : strs) {
+
+            char[] wordCharArr = word.toCharArray();
+            Arrays.sort(wordCharArr);
+
+            String sortedWord = new String(wordCharArr);
+
+            if (!sortedWordToWords.containsKey(sortedWord))
+                sortedWordToWords.put(sortedWord, new ArrayList<>());
+
+            sortedWordToWords.get(sortedWord).add(word);
+
+        }
+
+        groupedAnagrams = new ArrayList<>(sortedWordToWords.values());
+        return groupedAnagrams;
 
     }
 
