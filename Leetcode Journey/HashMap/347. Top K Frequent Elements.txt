@@ -1,0 +1,175 @@
+
+Date: 4th Mar. 2K24 - 09:51 PM..!!
+
+Problem#: 347. Top K Frequent Elements
+
+URL: https://leetcode.com/problems/top-k-frequent-elements/
+
+Keywords: Array, Hash Map, Priority Queue, Bucket Sort
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given an integer array `nums` and an integer `k`, return the k most frequent elements. You may return the answer in any order.
+
+Example:
+Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+
+Feasible Solutions:
+1. Using Hash Map with Frequency - Bucket Sort
+
+Description:
+- Utilize a hash map to store the frequency of each element.
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Utilize hash maps for efficiently tracking element frequencies.
+
+Notes:
+- Be mindful of edge cases, such as handling smaller k values or empty input arrays.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1:
+
+Description:
+- Utilize a frequency map to categorize numbers by their occurrence
+
+Algorithm:
+1. Initialize an empty HashMap, `frequencyMap`, to store the frequency of each number in the input array, `nums`.
+2. Iterate through each number, `x`, in `nums`.
+    - Update the frequency map, incrementing the count for `x`.
+3. Initialize a list of lists, `numsByFreqList`, to categorize numbers by their frequencies.
+4. Iterate through the keys of `frequencyMap`.
+    - Get the frequency, `xFreq`, for each number.
+    - Retrieve the list of numbers, `numsWithXFreq`, associated with `xFreq` in `numsByFreqList`.
+    - If `numsWithXFreq` is null, create a new list and add `x` to it. Otherwise, append `x` to the existing list.
+5. Find the maximum frequency, `maxFrequency`, among all numbers in `frequencyMap`.
+6. Initialize an empty list, `result`, to store the k most frequent numbers.
+7. Iterate from `maxFrequency` to 1.
+    - Check if the list at index `i` in `numsByFreqList` is not null.
+    - If not null, add all numbers from the list to the result until the result size reaches k.
+8. Convert the result list to an array and return it.
+
+Time Complexity:  O(n), where n is the length of the input array, `nums`.
+Space Complexity: O(n), considering the space used for the frequency map and the list of numbers by frequency.
+
+Code:
+
+```java
+
+private int[] solutionUsingHashMap(int[] nums, int k) {
+    /*
+        Time Complexity:    O(n) - Linear scan through nums
+        Space Complexity:   O(n) - Each element in nums has an entry in the frequency map
+        Approach:           Using Frequency Map
+    */
+
+    // Result list to store the k most frequent numbers
+    List<Integer> result = new ArrayList<>();
+
+    // Generate a frequency map for each number in nums
+    Map<Integer, Integer> frequencyMap = new HashMap<>();
+    for (int x : nums) freqMap.put(x, freqMap.getOrDefault(x, 0) + 1);
+
+    // List to store numbers grouped by their frequency
+    List<List<Integer>> numsByFreqList = new ArrayList<>();
+
+    // Index represents frequency, and value is a list of numbers with the same frequency
+    for (int i = 0; i < nums.length + 1; i++) numsByFreqList.add(null);
+
+    // Populate numsByFreqList based on frequencyMap
+    for (int x : frequencyMap.keySet()) {
+
+        int xFreq = frequencyMap.get(x);
+        List<Integer> numsWithXFreq = numsByFreqList.get(xFreq);
+
+        if (numsWithXFreq == null) {
+            numsWithXFreq = new ArrayList<>();
+            numsWithXFreq.add(x);
+            numsByFreqList.set(xFreq, numsWithXFreq);
+        } else numsWithXFreq.add(x);
+
+    }
+
+    int maxFrequency = Collections.max(frequencyMap.values());
+
+    // Collect the k most frequent numbers from numsByFreqList
+    for (int i = maxFrequency; i > 0 && result.size() < k; i--)
+        if (numsByFreqList.get(i) != null) result.addAll(numsByFreqList.get(i));
+
+    // Convert the result list to an array
+    return result.stream().mapToInt(Integer::intValue).toArray();
+}
+
+```
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution in Java:
+
+```java
+
+class Solution {
+
+    public int[] topKFrequent(int[] nums, int k) {
+
+        return solutionUsingHashMap(nums, k);
+
+    }
+
+    private int[] solutionUsingHashMap(int[] nums, int k) {
+        /*
+            Time Complexity:    O(n) - Linear scan through nums
+            Space Complexity:   O(n) - Each element in nums has an entry in the frequency map
+            Approach:           Using Frequency Map
+        */
+
+        // Result list to store the k most frequent numbers
+        List<Integer> result = new ArrayList<>();
+
+        // Generate a frequency map for each number in nums
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (int x : nums) freqMap.put(x, freqMap.getOrDefault(x, 0) + 1);
+
+        // List to store numbers grouped by their frequency
+        List<List<Integer>> numsByFreqList = new ArrayList<>();
+
+        // Index represents frequency, and value is a list of numbers with the same frequency
+        for (int i = 0; i < nums.length + 1; i++) numsByFreqList.add(null);
+
+        // Populate numsByFreqList based on frequencyMap
+        for (int x : frequencyMap.keySet()) {
+
+            int xFreq = frequencyMap.get(x);
+            List<Integer> numsWithXFreq = numsByFreqList.get(xFreq);
+
+            if (numsWithXFreq == null) {
+                numsWithXFreq = new ArrayList<>();
+                numsWithXFreq.add(x);
+                numsByFreqList.set(xFreq, numsWithXFreq);
+            } else numsWithXFreq.add(x);
+
+        }
+
+        int maxFrequency = Collections.max(frequencyMap.values());
+
+        // Collect the k most frequent numbers from numsByFreqList
+        for (int i = maxFrequency; i > 0 && result.size() < k; i--)
+            if (numsByFreqList.get(i) != null) result.addAll(numsByFreqList.get(i));
+
+        // Convert the result list to an array
+        return result.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+}
+```
+
+----------------------------------------------------------------------------------------------------
