@@ -10,9 +10,9 @@ public class S347 {
 
     private void major() {
 
-//        int[] nums = {1, 1, 1, 2, 2, 3, 3, 4};
-        int[] nums = {1, 7, 7, 7, 7, 7, 3, 3};
-        int k = 2;
+        int[] nums = {1, 1, 1, 2, 2, 3, 3, 4};
+//        int[] nums = {1, 7, 7, 7, 7, 7, 3, 3};
+        int k = 3;
 
         int[] topKFrequenceNumsArr = topKFrequent(nums, k);
         System.out.println(Arrays.toString(topKFrequenceNumsArr));
@@ -21,7 +21,63 @@ public class S347 {
 
     public int[] topKFrequent(int[] nums, int k) {
 
-        return solutionUsingHashMap(nums, k);
+//        return solutionUsingHashMap(nums, k);
+
+        return solutionUsingPriorityQueue(nums, k);
+
+    }
+
+    private int[] solutionUsingPriorityQueue(int[] nums, int k) {
+        /*
+            Time Complexity:    O(n * log(k))
+            Space Complexity:   O(n * log(k))
+            Approach:           Using Priority Queue with a custom comparator based on frequency
+         */
+
+        int[] resultArr = new int[k];
+
+        //  Create a frequency map to store the count of each number in nums
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        for (int x : nums) freqMap.merge(x, 1, Integer::sum);
+
+        //  Create a min heap (priority queue) based on the frequency of numbers
+        PriorityQueue<Map.Entry<Integer, Integer>> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Map.Entry::getValue));
+
+        for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+            priorityQueue.add(entry);
+            // If the size of the priority queue exceeds k, remove the element with the lowest frequency
+            if (priorityQueue.size() > k) priorityQueue.poll();
+        }
+
+        // Populate the result array with the k most frequent elements in reverse order
+        for (int i = k - 1; i >= 0; i--) resultArr[i] = Objects.requireNonNull(priorityQueue.poll()).getKey();
+
+        return resultArr;
+
+    }
+
+    private void practiceCompareMethod(int[] nums, int k) {
+
+/*
+//        Comparator.comparing((Map.Entry<Integer, String> map) -> map.getValue());
+        Comparator<Map.Entry<Integer, Integer>> entryComparator = Comparator.comparingInt((Map.Entry<Integer, Integer> map) -> map.getValue());
+        entryComparator.compare(null, null);
+//        Comparator<Map.Entry<Integer, Integer>> mapComparator = Comparator.comparingInt(map -> map.getValue());
+        Comparator<Map.Entry<Integer, Integer>> mapComparator2 = Comparator.comparingInt(Map.Entry::getValue);
+        Comparator<Map.Entry<Integer, Integer>> mapComparator3 = (o1, o2) -> o1.getValue() - o2.getValue();
+        Comparator<Map.Entry<Integer, Integer>> mapComparator4 = (o1, o2) -> {
+            return Comparator.comparingInt((Map.Entry<Integer, Integer> map) -> map.getValue());
+        };
+        Comparator<Map.Entry<Integer, Integer>> mapComparator5 = (o1, o2) -> {
+            return Comparator.comparingInt(map -> map.getValue());
+        };
+        Comparator<Map.Entry<Integer, Integer>> mapComparator6 = (o1, o2) -> {
+            return Comparator.comparingInt((map<Map.Entry<Integer, Integer>>) ->map.getValue());
+        };
+        Comparator<Map.Entry<Integer, Integer>> mapComparator7 = (o1, o2) -> {
+            return Comparator.comparingInt(Map.Entry::getValue);
+        };
+*/
 
     }
 

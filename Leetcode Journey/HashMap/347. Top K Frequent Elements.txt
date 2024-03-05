@@ -23,17 +23,29 @@ Output: [1,2]
 
 Feasible Solutions:
 1. Using Hash Map with Frequency - Bucket Sort
+2. Using Priority Queue with Frequency Map
 
 Description:
 - Utilize a hash map to store the frequency of each element.
+- Utilizing a priority queue to keep track of the most frequent elements.
+- Using a frequency map to efficiently count occurrences.
 
 ----------------------------------------------------------------------------------------------------
 
 Key Takeaways:
 - Utilize hash maps for efficiently tracking element frequencies.
+- Utilizing a priority queue with a custom comparator based on frequency for efficient retrieval of k most frequent elements.
+- Leveraging priority queues for scenarios requiring efficient retrieval of elements with specific criteria.
+- Combining data structures like priority queues and hash maps for optimized solutions.
+
 
 Notes:
 - Be mindful of edge cases, such as handling smaller k values or empty input arrays.
+- The use of the `merge` method in the frequency map to efficiently count occurrences.
+- The implementation of a custom comparator for the priority queue based on frequency.
+
+New Topics Learnt:
+- Efficiently using a priority queue with a custom comparator.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -113,6 +125,73 @@ private int[] solutionUsingHashMap(int[] nums, int k) {
 
 ----------------------------------------------------------------------------------------------------
 
+Approach 2: Using Priority Queue with Frequency Map
+
+Description:
+- Count the frequency of each element using a frequency map.
+- Utilize a priority queue to keep track of the k most frequent elements.
+- Poll elements from the priority queue to obtain the final result.
+
+Algorithm:
+1. Initialize an empty HashMap, `freqMap`, to store the frequency of each number in the input array `nums`.
+2. Iterate through each number, `num`, in the input array `nums`.
+    - Update the frequency count of `num` in the `freqMap`.
+3. Initialize a PriorityQueue, `priorityQueue`, with a comparator based on the frequency of numbers.
+4. Iterate through the entries in the `freqMap`.
+    - Add each entry to the `priorityQueue`.
+    - If the size of the `priorityQueue` exceeds `k`, remove the element with the lowest frequency.
+5. Initialize an array, `resultArr`, to store the k most frequent elements.
+6. Iterate from `k-1` to `0` and populate `resultArr` in reverse order from the `priorityQueue`.
+7. Return `resultArr` as the output.
+
+Code:
+
+```java
+
+private int[] solutionUsingPriorityQueue(int[] nums, int k) {
+    /*
+        Time Complexity:    O(n * log(k))
+        Space Complexity:   O(n * log(k))
+        Approach:           Using Priority Queue with a custom comparator based on frequency
+     */
+
+    int[] resultArr = new int[k];
+
+    //  Create a frequency map to store the count of each number in nums
+    Map<Integer, Integer> freqMap = new HashMap<>();
+    for (int x : nums) freqMap.merge(x, 1, Integer::sum);
+
+    //  Create a min heap (priority queue) based on the frequency of numbers
+    PriorityQueue<Map.Entry<Integer, Integer>> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Map.Entry::getValue));
+
+    for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+        priorityQueue.add(entry);
+        // If the size of the priority queue exceeds k, remove the element with the lowest frequency
+        if (priorityQueue.size() > k) priorityQueue.poll();
+    }
+
+    // Populate the result array with the k most frequent elements in reverse order
+    for (int i = k - 1; i >= 0; i--) resultArr[i] = Objects.requireNonNull(priorityQueue.poll()).getKey();
+
+    return resultArr;
+
+}
+
+```
+
+Time Complexity: O(n * log(k))
+- We iterate through the frequency map entries (n entries).
+- Each insertion and removal in the priority queue takes log(k) time.
+- Polling every time the size of priorityQueue becomes k keeps the size of the queue limited to k (not equal to n).
+- Overall time complexity is O(n * log(k)).
+
+Space Complexity: O(n)
+- The space complexity is dominated by the frequency map, which has at most n entries.
+- The priority queue has a maximum size of k.
+- Overall space complexity is O(n).
+
+----------------------------------------------------------------------------------------------------
+
 Complete LeetCode Solution in Java:
 
 ```java
@@ -121,9 +200,13 @@ class Solution {
 
     public int[] topKFrequent(int[] nums, int k) {
 
-        return solutionUsingHashMap(nums, k);
+        // return solutionUsingHashMap(nums, k);
+
+        return solutionUsingPriorityQueue(nums, k);
 
     }
+
+    // ----------------------------------------------------------------------------------------------------
 
     private int[] solutionUsingHashMap(int[] nums, int k) {
         /*
@@ -136,7 +219,7 @@ class Solution {
         List<Integer> result = new ArrayList<>();
 
         // Generate a frequency map for each number in nums
-        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        Map<Integer, Integer> freqMap = new HashMap<>();
         for (int x : nums) freqMap.put(x, freqMap.getOrDefault(x, 0) + 1);
 
         // List to store numbers grouped by their frequency
@@ -146,9 +229,9 @@ class Solution {
         for (int i = 0; i < nums.length + 1; i++) numsByFreqList.add(null);
 
         // Populate numsByFreqList based on frequencyMap
-        for (int x : frequencyMap.keySet()) {
+        for (int x : freqMap.keySet()) {
 
-            int xFreq = frequencyMap.get(x);
+            int xFreq = freqMap.get(x);
             List<Integer> numsWithXFreq = numsByFreqList.get(xFreq);
 
             if (numsWithXFreq == null) {
@@ -159,7 +242,7 @@ class Solution {
 
         }
 
-        int maxFrequency = Collections.max(frequencyMap.values());
+        int maxFrequency = Collections.max(freqMap.values());
 
         // Collect the k most frequent numbers from numsByFreqList
         for (int i = maxFrequency; i > 0 && result.size() < k; i--)
@@ -168,6 +251,39 @@ class Solution {
         // Convert the result list to an array
         return result.stream().mapToInt(Integer::intValue).toArray();
     }
+
+    // ----------------------------------------------------------------------------------------------------
+
+    private int[] solutionUsingPriorityQueue(int[] nums, int k) {
+        /*
+            Time Complexity:    O(n * log(k)) - Each insertion and removal in the priority queue takes log(k)
+            Space Complexity:   O(n) - dominated by the frequency map, which has at most n entries
+            Approach:           Using Priority Queue with a custom comparator based on frequency
+         */
+
+        int[] resultArr = new int[k];
+
+        //  Create a frequency map to store the count of each number in nums
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        for (int x : nums) freqMap.merge(x, 1, Integer::sum);
+
+        //  Create a min heap (priority queue) based on the frequency of numbers
+        PriorityQueue<Map.Entry<Integer, Integer>> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Map.Entry::getValue));
+
+        for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+            priorityQueue.add(entry);
+            // If the size of the priority queue exceeds k, remove the element with the lowest frequency
+            if (priorityQueue.size() > k) priorityQueue.poll();
+        }
+
+        // Populate the result array with the k most frequent elements in reverse order
+        for (int i = k - 1; i >= 0; i--) resultArr[i] = Objects.requireNonNull(priorityQueue.poll()).getKey();
+
+        return resultArr;
+
+    }
+
+    // ----------------------------------------------------------------------------------------------------
 
 }
 ```

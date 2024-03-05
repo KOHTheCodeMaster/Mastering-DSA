@@ -1,0 +1,84 @@
+
+Metadata:
+- Date & Time: Including the date and time helps in tracking when the solution was created or updated.
+- Problem #: Providing the problem number for reference.
+- URL: Linking to the problem on LeetCode for quick access.
+- Keywords: Listing keywords related to the problem for better categorization.
+- Dev: K.O.H..!! (Harshit Gupta)
+- GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+Problem Description:
+- Given: A clear and concise explanation of the problem.
+- Example: Providing an example to illustrate the problem statement.
+
+Feasible Solutions:
+Listing possible approaches with a brief description of each:
+1. Using HashMap with Char Freq Map as Key
+2. Using HashMap with Character Frequency as Key
+3. Using HashMap with Sorted Word as Key
+4. Using Character Frequency Array
+
+Optimized Solution:
+- Description: Providing a high-level overview of the optimized approach.
+- Optimization: Highlighting the specific optimizations made in the chosen approach.
+
+Key Takeaways:
+Summarizing the important lessons learned from the problem and its solutions.
+
+Notes:
+Additional notes or considerations related to the problem or solutions.
+
+New Topics Learnt:
+Highlighting any new concepts or techniques learned during the problem-solving process.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Using HashMap
+- Description: Detailed steps for the first approach.
+- Algorithm: Step-by-step algorithm for the approach.
+- Code: Java code implementing the approach.
+- Time Complexity: Analysis of time complexity.
+- Space Complexity: Analysis of space complexity.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Using HashMap with Char Frequency as Key
+- Description: Detailed steps for the second approach.
+- Algorithm: Step-by-step algorithm for the approach.
+- Code: Java code implementing the approach.
+- Time Complexity: Analysis of time complexity.
+- Space Complexity: Analysis of space complexity.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Using HashMap with Sorted Word As Key
+- Description: Detailed steps for the third approach.
+- Algorithm: Step-by-step algorithm for the approach.
+- Code: Java code implementing the approach.
+- Time Complexity: Analysis of time complexity.
+- Space Complexity: Analysis of space complexity.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 4: Using Character Frequency Array
+- Description: Detailed steps for the fourth approach.
+- Algorithm: Step-by-step algorithm for the approach.
+- Code: Java code implementing the approach.
+- Time Complexity: Analysis of time complexity.
+- Space Complexity: Analysis of space complexity.
+
+----------------------------------------------------------------------------------------------------
+
+Overall Comparison:
+- Trade-offs: Highlighting the pros and cons of each approach.
+- Considerations for Choosing: Guidance on choosing an approach based on specific criteria.
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution in Java:
+- Class Name: `Solution`
+- Method: `groupAnagrams`
+- Method Body: Invoking the selected solution approach.
+- Commented Out Options: Options to switch between different approaches.
+
+----------------------------------------------------------------------------------------------------
