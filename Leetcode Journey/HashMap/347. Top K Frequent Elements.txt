@@ -24,6 +24,7 @@ Output: [1,2]
 Feasible Solutions:
 1. Using Hash Map with Frequency - Bucket Sort
 2. Using Priority Queue with Frequency Map
+3: Using Hoare Partition Algorithm
 
 Description:
 - Utilize a hash map to store the frequency of each element.
@@ -33,6 +34,7 @@ Description:
 ----------------------------------------------------------------------------------------------------
 
 Key Takeaways:
+- Efficiently finding top k frequent elements using frequency map and partition algorithm.
 - Utilize hash maps for efficiently tracking element frequencies.
 - Utilizing a priority queue with a custom comparator based on frequency for efficient retrieval of k most frequent elements.
 - Leveraging priority queues for scenarios requiring efficient retrieval of elements with specific criteria.
@@ -46,6 +48,7 @@ Notes:
 
 New Topics Learnt:
 - Efficiently using a priority queue with a custom comparator.
+- Application of the Hoare Partition Algorithm in finding top k elements.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -189,6 +192,112 @@ Space Complexity: O(n)
 - The space complexity is dominated by the frequency map, which has at most n entries.
 - The priority queue has a maximum size of k.
 - Overall space complexity is O(n).
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Using Hoare Partition Algorithm
+
+- Description: Finds the top k elements in an array using the Hoare Partition Algorithm.
+
+Algorithm:
+1. Initialize a HashMap, `freqMap`, to count the frequency of each element in the input array `nums`.
+2. Convert the unique keys from `freqMap` to an array, `keys`.
+3. Calculate the `topKSeparatorIndex` as the index of the (n-k)th least frequent element in the sorted array (0-based),
+    where n is the length of `keys` array.
+4. Call `partitionKeysForTopKElements` to rearrange the elements in the `keys` array based on their frequency.
+5. Return an array containing the top k frequent elements,
+    obtained by copying a subarray from `keys` starting from `topKSeparatorIndex + 1` to the end.
+
+Algorithm (partitionKeysForTopKElements):
+1. Initialize pointers `left` and `right` to 0 and `keys.length - 1` respectively.
+2. While `left` is not equal to `right`:
+    a. Call `partitionKeysBasedOnFrequency` to find the pivot index.
+    b. If the pivot index is equal to `topKSeparatorIndex`, return from the function.
+    c. If the pivot index is greater than `topKSeparatorIndex`, update `right` to `pivotIndex - 1`.
+    d. If the pivot index is less than `topKSeparatorIndex`, update `left` to `pivotIndex + 1`.
+
+Algorithm (partitionKeysBasedOnFrequency):
+1. Handle the base case when `right` is less than `left`.
+2. Set the pivot frequency as the frequency of the rightmost element in `keys`.
+3. Initialize `pivotIndex` to `left`.
+4. Iterate through the elements from `left` to `right` in `keys`.
+    - If the frequency of the element at index `i` is less than the pivot frequency,
+        swap the elements at indices `i` and `pivotIndex` and increment `pivotIndex`.
+5. Swap the elements at indices `pivotIndex` and `right` to place the pivot at its correct position.
+6. Return the `pivotIndex`.
+
+Time Complexity: O(n * log(k)), where n is the length of the input array `nums`.
+- The time complexity is dominated by the sorting step, which involves partitioning the array based on frequency
+using the Hoare Partition Algorithm.
+
+Space Complexity: O(n), considering the space used for the frequency map and the array of unique keys.
+
+This algorithm efficiently identifies the top k frequent elements without sorting the entire array,
+leveraging the characteristics of the Hoare Partition Algorithm.
+
+
+Code:
+
+```java
+private int[] solutionUsingHoarePartitionAlgorithm(int[] nums, int k) {
+    /*
+        Time Complexity:    O(n * log(k))
+        Space Complexity:   O(n)
+        Approach:           Using Hoare Partition Algorithm and Frequency Map
+        Note:               n is the number of elements in nums.
+    */
+
+    Map<Integer, Integer> freqMap = new HashMap<>();
+    for (int x : nums) freqMap.merge(x, 1, Integer::sum);
+
+    int[] keys = freqMap.keySet().stream().mapToInt(Integer::intValue).toArray();
+    int topKSeparatorIndex = keys.length - k - 1;
+
+    partitionKeysForTopKElements(keys, freqMap, topKSeparatorIndex);
+
+    return Arrays.copyOfRange(keys, topKSeparatorIndex + 1, keys.length);
+}
+
+private void partitionKeysForTopKElements(int[] keys, Map<Integer, Integer> freqMap, int topKSeparatorIndex) {
+    int left = 0;
+    int right = keys.length - 1;
+
+    while (left != right) {
+        int pivotIndex = partitionKeysBasedOnFrequency(keys, freqMap, left, right);
+
+        if (pivotIndex == topKSeparatorIndex) return;
+        else if (pivotIndex > topKSeparatorIndex) right = pivotIndex - 1;
+        else left = pivotIndex + 1;
+    }
+}
+
+private int partitionKeysBasedOnFrequency(int[] keys, Map<Integer, Integer> freqMap, int left, int right) {
+    if (right < left) return right;
+
+    int pivot = freqMap.get(keys[right]);
+    int pivotIndex = left;
+
+    for (int i = left; i < right; i++)
+        if (freqMap.get(keys[i]) < pivot) swapElements(keys, i, pivotIndex++);
+
+    swapElements(keys, pivotIndex, right);
+
+    return pivotIndex;
+}
+
+private void swapElements(int[] keys, int i, int j) {
+    int temp = keys[i];
+    keys[i] = keys[j];
+    keys[j] = temp;
+}
+```
+
+Time Complexity: O(n * log(k))
+- Iterate through each unique key (element) and perform partition operations, which takes O(log(k)) time.
+
+Space Complexity: O(n)
+- We use a frequency map to store the occurrences of each element.
+
 
 ----------------------------------------------------------------------------------------------------
 

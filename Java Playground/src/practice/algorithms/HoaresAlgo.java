@@ -25,7 +25,7 @@ public class HoaresAlgo {
 //        int[] nums = {4, 3, 3, 2, 2, 1, 1, 1};
 //        int[] nums = {512, 65, 66, 36, 69, 14, 52, 532, 84, 565, 85, 22, 23, 24, 89, 57, 58, 414}; // Size 18
         int[] nums = {100, 100, 100, 100, 90, 80, 80, 70, 70, 70, 60, 40, 50, 30, 30, 20, 20, 10};
-        int k = 3;  //  Top K Elements
+        int k = 10;  //  Top K Elements
 
         // Count the frequency of each element in nums and store in freqMap
         Map<Integer, Integer> freqMap = new HashMap<>();
@@ -34,7 +34,7 @@ public class HoaresAlgo {
         // Get unique keys from freqMap
         int[] keys = freqMap.keySet().stream().mapToInt(Integer::intValue).toArray();
 
-        int topKSeparatorIndex = keys.length - (k+1);    // Index of (n - k)th least frequent element (0-based)
+        int topKSeparatorIndex = keys.length - (k + 1);    // Index of (n - k)th least frequent element (0-based)
 
         System.out.println("\nkeys: " + Arrays.toString(keys) + " | L: " + 0 + " | R: " + (keys.length - 1) +
                 " | n: " + keys.length + " | k: " + k + " | topKSeparatorIndex: " + topKSeparatorIndex);
@@ -106,27 +106,39 @@ public class HoaresAlgo {
     /**
      * Partitions the array, placing the pivot (right most element) at its correct sorted position.
      *
-     * @param arr  The array of elements to be partitioned.
+     * @param arr   The array of elements to be partitioned.
      * @param left  The left index of the subarray to be partitioned.
      * @param right The right index of the subarray to be partitioned.
      * @return The index where the pivot has been placed in its final sorted position.
      */
     private int partitionArray(int[] arr, int left, int right) {
 
-        int pivot = arr[right];
+        // Handle base case when right index is less than left
+        if (right < left) return right;
+
+        // Set pivot as the rightmost element
+        int pivot = arr[right]; //  Todo: Choose Pivot as Middle or Random Element instead of last element for optimization
         int pivotIndex = left;
 
-        // Iterate through the elements and partition based on frequency
+        // Iterate through the elements and keep swapping elements lesser than pivot to the left
         for (int i = left; i < right; i++) if (arr[i] < pivot) swapElements(arr, pivotIndex++, i);
 
         // Move the pivot to its correct position (pivotIndex) in the sorted array (arr),
         // as all elements to the left of the pivot are already in their place
         swapElements(arr, pivotIndex, right);
 
+        // Return the index where the pivot has been placed
         return pivotIndex;
 
     }
 
+    /**
+     * Swaps elements at positions i and j in the array.
+     *
+     * @param keys The array of elements.
+     * @param i    The first index.
+     * @param j    The second index.
+     */
     private void swapElements(int[] keys, int i, int j) {
         int temp = keys[i];
         keys[i] = keys[j];
