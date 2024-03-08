@@ -1,0 +1,303 @@
+
+Date: 2nd Mar. 2K24 - 05:08 PM..!!
+
+Problem#: 238. Product of Array Except Self
+
+URL: https://leetcode.com/problems/product-of-array-except-self/
+
+Keywords: Array, Two Pointers
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given an array `nums` of n integers where n > 1, return an array `output` such that `output[i]` is equal to the product of all the elements of `nums` except `nums[i]`.
+
+Example:
+Input: [1, 2, 3, 4]
+Output: [24, 12, 8, 6]
+
+Feasible Solutions:
+1. Using Two Pointers (Single Pass)
+2. Using Two Pointers (Two Pass)
+
+Optimized Solution: Using Two Pointers (Single Pass)
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Utilize two pointers to efficiently compute products from the left and right of each element.
+- Optimize space complexity by updating the result array in place.
+
+Notes:
+- This solution assumes the input array nums is non-empty and contains more than one element.
+
+New Topics Learnt:
+- Efficiently calculate products from both sides of each element using two pointers.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Using Two Pointers (Single Pass)
+
+Description:
+- Utilize two pointers, left and right, to keep track of the running product from both ends of the array simultaneously.
+- Reduce space complexity by updating the result array in place.
+- Update the result array in a single pass, avoiding the need for two separate passes.
+
+Algorithm:
+1. Initialize an empty array, `arrProductExceptSelf`, to store the product of elements except self.
+2. Initialize a boolean, `pointersCrossed`, to indicate when the left and right pointers cross each other.
+3. Initialize a variable, `runningProduct`, to 1, which will store the running product value during traversal.
+4. Iterate through the array `nums` using two pointers, `left` starting from 0 and `right` starting from the last index.
+    - Check if the pointers have just crossed each other such that `left` is greater than `right`.
+        - Set `pointersCrossed` to true & Update `runningProduct` with product of left & right element.
+    - Check if the pointers have reached the middle element such that `left` is equal to `right`.
+        - Set `pointersCrossed` to true.
+        - Update the value at `left` (middle element) in `arrProductExceptSelf` with runningProduct.
+        - Update `runningProduct` with middle element value.
+    - If pointers have not crossed:
+        - Update the value at `left` in `arrProductExceptSelf` -> right element * runningProduct.
+        - Update the value at `right` in `arrProductExceptSelf` -> left element * runningProduct.
+        - Update `runningProduct` with product of left & right element.
+    - If pointers have crossed:
+        - Update the value at `left` and `right` in `arrProductExceptSelf` by multiplying with runningProduct.
+        - Update `runningProduct` by multiplying with the product of left & right elements.
+5. Return `arrProductExceptSelf` as the output.
+
+Code:
+```java
+private int[] solutionTwoPointers(int[] nums) {
+    /*
+        Time Complexity:    O(n) - Linear Time to Scan nums
+        Space Complexity:   O(1) - No Extra Space used for computation (output array does not count)
+        Approach:           Using Two Pointers
+     */
+
+    // Initialize the output array to store the product of elements except self
+    int[] arrProductExceptSelf = new int[nums.length];
+
+    // Flag to indicate when the left and right pointers cross each other
+    boolean pointersCrossed = false;
+    int runningProduct = 1; // Temporary variable to store the running product value during traversal
+
+    // Iterate through nums using two pointers, moving towards each other
+    for (int left = 0, right = nums.length - 1; left < nums.length; left++, right--) {
+
+        // Handle case when the pointers cross each other
+        if (!pointersCrossed && left > right) {
+            //  When Left & Right Cross Each Other
+            pointersCrossed = true;
+
+            runningProduct = nums[left] * nums[right];
+            continue;
+        } else if (!pointersCrossed && left == right) {
+            // Handle case when left == right, representing the middle element
+            pointersCrossed = true;
+
+            // Populate result for middle element with runningProduct
+            arrProductExceptSelf[left] = runningProduct;
+
+            runningProduct = nums[left];
+            continue;
+        }
+
+        // Calculate and update product values based on the pointers' positions
+        if (!pointersCrossed) {
+            arrProductExceptSelf[left] = nums[right] * runningProduct;
+            arrProductExceptSelf[right] = nums[left] * runningProduct;
+
+            runningProduct *= nums[left] * nums[right];
+        } else {
+            arrProductExceptSelf[left] *= runningProduct;
+            arrProductExceptSelf[right] *= runningProduct;
+
+            runningProduct *= nums[left] * nums[right];
+        }
+
+    }
+
+//        System.out.println("Nums: " + Arrays.toString(nums));
+//        System.out.println("Result: " + Arrays.toString(arrProductExceptSelf));
+
+    return arrProductExceptSelf;
+
+}
+
+```
+
+Time Complexity: O(n)
+- The algorithm iterates through the array `nums` once, performing constant-time operations at each step.
+
+Space Complexity: O(1)
+- The algorithm uses a constant amount of extra space regardless of the input size.
+- The space complexity is independent of the size of the array.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Using Two Pointers (Two Pass)
+
+Description:
+- Utilize two passes to calculate products from both the left and right of each element.
+- Update the result array based on the products obtained in each pass.
+
+Algorithm:
+1. Initialize the result array, `arrProductExceptSelf`, and set all values to 1.
+2. Initialize a variable, `runningProduct`, to store the running product during the first pass.
+3. First pass: Calculate products to the left of each element and update the result array.
+4. Reset the running product to 1 for the second pass.
+5. Second pass: Calculate products to the right of each element and update the result array.
+6. Return the final result array.
+
+Code:
+
+```java
+private int[] solutionUsingTwoPointersTwoPass(int[] nums) {
+    /*
+        Time Complexity:    O(n) - Linear Time to Scan nums - Iterating nums twice
+        Space Complexity:   O(1) - No Extra Space used for computation (output array does not count)
+        Approach:           Using Two Pointers
+     */
+
+    int[] arrProductExceptSelf = new int[nums.length];
+    Arrays.fill(arrProductExceptSelf, 1);
+
+    int runningProduct = 1;   // Temporary variable to store the running product value during traversal
+
+    // First pass: Calculate products to the left of each element
+    for (int i = 0; i < nums.length; i++) {
+        arrProductExceptSelf[i] = runningProduct;   // Update product value with the running product to the left
+        runningProduct *= nums[i];
+    }
+
+    runningProduct = 1; // Reset the running product value for the second pass
+
+    // Second pass: Calculate products to the right of each element and update the final result
+    for (int i = nums.length - 1; i >= 0; i--) {
+        arrProductExceptSelf[i] *= runningProduct;    // Multiply with the running product to the right
+        runningProduct *= nums[i];
+    }
+
+    return arrProductExceptSelf;
+}
+```
+
+Time Complexity: O(n)
+- We traverse the array twice, once for products to the left and once for products to the right, each taking linear time.
+
+Space Complexity: O(1)
+- We use only a constant amount of extra space for variables.
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution in Java:
+
+```java
+class Solution {
+
+    public int[] productExceptSelf(int[] nums) {
+
+        return solutionTwoPointers(nums);
+
+        // return solutionUsingTwoPointersTwoPass(nums);
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private int[] solutionTwoPointers(int[] nums) {
+        /*
+            Time Complexity:    O(n) - Linear Time to Scan nums
+            Space Complexity:   O(1) - No Extra Space used for computation (output array does not count)
+            Approach:           Using Two Pointers
+         */
+
+        // Initialize the output array to store the product of elements except self
+        int[] arrProductExceptSelf = new int[nums.length];
+
+        // Flag to indicate when the left and right pointers cross each other
+        boolean pointersCrossed = false;
+        int runningProduct = 1; // Temporary variable to store the running product value during traversal
+
+        // Iterate through nums using two pointers, moving towards each other
+        for (int left = 0, right = nums.length - 1; left < nums.length; left++, right--) {
+
+            // Handle case when the pointers cross each other
+            if (!pointersCrossed && left > right) {
+                //  When Left & Right Cross Each Other
+                pointersCrossed = true;
+
+                runningProduct = nums[left] * nums[right];
+                continue;
+            } else if (!pointersCrossed && left == right) {
+                // Handle case when left == right, representing the middle element
+                pointersCrossed = true;
+
+                // Populate result for middle element with runningProduct
+                arrProductExceptSelf[left] = runningProduct;
+
+                runningProduct = nums[left];
+                continue;
+            }
+
+            // Calculate and update product values based on the pointers' positions
+            if (!pointersCrossed) {
+                arrProductExceptSelf[left] = nums[right] * runningProduct;
+                arrProductExceptSelf[right] = nums[left] * runningProduct;
+
+                runningProduct *= nums[left] * nums[right];
+            } else {
+                arrProductExceptSelf[left] *= runningProduct;
+                arrProductExceptSelf[right] *= runningProduct;
+
+                runningProduct *= nums[left] * nums[right];
+            }
+
+        }
+
+        return arrProductExceptSelf;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private int[] solutionUsingTwoPointersTwoPass(int[] nums) {
+        /*
+            Time Complexity:    O(n) - Linear Time to Scan nums - Iterating nums twice
+            Space Complexity:   O(1) - No Extra Space used for computation (output array does not count)
+            Approach:           Using Two Pointers
+         */
+
+        int[] arrProductExceptSelf = new int[nums.length];
+        Arrays.fill(arrProductExceptSelf, 1);
+
+        int runningProduct = 1;   // Temporary variable to store the running product value during traversal
+
+        // First pass: Calculate products to the left of each element
+        for (int i = 0; i < nums.length; i++) {
+            arrProductExceptSelf[i] = runningProduct;   // Update product value with the running product to the left
+            runningProduct *= nums[i];
+        }
+
+        runningProduct = 1; // Reset the running product value for the second pass
+
+        // Second pass: Calculate products to the right of each element and update the final result
+        for (int i = nums.length - 1; i >= 0; i--) {
+            arrProductExceptSelf[i] *= runningProduct;    // Multiply with the running product to the right
+            runningProduct *= nums[i];
+        }
+
+        return arrProductExceptSelf;
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+}
+
+```
+
+
+----------------------------------------------------------------------------------------------------
