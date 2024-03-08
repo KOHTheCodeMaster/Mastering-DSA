@@ -111,9 +111,12 @@ public class S347 {
         // Handle base case when right index is less than left
         if (right < left) return right;
 
-        // Set pivot as the frequency of the rightmost element
-        int pivot = freqMap.get(keys[right]);
+        // Set pivot as the frequency of the mid element
+        int mid = (left + right) / 2;
+        int pivot = freqMap.get(keys[mid]);
         int pivotIndex = left;
+
+        swapElements(keys, mid, right);   //  Move Pivot to the end of the Array
 
         // Iterate through the elements and partition based on frequency
         for (int i = left; i < right; i++)

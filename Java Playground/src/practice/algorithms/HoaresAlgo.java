@@ -25,7 +25,8 @@ public class HoaresAlgo {
 //        int[] nums = {4, 3, 3, 2, 2, 1, 1, 1};
 //        int[] nums = {512, 65, 66, 36, 69, 14, 52, 532, 84, 565, 85, 22, 23, 24, 89, 57, 58, 414}; // Size 18
         int[] nums = {100, 100, 100, 100, 90, 80, 80, 70, 70, 70, 60, 40, 50, 30, 30, 20, 20, 10};
-        int k = 10;  //  Top K Elements
+//        int[] nums = {1, 2};
+        int k = 3;  //  Top K Elements
 
         // Count the frequency of each element in nums and store in freqMap
         Map<Integer, Integer> freqMap = new HashMap<>();
@@ -116,9 +117,12 @@ public class HoaresAlgo {
         // Handle base case when right index is less than left
         if (right < left) return right;
 
-        // Set pivot as the rightmost element
-        int pivot = arr[right]; //  Todo: Choose Pivot as Middle or Random Element instead of last element for optimization
+        // Set pivot as the mid element
+        int mid = (left + right) / 2;
+        int pivot = arr[mid];
         int pivotIndex = left;
+
+        swapElements(arr, mid, right);   //  Move Pivot to the end of the Array
 
         // Iterate through the elements and keep swapping elements lesser than pivot to the left
         for (int i = left; i < right; i++) if (arr[i] < pivot) swapElements(arr, pivotIndex++, i);
