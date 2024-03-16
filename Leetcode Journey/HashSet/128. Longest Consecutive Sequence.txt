@@ -1,0 +1,292 @@
+
+Date: 2nd Mar. 2K24 - 05:08 PM..!!
+
+Problem#: 128. Longest Consecutive Sequence
+
+URL: https://leetcode.com/problems/longest-consecutive-sequence/
+
+Keywords: Array, HashSet, HashMap, Sequence
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given an unsorted array of integers `nums`, return the length of the longest consecutive elements sequence.
+
+A consecutive sequence of integers is a sequence where the difference between consecutive elements is one (e.g., [1,2,3,4]).
+
+Example:
+```
+Input: nums = [100,4,200,1,3,2]
+Output: 4
+Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore, the length is 4.
+```
+
+Feasible Solutions:
+1. Using HashSet
+2. Using HashMap (Pre & Post Count Check)
+
+Optimized Solution: Using HashSet
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Utilizing HashSet for efficient lookup of consecutive elements.
+- Optimizing time complexity to O(n) by iterating through the array only once.
+- Iterates through the array once and checks for consecutive elements using HashSet.
+
+Notes:
+- Handle edge case where the input array is empty.
+- Use a Halting condition to stop iterating once the longest sequence count exceeds half the length of the array.
+
+New Topics Learnt: (HashSet Approach Insights)
+- Efficient Lookup: Utilizing a HashSet for efficient lookup of consecutive elements in an unsorted array significantly reduces time complexity.
+The constant-time complexity of HashSet operations allows for quick verification of element existence.
+
+- Sequence Identification: By identifying the start of each potential consecutive sequence, the algorithm iterates through
+the array and expands the sequence by incrementing the elements using HashSet operations.
+This method efficiently identifies and calculates the length of consecutive sequences.
+
+- Space vs. Time Tradeoff: While HashSet incurs an additional space complexity of O(n), it provides a substantial reduction
+in time complexity, resulting in an overall improvement in algorithm performance.
+This tradeoff is often acceptable, especially for large input sizes, where reducing time complexity is critical.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Using HashSet
+
+Description: The optimized solution utilizes a HashSet to efficiently identify consecutive elements in the unsorted array.
+
+Algorithm:
+1. Initialize a HashSet to store the elements of the array.
+2. Iterate through the array and check if the current element is the start of a sequence.
+3. If it is, iterate through consecutive elements using HashSet and count the length of the sequence.
+4. Update the longest sequence count as necessary.
+5. Return the longest sequence count.
+
+
+Code:
+```java
+
+private int solutionUsingHashSet(int[] nums) {
+    /*
+        Time Complexity:    O(n)
+        Space Complexity:   O(n)
+        Approach:           Using HashSet
+     */
+
+    int maxSequenceLength = 1;
+
+    //  Handle Edge Case
+    if (nums.length == 0) return 0;
+
+    Set<Integer> numSet = new HashSet<>();
+    for (int num : nums) numSet.add(num);
+
+    for (int num : nums) {
+        //  Skip If num is not the Start of Sequence
+        if (numSet.contains(num - 1)) continue;
+
+        int currentSequenceLength = 1;
+        while (numSet.contains(++num)) currentSequenceLength++;
+
+        maxSequenceLength = Math.max(currentSequenceLength, maxSequenceLength);
+
+        //  Stop iterating once maxSequenceLength is greater than half of the nums length
+        if (maxSequenceLength > nums.length / 2) break;
+    }
+
+    return maxSequenceLength;
+}
+
+```
+
+Time Complexity:
+- The time complexity is O(n) because the algorithm iterates through the input array `nums` twice,
+each time with linear complexity, and the loop may break early if `maxSequenceLength` exceeds half the length of `nums`.
+
+Space Complexity:
+- The space complexity is O(n) because the algorithm uses a HashSet `numSet` to store the unique elements from
+the input array `nums`, which may have up to n elements.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Using HashMap (Pre & Post Count Check)
+
+Description:
+- Implement the solution using a HashMap to efficiently check for consecutive elements in the array with pre and post count checks.
+
+Algorithm:
+1. Initialize HashMap:
+   - Create a HashMap named `map` to store the frequency of each element in the input array `nums`.
+   - Iterate through each element `x` in `nums` and update the frequency in the map using the `merge` method.
+2. Iterate Through Unique Elements:
+   - Iterate through each unique key in the `map`.
+   - If the frequency value for the current key is null (indicating it has been visited in a previous sequence calculation), skip to the next key.
+3. Find Pre-Sequence Count:
+   - For each key, find the length of the preceding sequence by recursively checking the previous keys in the map.
+   - Start with the current key and decrement it by 1 until the previous key is not found in the map.
+   - Increment the count for each valid previous key found.
+4. Find Post-Sequence Count:
+   - For each key, find the length of the following sequence by recursively checking the next keys in the map.
+   - Start with the current key + 1 and increment it until the next key is not found in the map.
+   - Increment the count for each valid next key found.
+5. Calculate Maximum Sequence Length:
+   - For each key, calculate the maximum sequence length by adding the pre-sequence count and post-sequence count.
+   - Update the result with the maximum of the current maximum sequence length and the calculated sequence length for the current key.
+6. Return Result:
+   - After iterating through all keys, return the maximum sequence length as the result.
+
+Special Checks:
+- During the iteration, if a key's frequency value in the map is null, it indicates that it has been visited in a previous sequence calculation, so it can be skipped, saving unnecessary calculations.
+
+
+Code:
+```java
+
+public int solutionUsingHashMap(int[] nums) {
+    /*
+        Time Complexity:    O(n) - iterates through the input array `nums` once to populate the HashMap,
+                            and each key in the HashMap is processed once to calculate the sequence lengths
+        Space Complexity:   O(n) - uses HashMap potentially storing all unique elements from the input array `nums`
+        Approach:           Using HashMap - Pre & Post Count Check
+     */
+
+    int maxSequenceLength = -1;
+    Map<Integer, Integer> frequencyMap = new HashMap<>();
+    for (int num : nums) frequencyMap.merge(num, 1, Integer::sum);
+
+    for (int key : frequencyMap.keySet()) {
+        if (frequencyMap.get(key) == null) continue;
+
+        int leftSequenceLength = findSequenceLength(frequencyMap, key, -1); //  Inclusive of current key
+        int rightSequenceLength = findSequenceLength(frequencyMap, key + 1, 1);
+
+        maxSequenceLength = Math.max(maxSequenceLength, leftSequenceLength + rightSequenceLength);
+    }
+
+    return maxSequenceLength;
+
+}
+
+private int findSequenceLength(Map<Integer, Integer> frequencyMap, int key, int direction) {
+
+    int sequenceLength = 0;
+
+    while (frequencyMap.containsKey(key)) {
+        frequencyMap.put(key, null);
+        sequenceLength++;
+        key += direction;
+    }
+
+    return sequenceLength;
+}
+
+```
+
+Time Complexity: O(n)
+- each element in the input array `nums` is processed once to populate the HashMap,
+- and each key in the HashMap is processed once to calculate the sequence lengths.
+
+Space Complexity: O(n)
+- the HashMap `map` can potentially store all unique elements from the input array `nums`,
+- leading to a space requirement proportional to the size of `nums`.
+
+----------------------------------------------------------------------------------------------------
+
+Complete LeetCode Solution in Java:
+
+```java
+
+class Solution {
+
+    public int longestConsecutive(int[] nums) {
+
+        // return solutionUsingHashSet(nums);
+
+        return solutionUsingHashMap(nums);
+
+    }
+
+    private int solutionUsingHashSet(int[] nums) {
+        /*
+            Time Complexity:    O(n) - iterates through the input array `nums` twice
+            Space Complexity:   O(n) - uses HashSet to store the unique elements from nums
+            Approach:           Using HashSet
+         */
+
+        int maxSequenceLength = 1;
+
+        //  Handle Edge Case
+        if (nums.length == 0) return 0;
+
+        Set<Integer> numSet = new HashSet<>();
+        for (int num : nums) numSet.add(num);
+
+        for (int num : nums) {
+            //  Skip If num is not the Start of Sequence
+            if (numSet.contains(num - 1)) continue;
+
+            int currentSequenceLength = 1;
+            while (numSet.contains(++num)) currentSequenceLength++;
+
+            maxSequenceLength = Math.max(currentSequenceLength, maxSequenceLength);
+
+            //  Stop iterating once maxSequenceLength is greater than half of the nums length
+            if (maxSequenceLength > nums.length / 2) break;
+        }
+
+        return maxSequenceLength;
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    public int solutionUsingHashMap(int[] nums) {
+        /*
+            Time Complexity:    O(n) - iterates through the input array `nums` once to populate the HashMap,
+                                and each key in the HashMap is processed once to calculate the sequence lengths
+            Space Complexity:   O(n) - uses HashMap potentially storing all unique elements from the input array `nums`
+            Approach:           Using HashMap - Pre & Post Count Check
+         */
+
+        int maxSequenceLength = 0;
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (int num : nums) frequencyMap.merge(num, 1, Integer::sum);
+
+        for (int key : frequencyMap.keySet()) {
+            if (frequencyMap.get(key) == null) continue;
+
+            int leftSequenceLength = findSequenceLength(frequencyMap, key, -1); //  Inclusive of current key
+            int rightSequenceLength = findSequenceLength(frequencyMap, key + 1, 1);
+
+            maxSequenceLength = Math.max(maxSequenceLength, leftSequenceLength + rightSequenceLength);
+        }
+
+        return maxSequenceLength;
+
+    }
+
+    private int findSequenceLength(Map<Integer, Integer> frequencyMap, int key, int direction) {
+
+        int sequenceLength = 0;
+
+        while (frequencyMap.containsKey(key)) {
+            frequencyMap.put(key, null);
+            sequenceLength++;
+            key += direction;
+        }
+
+        return sequenceLength;
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+}
+
+```
+
+----------------------------------------------------------------------------------------------------
