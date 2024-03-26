@@ -4,6 +4,8 @@ import java.util.Stack;
 
 public class S150 {
 
+    private int position;
+
     public static void main(String[] args) {
         S150 obj = new S150();
         obj.major();
@@ -13,11 +15,14 @@ public class S150 {
 
         String[] tokens = {"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"};
 
-        int result = solutionUsingStack(tokens);
+//        int result = solutionUsingStack(tokens);
+        int result = solutionUsingRecursion(tokens);
 
         System.out.println("Result: " + result);
 
     }
+
+    //  ----------------------------------------------------------------------------------------------------
 
     private int solutionUsingStack(String[] tokens) {
         /*
@@ -63,5 +68,45 @@ public class S150 {
     }
 
     //  ----------------------------------------------------------------------------------------------------
+
+    private int solutionUsingRecursion(String[] tokens) {
+        /*
+            Time Complexity:    O(n) - Linear time to scan through input array `tokens` recursively from end
+            Space Complexity:   O(n) - Stack space for recursive calls
+            Approach:           Recursive Token Evaluation
+         */
+
+        position = tokens.length - 1;
+        return evaluate(tokens);
+
+    }
+
+    private int evaluate(String[] tokens) {
+        /*
+            Time Complexity:    O(n) - Linear time to scan through input array `tokens` recursively from end
+            Space Complexity:   O(n) - Stack space for recursive calls
+            Approach:           Recursive Token Evaluation
+         */
+
+        String token = tokens[position--];
+
+        switch (token) {
+            case "+":
+                return evaluate(tokens) + evaluate(tokens);
+
+            case "-":   //  A - B = (-B) + A
+                return (-evaluate(tokens)) + evaluate(tokens);
+
+            case "*":
+                return evaluate(tokens) * evaluate(tokens);
+
+            case "/":
+                int denominator = evaluate(tokens);
+                return evaluate(tokens) / denominator;
+
+            default:
+                return Integer.parseInt(token);
+        }
+    }
 
 }
