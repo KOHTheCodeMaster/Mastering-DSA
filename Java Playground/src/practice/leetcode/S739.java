@@ -5,8 +5,6 @@ import java.util.Stack;
 
 public class S739 {
 
-    private int position;
-
     public static void main(String[] args) {
         S739 obj = new S739();
         obj.major();

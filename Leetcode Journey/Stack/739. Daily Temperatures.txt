@@ -1,0 +1,110 @@
+
+Date: 28th Mar. 2K24 - 04:15 PM..!!
+
+Problem#: 739. Daily Temperatures
+
+URL: https://leetcode.com/problems/daily-temperatures/
+
+Keywords: Array, Stack, Monotonic Stack
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given a list of daily temperatures `temperatures`, return a list where, for each day in the input,
+tells you how many days you would have to wait until a warmer temperature. If there is no future day for which this is possible, put `0` instead.
+
+Example:
+Input: temperatures = [73,74,75,71,69,72,76,73]
+Output: [1,1,4,2,1,1,0,0]
+
+Feasible Solutions:
+1. Using Stack to Find Next Higher Temperature Index
+
+Description:
+- Utilize a stack to keep track of indices of temperatures for which we haven't found the next higher temperature yet.
+- Traverse the array of temperatures and update the answer for each day by
+  popping indices from the stack where the temperature is lower than the current day's temperature.
+
+Key Takeaways:
+
+- Utilizing a stack to efficiently find the next higher temperature index.
+- Understanding the concept of a monotonic stack for solving problems related to finding the next higher or lower element.
+
+----------------------------------------------------------------------------------------------------
+
+Approach: Using Stack to Find Next Higher Temperature Index
+
+Description:
+- Initialize an array `answer` to store the result.
+- Initialize an empty stack `dayStack` to keep track of indices of temperatures.
+- Iterate through each day in the `temperatures` array.
+    - While the stack is not empty and the temperature of the current day is higher than the temperature at the top of the stack:
+        - Pop the top index from the stack.
+        - Update the answer for the popped index by calculating the number of days until a warmer temperature is encountered.
+    - Push the current day's index onto the stack.
+- Return the `answer` array.
+
+Algorithm:
+1. Initialize Variables:
+   - Initialize an array `answer` to store the result. Its length should be the same as the input `temperatures` array.
+   - Initialize an empty stack `dayStack` to keep track of indices of temperatures.
+2. Traverse the Temperatures Array:
+   - Iterate through each day in the `temperatures` array.
+   - Let the current day be represented by the variable `day`.
+3. Check Stack Conditions:
+   - While the stack is not empty and the temperature of the current day (`temperatures[day]`) is higher than
+    the temperature at the top of the stack (`temperatures[dayStack.peek()]`):
+     - Pop the top index from the stack. Let's call this index `prevDay`.
+4. Update Answer: - Update the answer for the popped index `prevDay` in the `answer` array by calculating
+    the number of days until a warmer temperature is encountered. This can be calculated as `day - prevDay`.
+5. Push Current Day Index to Stack: - After the above steps, push the current day's index (`day`) onto the stack.
+6. Repeat: - Repeat steps 3 to 5 for each day in the `temperatures` array until all days are processed.
+7. Return Answer: - After processing all days, return the `answer` array, which contains the number of days until
+    a warmer temperature is encountered for each day in the input array.
+
+Detailed Example:
+Consider the input temperatures array: `[73, 74, 75, 71, 69, 72, 76, 73]`
+
+- For the first temperature `73`, push its index `0` onto the stack.
+- For the next temperature `74`, it's higher than the temperature at index `0`. So, pop `0` and update `answer[0]` as `1 - 0 = 1`.
+- Similarly, for temperature `75`, pop `1` and update `answer[1]` as `2 - 1 = 1`.
+- Continue this process for each temperature until all temperatures are processed.
+
+Note: At any point, the stack will always contain indices of temperatures in non-increasing order.
+    This ensures that we can efficiently find the next higher temperature index for each day by popping from the stack when needed.
+
+Code:
+
+```java
+private int[] solutionUsingStack(int[] temperatures) {
+    /*
+        Time Complexity:    O(n) - Linear time to iterate through the temperatures array
+        Space Complexity:   O(n) - Stack space used to store temperatures
+        Approach:           Using Stack to find the next higher temperature index
+    */
+
+    int[] answer = new int[temperatures.length];
+    Stack<Integer> dayStack = new Stack<>();
+
+    for (int day = 0; day < temperatures.length; day++) {
+        while (!dayStack.isEmpty() && temperatures[dayStack.peek()] < temperatures[day]) {
+            // Check if the current temperature is higher than the temperature at the top of the stack
+            int prevDay = dayStack.pop();
+            answer[prevDay] = day - prevDay;    // no. of days until a warmer temperature is encountered
+        }
+        dayStack.push(day);
+    }
+
+    return answer;
+}
+```
+
+Time Complexity: O(n) - Linear time complexity due to iterating through the temperatures array once.
+Space Complexity: O(n) - Stack space used to store temperatures and answer array with the same size as the input.
+
+----------------------------------------------------------------------------------------------------
