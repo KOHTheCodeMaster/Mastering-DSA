@@ -1,0 +1,47 @@
+
+Date: 3rd Apr 2K24 - 10:33 PM..!!
+
+Concept: Integer Overflow Problem in Binary Search
+
+Keywords: Integer Overflow, Binary Search, Middle Index, Corrected Formula, Risk Mitigation
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Integer Overflow Problem:
+-------------------------
+
+- Issue: The use of `(left + right) / 2` in binary search is intuitive and seems correct, it may lead to integer overflow in certain scenarios,
+    when the sum of `left` and `right` exceeds the maximum value an integer can hold. This can occur if `left` and `right` are very large.
+
+- Cause: Integer overflow occurs when the sum of `left` and `right` exceeds the maximum value an integer can hold,
+    resulting in incorrect calculations or runtime errors.
+
+- Solution:
+  - Corrected Formula: Instead of `(left + right) / 2`, use `left + (right - left) / 2` to calculate the middle index.
+  - Explanation:
+    1. `(right - left)` calculates the difference between `right` and `left`, which represents the range of indices between them.
+    2. Dividing `(right - left)` by 2 ensures that we're finding the midpoint of the range without risking overflow,
+        as the difference between `right` and `left` is always smaller than or equal to the original sum of `left` and `right`.
+    3. Adding this midpoint to `left` gives us the actual middle index within the range defined by `left` and `right`.
+
+- Advantages:
+  - Prevents Errors: The corrected formula mitigates the risk of integer overflow, ensuring accurate binary search operations.
+  - Enhanced Stability: By avoiding overflow, the algorithm becomes more reliable and stable, especially for large datasets.
+
+- Implementation:
+  - Replace instances of `(left + right) / 2` with `left + (right - left) / 2` in binary search algorithms to prevent overflow.
+  
+- Example:  For large `left` and `right` values, using `(left + right) / 2` may overflow, while `left + (right - left) / 2` handles this correctly.
+    Consider `left = 10` and `right = Integer.MAX_VALUE`,
+    using `(left + right) / 2` would result in an overflow because the sum exceeds the maximum value an integer can hold.
+    However, `left + (right - left) / 2` calculates a value much smaller than `Integer.MAX_VALUE`, preventing overflow & handles this scenario correctly.
+
+- Conclusion:
+   By using `left + (right - left) / 2`, we ensure that our binary search algorithm remains robust
+    and free from potential overflow issues, even for large input values.
+
+----------------------------------------------------------------------------------------------------
