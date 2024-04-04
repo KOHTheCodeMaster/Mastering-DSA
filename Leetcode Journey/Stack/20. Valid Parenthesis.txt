@@ -1,0 +1,166 @@
+
+Date: 4th April 2023 - 01:32 PM
+
+Problem#: 20. Valid Parentheses
+
+URL: https://leetcode.com/problems/valid-parentheses/
+
+Keywords: Stack, String, Bracket
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if:
+
+- Open brackets must be closed by the same type of brackets.
+- Open brackets must be closed in the correct order.
+
+Example:
+Input: s = "()"
+Output: true
+
+Feasible Solutions:
+1. Using Stack with Pairs Check
+2. Using Stack with Mapping
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Understanding the use of stacks for maintaining order in parsing strings.
+- Implementation of different strategies for validating parentheses.
+- Efficiency in scanning and processing strings for bracket matching.
+
+Notes:
+- Carefully handle edge cases such as empty strings or unmatched parentheses.
+- Be mindful of the order of operations while pushing and popping elements from the stack.
+
+New Topics Learnt:
+- Implementation of stack-based algorithms for string parsing and validation.
+- Different approaches for mapping characters to validate brackets.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Using Stack with Pairs Check
+
+Description:
+- Utilize a stack to validate parentheses by checking pairs of open and closed brackets.
+
+Algorithm:
+1. Initialize a boolean variable `isValid` as true and a stack `stack`.
+2. Iterate through each character `bracket` in the input string `strBrackets`.
+    - If `bracket` is an open bracket, push it onto the stack.
+    - If `bracket` is a closed bracket, check if it forms a valid pair with the top element of the stack.
+3. If all brackets are matched correctly, the stack will be empty at the end.
+4. Return `isValid`.
+
+Time Complexity: O(n), where n is the length of the input string `strBrackets`.
+Space Complexity: O(n), considering the space used by the stack.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Using Stack with Mapping
+
+Description:
+- Utilize a stack to validate parentheses by mapping open brackets to their corresponding closed brackets.
+
+Algorithm:
+1. Initialize a boolean variable `isValid` as true and a stack `stack`.
+2. Iterate through each character `bracket` in the input string `strBrackets`.
+    - If `bracket` is an open bracket, push its corresponding closed bracket onto the stack.
+    - If `bracket` is a closed bracket, check if it matches the top element of the stack.
+3. If all brackets are matched correctly, the stack will be empty at the end.
+4. Return `isValid`.
+
+Time Complexity: O(n), where n is the length of the input string `strBrackets`.
+Space Complexity: O(n), considering the space used by the stack.
+
+----------------------------------------------------------------------------------------------------
+
+Complete Java Solution:
+
+```java
+class Solution {
+
+    public boolean isValid(String s) {
+        return solutionUsingStackWithPairs(s); // Change method as per approach
+    }
+
+    private boolean solutionUsingStackWithPairs(String strBrackets) {
+        /*
+            Time Complexity:    O(n) - Linear time to scan through input string `strBrackets`
+            Space Complexity:   O(n)
+            Approach:           Using Stack
+         */
+
+        boolean isValid = true;
+        Stack<Character> stack = new Stack<>();
+
+        for (Character c : strBrackets.toCharArray()) {
+
+            //  Case: Open Bracket
+            if (c.equals('(') || c.equals('{') || c.equals('[')) stack.push(c);
+            else {    //  Case: Closed Bracket
+
+                if (!stack.isEmpty() && isValidBracketPair(stack.peek(), c)) stack.pop();
+                else {
+                    isValid = false;
+                    break;
+                }
+            }
+
+        }
+
+        if (!stack.isEmpty()) isValid = false;
+
+        return isValid;
+
+    }
+
+    private boolean isValidBracketPair(Character openBracket, Character closedBracket) {
+
+        return (openBracket.equals('(') && closedBracket.equals(')')) ||
+                (openBracket.equals('{') && closedBracket.equals('}')) ||
+                (openBracket.equals('[') && closedBracket.equals(']'));
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private boolean solutionUsingStackWithMapping(String strBrackets) {
+        /*
+            Time Complexity:    O(n) - Linear time to scan through input string `strBrackets`
+            Space Complexity:   O(n)
+            Approach:           Using Stack
+         */
+
+        boolean isValid = true;
+        Stack<Character> stack = new Stack<>();
+
+        for (Character c : strBrackets.toCharArray()) {
+            //  Case: Open Bracket
+            if (c == '(') stack.push(')');
+            else if (c == '{') stack.push('}');
+            else if (c == '[') stack.push(']');
+            else {
+                //  Case: Closed Bracket
+                if (stack.isEmpty() || c != stack.pop()) {
+                    isValid = false;
+                    break;
+                }
+            }
+        }
+
+        if (!stack.isEmpty()) isValid = false;
+        return isValid;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+}
+
+----------------------------------------------------------------------------------------------------

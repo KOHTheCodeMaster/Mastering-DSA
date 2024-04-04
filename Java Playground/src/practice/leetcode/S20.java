@@ -11,9 +11,11 @@ public class S20 {
 
     private void major() {
 
-        String s = "({[(())]})";
+//        String s = "({[(())]})";
+        String s = "()[]{}";
 
-        boolean result = solutionUsingStack(s);
+//        boolean result = solutionUsingStack(s);
+        boolean result = solutionUsingStackWithMapping(s);
 
         System.out.println("Result: " + result);
 
@@ -21,23 +23,22 @@ public class S20 {
 
     //  ----------------------------------------------------------------------------------------------------
 
-    private boolean solutionUsingStack(String inputStr) {
+    private boolean solutionUsingStackWithPairs(String strBrackets) {
         /*
-            Time Complexity:    O(n) - Linear time to scan through input string `inputStr`
+            Time Complexity:    O(n) - Linear time to scan through input string `strBrackets`
             Space Complexity:   O(n)
             Approach:           Using Stack
          */
 
         boolean isValid = true;
-        Stack<Character> stack = new Stack<>();
+        Stack<Character> bracketsStack = new Stack<>();
 
-        for (Character c : inputStr.toCharArray()) {
+        for (Character bracket : strBrackets.toCharArray()) {
 
             //  Case: Open Bracket
-            if (c.equals('(') || c.equals('{') || c.equals('[')) stack.push(c);
+            if (bracket == '(' || bracket == '{' || bracket == '[') bracketsStack.push(bracket);
             else {    //  Case: Closed Bracket
-
-                if (!stack.isEmpty() && isValidBracketPair(stack.peek(), c)) stack.pop();
+                if (!bracketsStack.isEmpty() && isValidBracketPair(bracketsStack.peek(), bracket)) bracketsStack.pop();
                 else {
                     isValid = false;
                     break;
@@ -46,7 +47,7 @@ public class S20 {
 
         }
 
-        if (!stack.isEmpty()) isValid = false;
+        if (!bracketsStack.isEmpty()) isValid = false;
 
         return isValid;
 
@@ -59,5 +60,38 @@ public class S20 {
                 (openBracket.equals('[') && closedBracket.equals(']'));
 
     }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private boolean solutionUsingStackWithMapping(String strBrackets) {
+        /*
+            Time Complexity:    O(n) - Linear time to scan through input string `strBrackets`
+            Space Complexity:   O(n)
+            Approach:           Using Stack
+         */
+
+        boolean isValid = true;
+        Stack<Character> bracketsStack = new Stack<>();
+
+        for (Character bracket : strBrackets.toCharArray()) {
+            //  Case: Open Bracket
+            if (bracket == '(') bracketsStack.push(')');
+            else if (bracket == '{') bracketsStack.push('}');
+            else if (bracket == '[') bracketsStack.push(']');
+            else {
+                //  Case: Closed Bracket
+                if (bracketsStack.isEmpty() || bracket != bracketsStack.pop()) {
+                    isValid = false;
+                    break;
+                }
+            }
+        }
+
+        if (!bracketsStack.isEmpty()) isValid = false;
+        return isValid;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
 
 }
