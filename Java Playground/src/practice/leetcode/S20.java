@@ -12,10 +12,12 @@ public class S20 {
     private void major() {
 
 //        String s = "({[(())]})";
+//        String s = "({[((})]))";
         String s = "()[]{}";
 
 //        boolean result = solutionUsingStack(s);
-        boolean result = solutionUsingStackWithMapping(s);
+//        boolean result = solutionUsingStackWithMapping(s);
+        boolean result = solutionUsingArray(s);
 
         System.out.println("Result: " + result);
 
@@ -93,5 +95,30 @@ public class S20 {
     }
 
     //  ----------------------------------------------------------------------------------------------------
+
+    public boolean solutionUsingArray(String s) {
+
+        boolean isValid = true;
+        char[] bracketsArr = new char[s.length()];
+        int index = -1;
+
+        for (char bracket : s.toCharArray()) {
+
+            if (bracket == '(' || bracket == '{' || bracket == '[') bracketsArr[++index] = bracket;
+            else {
+                if (index >= 0 && (isValidBracketPair(bracketsArr[index], bracket))) index--;
+                else {
+                    isValid = false;
+                    break;
+                }
+            }
+
+        }
+
+        if (index != -1) isValid = false;
+
+        return isValid;
+
+    }
 
 }

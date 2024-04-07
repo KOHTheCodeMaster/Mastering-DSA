@@ -27,6 +27,7 @@ Output: true
 Feasible Solutions:
 1. Using Stack with Pairs Check
 2. Using Stack with Mapping
+3. Using Array
 
 ----------------------------------------------------------------------------------------------------
 
@@ -78,6 +79,24 @@ Algorithm:
 
 Time Complexity: O(n), where n is the length of the input string `strBrackets`.
 Space Complexity: O(n), considering the space used by the stack.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Using Array
+
+Description:
+- Utilize an array-based stack to validate parentheses by checking pairs of open and closed brackets.
+
+Algorithm:
+1. Initialize a boolean variable `isValid` as true and an integer variable `index` as -1.
+2. Iterate through each character `bracket` in the input string `s`.
+    - If `bracket` is an open bracket ('(', '{', '['), push it onto the `bracketsArr` stack and increment `index`.
+    - If `bracket` is a closed bracket (')', '}', ']'), check if it forms a valid pair with the opening bracket at `bracketsArr[index]`.
+3. If all brackets are matched correctly, `index` will be -1 at the end.
+4. Return `isValid`.
+
+Time Complexity: O(n), where n is the length of the input string `s`.
+Space Complexity: O(n), considering the space used by the array `bracketsArr`.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -156,6 +175,31 @@ class Solution {
         }
 
         if (!stack.isEmpty()) isValid = false;
+        return isValid;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    public boolean solutionUsingArray(String s) {
+
+        boolean isValid = true;
+        char[] bracketsArr = new char[s.length()];
+        int index = -1;
+
+        for (char bracket : s.toCharArray()) {
+            if (bracket == '(' || bracket == '{' || bracket == '[') bracketsArr[++index] = bracket;
+            else {
+                if (index >= 0 && (isValidBracketPair(bracketsArr[index], bracket))) index--;
+                else {
+                    isValid = false;
+                    break;
+                }
+            }
+        }
+
+        if (index != -1) isValid = false;
+
         return isValid;
 
     }
