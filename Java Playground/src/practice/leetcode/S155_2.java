@@ -43,10 +43,8 @@ public class S155_2 {
     }
 
     public void push(int x) {
-        if (head == null)
-            head = new Node(x, x, null);
-        else
-            head = new Node(x, Math.min(x, head.min), head);
+        if (head == null) head = new Node(x, x, null);
+        else head = new Node(x, Math.min(x, head.min), head);
     }
 
     public void pop() {

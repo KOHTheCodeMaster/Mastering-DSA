@@ -1,15 +1,12 @@
 package practice.leetcode;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class S155 {
 
-    private final List<Integer> stack;
-    private final LinkedList<Integer> minStack;
-
-    private int top;
+    private final List<Integer> list;
+    private final List<Integer> minList;
 
     public static void main(String[] args) {
         S155 obj = new S155();
@@ -34,50 +31,45 @@ public class S155 {
         obj.push(4);
         obj.push(5);
 
-        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | Stack: " + obj.stack + " | MLL: " + obj.minStack);
+        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | List: " + obj.list + " | Min List: " + obj.minList);
         obj.pop();
-        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | Stack: " + obj.stack + " | MLL: " + obj.minStack);
+        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | List: " + obj.list + " | Min List: " + obj.minList);
         obj.pop();
-        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | Stack: " + obj.stack + " | MLL: " + obj.minStack);
+        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | List: " + obj.list + " | Min List: " + obj.minList);
         obj.pop();
-        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | Stack: " + obj.stack + " | MLL: " + obj.minStack);
+        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | List: " + obj.list + " | Min List: " + obj.minList);
         obj.pop();
-        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | Stack: " + obj.stack + " | MLL: " + obj.minStack);
+        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | List: " + obj.list + " | Min List: " + obj.minList);
         obj.pop();
-        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | Stack: " + stack + " | MLL: " + minStack);
+        System.out.println("Min: " + obj.getMin() + " | Top: " + obj.top() + " | List: " + list + " | Min List: " + minList);
 //        obj.pop();
 
     }
 
     public S155() {
-        stack = new ArrayList<>();
-        minStack = new LinkedList<>();
-        top = -1;
+        list = new ArrayList<>();
+        minList = new ArrayList<>();
     }
 
     public void push(int val) {
-        stack.add(val);
-        top++;
-        populateMinLinkedList(val);
-    }
-
-    private void populateMinLinkedList(int val) {
-        if (minStack.isEmpty() || val < minStack.getFirst()) minStack.addFirst(val);
-        else if (val < minStack.getLast()) minStack.add(1, val);
-        else minStack.addLast(val);
+        list.add(val);
+        if (minList.isEmpty() || val < minList.get(0)) minList.add(val);
     }
 
     public void pop() {
-        Integer element = stack.remove(top--);
-        minStack.remove(element);
+        if (list.isEmpty()) throw new IllegalStateException("Stack Is EMPTY!");
+
+        int element = list.remove(list.size() - 1);
+        if (!minList.isEmpty() && element == minList.get(minList.size() - 1)) minList.remove(minList.size() - 1);
     }
 
     public int top() {
-        return stack.get(top);
+        if (list.isEmpty()) throw new IllegalStateException("Stack Is EMPTY!");
+        return list.get(list.size() - 1);
     }
 
     public int getMin() {
-        return minStack.getFirst();
+        return minList.get(minList.size() - 1);
     }
 
 }

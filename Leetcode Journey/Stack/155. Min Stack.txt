@@ -1,0 +1,239 @@
+
+Date: 7th April 2024 - 01:08 PM
+
+Problem#: 155. Min Stack
+
+URL: https://leetcode.com/problems/min-stack/
+
+Keywords: Stack, Design, Data Structure
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+Implement the MinStack class:
+
+- MinStack() initializes the stack object.
+- void push(val) pushes the element val onto the stack.
+- void pop() removes the element on the top of the stack.
+- int top() gets the top element of the stack.
+- int getMin() retrieves the minimum element in the stack.
+
+Constraints:
+-231 <= val <= 231 - 1
+Methods pop, top and getMin operations will always be called on non-empty stacks.
+At most 3 * 104 calls will be made to push, pop, top, and getMin.
+
+Example:
+
+Input:
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+
+Output: [null,null,null,null,-3,null,0,-2]
+
+----------------------------------------------------------------------------------------------------
+
+Feasible Solutions:
+1. Using Two Lists
+2. Using a Single Stack with Pair
+3. Using a Node with Pair
+
+Key Takeaways:
+- Approach 1: Utilizes two separate lists to maintain elements and track the current minimum.
+- Approach 2: Employs a single stack to store pairs of elements (value, current minimum).
+- Approach 3: Utilizes a single node structure to represent each element in the stack, storing pairs of elements (value, current minimum).
+
+Notes:
+- Carefully handle edge cases such as empty stacks or unmatched parentheses.
+- Be mindful of the order of operations while pushing and popping elements from the stack.
+- All three approaches offer constant time complexity for stack operations but differ in their memory usage and implementation details.
+
+New Topics Learnt:
+- Various strategies for implementing a stack-based data structure.
+- Efficient methods for tracking the minimum element in a stack.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Using Two Lists
+
+Description:
+- Utilize two lists, one to store the elements and another to store the current minimum element.
+
+Algorithm:
+1. Initialize two lists, `list` and `minList`, to store the elements and their corresponding minimum values.
+2. For the `push` operation, add the element to the `list`, and if the `minList` is empty
+    or the new element is smaller than the current minimum, add the element to the `minList`.
+3. For the `pop` operation, remove the top element from the `list`,
+    and if the element is the same as the top element of the `minList`, remove it from the `minList`.
+4. For the `top` operation, return the top element of the `list`.
+5. For the `getMin` operation, return the top element of the `minList`.
+
+Time Complexity: O(1) for all operations - push, pop, top, getMin.
+Space Complexity: O(n) for the `list`, where n is the number of elements in the stack.
+
+Code for Approach:
+
+```java
+
+class MinStack {
+
+    private List<Integer> list;
+    private List<Integer> minList;
+
+    public MinStack() {
+        list = new ArrayList<>();
+        minList = new ArrayList<>();
+    }
+
+    public void push(int val) {
+        list.add(val);
+        if (minList.isEmpty() || val < minList.get(0)) minList.add(val);
+    }
+
+    public void pop() {
+        if (list.isEmpty()) throw new IllegalStateException("Stack Is EMPTY!");
+
+        int element = list.remove(list.size() - 1);
+        if (!minList.isEmpty() && element == minList.get(minList.size() - 1)) minList.remove(minList.size() - 1);
+    }
+
+    public int top() {
+        if (list.isEmpty()) throw new IllegalStateException("Stack Is EMPTY!");
+        return list.get(list.size() - 1);
+    }
+
+    public int getMin() {
+        return minList.get(minList.size() - 1);
+    }
+
+}
+```
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Using a Single Stack with Pair
+
+Description:
+- Utilize a single stack to store pairs of elements: (element, currentMin).
+
+Algorithm:
+1. Initialize a single stack, `stack`.
+2. For the `push` operation, push a pair (element, currentMin) onto the `stack`.
+   - Calculate the new current minimum as the minimum of the current minimum and the new element.
+3. For the `pop` operation, simply pop the top element from the `stack`.
+4. For the `top` operation, return the first element of the pair at the top of the `stack`.
+5. For the `getMin` operation, return the second element of the pair at the top of the `stack`.
+
+Time Complexity: O(1) for all operations - push, pop, top, getMin.
+Space Complexity: O(n) for the `stack`, where n is the number of elements in the stack.
+
+Note: This approach avoids the need for an additional stack but uses pairs to store the current minimum.
+
+Code for Approach 2:
+
+```java
+
+class MinStack {
+
+    private Stack<int[]> stack;
+
+    public MinStack() {
+        stack = new Stack<>();
+    }
+
+    public void push(int val) {
+        if (stack.isEmpty()) {
+            stack.push(new int[]{val, val});
+        } else {
+            int currentMin = Math.min(val, stack.peek()[1]);
+            stack.push(new int[]{val, currentMin});
+        }
+    }
+
+    public void pop() {
+        stack.pop();
+    }
+
+    public int top() {
+        return stack.peek()[0];
+    }
+
+    public int getMin() {
+        return stack.peek()[1];
+    }
+}
+```
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Using a Node with Pair
+
+Description:
+- Utilize a single Node class to represent each element in the stack, storing pairs of elements: (element, currentMin).
+
+Algorithm:
+1. Initialize a Node, `head`, to represent the top of the stack.
+2. For the `push` operation, create a new node with the value `x`,
+    where the minimum value is the minimum of `x` and the current minimum stored in the previous node.
+3. For the `pop` operation, simply move the `head` pointer to the next node.
+4. For the `top` operation, return the value of the current `head` node.
+5. For the `getMin` operation, return the minimum value stored in the current `head` node.
+
+Time Complexity: O(1) for all operations - push, pop, top, getMin.
+Space Complexity: O(n) for the stack, where n is the number of elements in the stack.
+
+Note:
+    - This approach optimizes memory usage by storing minimum values alongside each element in the stack,
+        without the need for additional data structures.
+    - It offers constant time complexity for stack operations and is suitable for scenarios where memory efficiency is critical.
+
+Code for Approach:
+
+```java
+class MinStack {
+
+    private Node head;
+
+    public MinStack() {
+        head = null;
+    }
+
+    public void push(int val) {
+        if (head == null) head = new Node(val, val, null);
+        else head = new Node(val, Math.min(val, head.min), head);
+    }
+
+    public void pop() {
+        head = head.next;
+    }
+
+    public int top() {
+        return head.val;
+    }
+
+    public int getMin() {
+        return head.min;
+    }
+
+    private static class Node {
+        int val;
+        int min;
+        Node next;
+
+        private Node(int val, int min, Node next) {
+            this.val = val;
+            this.min = min;
+            this.next = next;
+        }
+    }
+}
+```
+
+----------------------------------------------------------------------------------------------------
