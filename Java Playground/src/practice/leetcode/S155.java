@@ -53,7 +53,7 @@ public class S155 {
 
     public void push(int val) {
         list.add(val);
-        if (minList.isEmpty() || val < minList.get(0)) minList.add(val);
+        if (minList.isEmpty() || val <= minList.get(minList.size() - 1)) minList.add(val);
     }
 
     public void pop() {

@@ -5,7 +5,7 @@ Problem#: 155. Min Stack
 
 URL: https://leetcode.com/problems/min-stack/
 
-Keywords: Stack, Design, Data Structure
+Keywords: Stack, Design, Data Structure, LinkedList, Node
 
 Dev: K.O.H..!! (Harshit Gupta)
 
@@ -94,7 +94,7 @@ class MinStack {
 
     public void push(int val) {
         list.add(val);
-        if (minList.isEmpty() || val < minList.get(0)) minList.add(val);
+        if (minList.isEmpty() || val <= minList.get(minList.size() - 1)) minList.add(val);
     }
 
     public void pop() {

@@ -1,13 +1,11 @@
 package practice.leetcode;
 
-import java.util.Stack;
+public class S155_3 {
 
-public class S155_2 {
-
-    private final Stack<int[]> stack;
+    private Node head;
 
     public static void main(String[] args) {
-        S155_2 obj = new S155_2();
+        S155_3 obj = new S155_3();
         obj.major();
     }
 
@@ -21,7 +19,7 @@ public class S155_2 {
     private void solutionUsingStack() {
 
         //  3 1 2 0 4 5
-        S155_2 obj = new S155_2();
+        S155_3 obj = new S155_3();
         obj.push(3);
         obj.push(1);
         obj.push(2);
@@ -44,25 +42,33 @@ public class S155_2 {
 
     }
 
-    public S155_2() {
-        stack = new Stack<>();
-    }
-
-    public void push(int val) {
-        if (stack.isEmpty()) stack.push(new int[]{val, val});
-        else stack.push(new int[]{val, Math.min(val, stack.peek()[1])});
+    public void push(int x) {
+        if (head == null) head = new Node(x, x, null);
+        else head = new Node(x, Math.min(x, head.min), head);
     }
 
     public void pop() {
-        stack.pop();
+        head = head.next;
     }
 
     public int top() {
-        return stack.peek()[0];
+        return head.val;
     }
 
     public int getMin() {
-        return stack.peek()[1];
+        return head.min;
+    }
+
+    private static class Node {
+        int val;
+        int min;
+        Node next;
+
+        private Node(int val, int min, Node next) {
+            this.val = val;
+            this.min = min;
+            this.next = next;
+        }
     }
 
 }
