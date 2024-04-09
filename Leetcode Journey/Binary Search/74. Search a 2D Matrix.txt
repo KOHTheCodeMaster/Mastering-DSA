@@ -1,0 +1,188 @@
+
+Date: 9th April 2023 - 10:46 AM
+
+Problem#: 74. Search a 2D Matrix
+
+URL: https://leetcode.com/problems/search-a-2d-matrix/
+
+Keywords: Binary Search, Matrix, Search
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given a matrix where each row and column is sorted in ascending order, write a function to determine if a target element is present in the matrix.
+
+Example:
+Input:
+matrix = [
+  [1,   3,  5,  7],
+  [10, 11, 16, 20],
+  [23, 30, 34, 50]
+]
+target = 3
+Output: true
+
+
+Feasible Solutions:
+1. Using Binary Search
+2. Using Binary Search (2 Pass)
+3. Using Two Pointers
+
+----------------------------------------------------------------------------------------------------
+
+Key Takeaways:
+- Utilizing binary search to efficiently search a sorted matrix.
+- Optimizing search time complexity to logarithmic.
+
+Notes:
+- Handling edge cases and out-of-bounds scenarios efficiently.
+
+New Topics Learnt:
+- Optimizing binary search algorithm for a specific problem domain.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Using Binary Search
+
+Description:
+- This method implements a solution to search for a target element in a sorted 2D matrix using binary search.
+- The algorithm efficiently searches for the target element by performing binary search on the matrix.
+- The matrix is assumed to be sorted row-wise and column-wise.
+
+Algorithm:
+
+1. Edge Case Check: 
+   - If the target is less than the first element of the matrix or greater than the last element,
+    it's guaranteed that the target doesn't exist in the matrix. Return `false`.
+
+2. Initialize Variables:
+   - Initialize a boolean variable `targetFound` as false to track if the target is found.
+   - Get the number of rows (`rows`) and columns (`cols`) in the matrix.
+   - Initialize two pointers `left` and `right`.
+   - `left` points to the first element of the matrix and `right` points to the last element of the matrix.
+
+3. Binary Search:
+   - When performing binary search on a 2D matrix represented as a 1D array, the mid-index calculated is a linear index of the flattened matrix.
+   - Use a while loop to perform binary search until `left` is less than or equal to `right`.
+   - Calculate the mid-index using `mid = left + (right - left) / 2`.
+   - To convert this linear index to row and column indices, we use the formulas `mid / cols` and `mid % cols`, respectively.
+   - Convert the mid-index to row and column indices:
+        - Calculate the row index using `row = mid / cols`.
+        - Calculate the column index using `col = mid % cols`.  =*/
+   - Initialize midVal with the value of the element at the mid-index using `matrix[mid / cols][mid % cols]`.
+
+   Explanation:
+   - `mid / cols` calculates the row index by dividing the mid-index by the number of columns in the matrix.
+        This operation determines how many complete rows are before the mid-index.
+   - `mid % cols` calculates the column index by taking the remainder when dividing the mid-index by the number of columns.
+        This operation determines the column position within the row.
+
+4. Check Target:
+   - If the midVal is equal to the target, set `targetFound` to true and break the loop.
+   - If the midVal is greater than the target, update `right` to `mid - 1`.
+   - If the midVal is less than the target, update `left` to `mid + 1`.
+
+5. Return Result:
+   - After the loop, return the value of `targetFound`, indicating whether the target was found in the matrix or not.
+
+Time Complexity:
+- Time complexity is O(log(m * n)), where m is the number of rows and n is the number of columns in the matrix. 
+- This is because binary search is performed on a matrix of dimensions m x n.
+
+Space Complexity:
+- Space complexity is O(1) as only a few variables are used regardless of the size of the input matrix.
+
+----------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------
+
+Approach 3: Using Two Pointers
+
+Description:
+- This approach aims to find the target element in a sorted 2D matrix by utilizing two pointers,
+    one starting from the top-left corner and the other from the top-right corner.
+- By comparing the target element with the element at each pointer's position,
+    the search space is efficiently narrowed down until the target is found or the entire matrix is traversed.
+
+Algorithm:
+
+1. Edge Case Check:
+   - If the target is less than the top-right element or greater than the bottom-left element,
+    it's guaranteed that the target doesn't exist in the matrix. Return `false`.
+
+2. Initialize Pointers:
+   - Initialize two pointers `left` and `right`.
+   - `left` starts from the top row, at the first column.
+   - `right` starts from the last column of the first row.
+
+3. Iterate Over Matrix:
+   - While `left` is less than the number of rows and `right` is greater than or equal to 0, continue the loop.
+   - Compare the element at the current position (`matrix[left][right]`) with the target.
+        - If they are equal, set `targetFound` to true and break the loop.
+        - If the element is greater than the target, decrement `right` to move towards smaller elements.
+        - If the element is less than the target, increment `left` to move towards larger elements.
+
+4. Return Result:
+   - After the loop, return the value of `targetFound`, indicating whether the target was found in the matrix or not.
+
+Time Complexity:
+- Time complexity is O(m + n), where m is the number of rows and n is the number of columns in the matrix.
+- This is because the pointers traverse at most m rows and n columns, covering the entire matrix.
+
+Space Complexity:
+- Space complexity is O(1) as only a few variables are used regardless of the size of the input matrix.
+
+Code:
+```java
+private boolean solutionUsingTwoPointers(int[][] matrix, int target) {
+    boolean targetFound = false;
+
+    int left = 0;                            // Start from top row
+    int right = matrix[0].length - 1;        // Start from last column of the first row
+
+    while (left < matrix.length && right >= 0) {
+        if (matrix[left][right] == target) {
+            targetFound = true;
+            break;
+        } else if (matrix[left][right] > target) {
+            right--;                         // Move towards smaller elements
+        } else {
+            left++;                          // Move towards larger elements
+        }
+    }
+
+    return targetFound;
+}
+```
+
+In-depth explanation for Time Complexity:
+
+We're using two pointers to traverse the matrix. The left pointer starts from the top row and moves downwards,
+    while the right pointer starts from the last column of the first row and moves towards the left.
+
+Let's analyze how many steps these pointers take to cover the entire matrix:
+
+- The left pointer starts from the first row and iterates downwards until it reaches the last row.
+    This takes 'm' steps, where 'm' is the number of rows in the matrix.
+- The right pointer starts from the last column of the first row and iterates towards the left until it reaches the first column.
+    This takes 'n' steps, where 'n' is the number of columns in the matrix.
+
+So, the total number of steps taken by both pointers combined is 'm + n'.
+
+Here's why the time complexity is O(m + n) and not O(m * n):
+
+- In this approach, we don't visit every cell of the matrix. Instead, we traverse either vertically or horizontally, covering 'm + n' cells in total.
+- We're not performing a search operation within each cell of the matrix, but rather navigating through rows or columns to find the target element.
+- The time taken to traverse the matrix is directly proportional to the number of rows and columns we need to traverse, which is 'm + n'.
+
+Therefore, the time complexity for Approach 3 is O(m + n), as it represents the number of steps taken to traverse the entire matrix,
+    considering both rows and columns.
+
+----------------------------------------------------------------------------------------------------
