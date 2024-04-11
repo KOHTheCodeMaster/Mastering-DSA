@@ -13,10 +13,15 @@ public class S779 {
         int n = 30;
         int k = 434991989;
 
-        int result = solutionUsingBruteForce(n, k);
+        int result = solutionUsingBitManipulation(n, k);
+//        int result = solutionUsingBruteForce(n, k);
 
         System.out.println("Result: " + result);
 
+    }
+
+    private int solutionUsingBitManipulation(int n, int k) {
+        return Integer.bitCount(k - 1) % 2;
     }
 
     //  ----------------------------------------------------------------------------------------------------

@@ -97,6 +97,43 @@ Time Complexity:
 Space Complexity:
 - Space complexity is O(1) as only a few variables are used regardless of the size of the input matrix.
 
+Code:
+
+```java
+
+private boolean solutionUsingBinarySearch(int[][] matrix, int target) {
+    /*
+        Time Complexity:    O(log(m * n)) - Binary search over a matrix of dimensions m x n
+        Space Complexity:   O(1) - Constant space, as only a few variables are used
+        Approach:           Using Binary Search
+    */
+
+    // Edge Case Check: If the target is out of bounds, return false.
+    if (target < matrix[0][0] || target > matrix[matrix.length - 1][matrix[0].length - 1]) return false;
+
+    boolean targetFound = false;
+    int rows = matrix.length;
+    int cols = matrix[0].length;
+    int left = 0;
+    int right = (rows * cols) - 1;
+
+    while (left <= right) {
+
+        int mid = left + (right - left) / 2;
+        int midVal = matrix[mid / cols][mid % cols];
+
+        if (midVal == target) {
+            targetFound = true;
+            break;
+        } else if (midVal > target) right = mid - 1;
+        else left = mid + 1;
+
+    }
+
+    return targetFound;
+}
+```
+
 ----------------------------------------------------------------------------------------------------
 
 Approach 2: Using Binary Search 2-Pass
