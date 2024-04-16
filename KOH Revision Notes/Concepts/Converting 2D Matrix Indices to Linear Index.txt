@@ -1,0 +1,122 @@
+
+Date: 16th Apr 2K24 - 01:32 PM..!!
+Concept: Converting 2D Matrix Indices to Linear Index
+
+Keywords: Matrix, Binary Search
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Converting 2D Matrix Indices to Linear Index:
+---------------------------------------------
+
+Understanding how to convert 2D matrix indices to linear indices and vice versa is a fundamental concept in algorithms,
+especially in problems like searching, is crucial in data structures and algorithms (DSA).
+
+Let's delve into the concept of converting 2D matrix indices to linear indices and vice versa,
+and how it's applied in the LeetCode problem 74: Search a 2D Matrix.
+
+1. Converting to Linear Index:
+When dealing with a 2D matrix in algorithms, sometimes it's convenient to treat it as a linear array.
+Converting 2D indices to linear indices allows us to apply binary search, which works efficiently on linear arrays.
+
+To convert a 2D matrix index `(row, col)` to a linear index `index`, we use the formula:
+```
+index = row * numOfCols + col
+```
+Here, `numOfCols` is the number of columns in the matrix.
+
+2. Converting Linear Index to 2D Matrix Indices:
+Converting a linear index back to 2D indices involves reversing the process. Given a linear index `index`,
+we can find its corresponding row and column using the formulas:
+
+```
+row = index / numOfCols
+col = index % numOfCols
+```
+Here, `/` represents integer division, and `%` represents the modulo operation.
+
+3. Application in Binary Search:
+In the problem 74: Search a 2D Matrix, the matrix is sorted row-wise, meaning each row is sorted in ascending order,
+and the first element of each row is greater than the last element of the previous row. This property allows us to apply binary search efficiently.
+
+Here's a high-level overview of the algorithm:
+1. Treat the 2D matrix as a linear array.
+2. Perform binary search on the linear array to find the target element.
+3. Convert the linear index of the target element back to 2D matrix indices.
+
+Now, let's analyze the code:
+
+```java
+
+private boolean solutionUsingBinarySearch(int[][] matrix, int target) {
+    /*
+        Time Complexity:    O(log(m * n)) - Binary search over a matrix of dimensions m x n
+        Space Complexity:   O(1) - Constant space, as only a few variables are used
+        Approach:           Using Binary Search
+    */
+
+    // Check for Edge Cases: If the target is out of bounds, return false.
+    if (target < matrix[0][0] || target > matrix[matrix.length - 1][matrix[0].length - 1]) return false;
+
+    boolean targetFound = false;
+    int rows = matrix.length;
+    int cols = matrix[0].length;
+    int left = 0;
+    int right = (rows * cols) - 1;
+
+    while (left <= right) {
+
+        int mid = left + (right - left) / 2;
+        int midVal = matrix[mid / cols][mid % cols];
+
+        if (midVal == target) {
+            targetFound = true;
+            break;
+        } else if (midVal > target) right = mid - 1;
+        else left = mid + 1;
+
+    }
+
+    return targetFound;
+}
+
+```
+
+Algorithm Overview:
+  - Initialize `left` to 0 and `right` to `m * n - 1`.
+  - While `left <= right`, calculate `mid`, convert it to 2D indices, and compare `midVal` with the target.
+  - Update `left` or `right` based on the comparison to narrow down the search space.
+
+
+Insights and Observations:
+1. Initialization:
+    - `left` is initialized to 0, and `right` is initialized to the last index of the linear array (`m * n - 1`).
+2. Binary Search:
+    - The algorithm performs binary search on the linear array using `left`, `right`, and `mid`. `mid` is calculated as the average of `left` and `right`.
+3. Converting to 2D Indices:
+    - The linear index `mid` is converted back to 2D matrix indices (`mid // n` for row and `mid % n` for column) to access `midVal`.
+4. Comparison with Target:
+    - `midVal` is compared with the target. Based on the comparison, `left` or `right` is updated accordingly to narrow down the search space.
+
+
+- Key Takeaways:
+  - Mastering index conversion enables efficient handling of 2D matrices in algorithms.
+  - Practice applying binary search on 2D matrices for optimized solutions.
+  - Understand problem constraints to devise effective algorithms.
+
+
+Summary:
+- Converting Indices: To convert 2D matrix indices `(row, col)` to linear index `index`:
+  - `index = row * numOfCols + col`
+- Reversing Indices: To convert linear index `index` to 2D matrix indices `(row, col)`:
+  - `row = index / numOfCols`
+  - `col = index % numOfCols`
+- Application in Binary Search: In problem-solving, treating a 2D matrix as a linear array enables efficient binary search algorithms.
+
+This encapsulates the core concepts of converting indices and applying binary search on 2D matrices for problem-solving.
+
+----------------------------------------------------------------------------------------------------
