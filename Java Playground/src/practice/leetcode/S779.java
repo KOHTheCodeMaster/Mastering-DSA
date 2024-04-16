@@ -10,8 +10,8 @@ public class S779 {
 
     private void major() {
 
-        int n = 30;
-        int k = 434991989;
+        int n = 5;
+        int k = 9;
 
         int result = solutionUsingBitManipulation(n, k);
 //        int result = solutionUsingBruteForce(n, k);
@@ -21,7 +21,17 @@ public class S779 {
     }
 
     private int solutionUsingBitManipulation(int n, int k) {
-        return Integer.bitCount(k - 1) % 2;
+//        return Integer.bitCount(k - 1) % 2;
+        return recursiveApproach(n, k);
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private int recursiveApproach(int n, int k) {
+        if (n == 1) return 0;     // Base Case
+        int prev = recursiveApproach(n - 1, (k + 1) / 2);   // Recursive Step
+        return (prev == 0) ? (k % 2 == 0 ? 1 : 0) : (k % 2 == 0 ? 0 : 1);
     }
 
     //  ----------------------------------------------------------------------------------------------------
