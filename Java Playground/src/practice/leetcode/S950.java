@@ -1,7 +1,7 @@
 
 package practice.leetcode;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class S950 {
 
