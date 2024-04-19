@@ -35,7 +35,6 @@ public class S5 {
 //        String s = "aacabdkacaa";
 
         String result = solutionUsingTwoPointers(s);
-//        String result = solution2(s);
 
         System.out.println("Result: " + result);
 
@@ -64,32 +63,33 @@ public class S5 {
             Character currentChar = s.charAt(i);
             List<Integer> indexList = charIndicesMap.get(currentChar);
 
-            if (visitedSet.contains(currentChar)) continue; //  Skip: currentChar is already visited
+            // Skip if currentChar is already visited
+            if (visitedSet.contains(currentChar)) continue;
             else visitedSet.add(currentChar);
 
-            if (indexList.size() <= 1) continue;    //  Skip strings starting with current character since it occurs only once
+            // Skip strings starting with current character since it occurs only once
+            if (indexList.size() <= 1) continue;
 
-            //  Skip: if longestPalindrome length is already greater than that of remaining string to be iterated
+            // Skip if longestPalindrome length is already greater than that of remaining string to be iterated
             if (longestPalindrome.length() >= s.length() - i + 1) break;
 
             longestPalindrome = findLongestPalindrome(s, indexList, longestPalindrome);
 
         }
 
-//        System.out.println("longestPalindrome: " + longestPalindrome);
-
         return longestPalindrome;
 
     }
 
     private String findLongestPalindrome(String s, List<Integer> indexList, String longestPalindrome) {
+
         //  Process strings starting and ending with currentChar
         int leftIndex = 0;
         int left = indexList.get(leftIndex);
         int rightIndex = indexList.size() - 1;
         int right = indexList.get(rightIndex);
 
-        //  Check if longestPalindrome length is greater than max possible length of strings starting and ending with currentChar
+        // Check if longestPalindrome length is greater than max possible length of strings starting and ending with currentChar
         if (longestPalindrome.length() >= right - left + 1) return longestPalindrome;
 
         while (left < right) {
@@ -98,11 +98,10 @@ public class S5 {
             boolean isPalindrome = isValidPalindrome(str);
             if (isPalindrome) {
 
+                // Update longestPalindrome if current substring is longer
                 longestPalindrome = longestPalindrome.length() > str.length() ? longestPalindrome : str;
 
-                //  Check length of next string for current character by moving left to next index and right at the end of indexList
-                //  nextLeft = indexList.get(leftIndex + 1);    |   nextRight = indexList.get(indexList.size() - 1);
-                //  Add 1 for string length since positions are 0-indexed
+                // Check length of next string for current character by moving left to next index and right at the end of indexList
                 int nextStrIterationLength = indexList.get(indexList.size() - 1) - indexList.get(leftIndex + 1) + 1;
 
                 if (longestPalindrome.length() >= nextStrIterationLength) break;
@@ -112,7 +111,7 @@ public class S5 {
                     rightIndex = indexList.size() - 1;
                     right = indexList.get(rightIndex);
                 }
-            } else right = indexList.get(--rightIndex);
+            } else right = indexList.get(--rightIndex); // Decrease right index if the substring is not a palindrome
 
             if (left == right) {
                 //  Move Left to next & Reset Right
@@ -127,6 +126,7 @@ public class S5 {
 
     private Map<Character, List<Integer>> generateCharIndicesMap(char[] charArr) {
 
+        // Generate a map of character indices
         Map<Character, List<Integer>> indexMap = new HashMap<>();
 
         for (int i = 0; i < charArr.length; i++) {

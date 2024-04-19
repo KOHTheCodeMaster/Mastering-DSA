@@ -1,0 +1,280 @@
+
+Date: 19th April 2K23 - 10:14 PM
+
+LeetCode Problem #: 5. Longest Palindromic Substring
+
+URL: https://leetcode.com/problems/longest-palindromic-substring/
+
+Keywords: Two Pointers, String Manipulation, Character Array, Palindrome
+
+Dev: K.O.H..!! (Harshit Gupta)
+
+GitHub: https://github.com/KOHTheCodeMaster/Mastering-DSA
+
+----------------------------------------------------------------------------------------------------
+
+Problem:
+
+Given a string s, return the longest palindromic substring in s.
+
+Example:
+Input: s = "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+
+Feasible Solutions:
+1. Using Two Pointers
+2. Dynamic Programming
+
+----------------------------------------------------------------------------------------------------
+
+Notes:
+- Carefully handle edge cases such as empty strings or strings with single characters.
+
+New Topics Learnt:
+- Techniques for finding and validating palindromic substrings in a given string.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 1: Using Two Pointers
+
+Description:
+- This method finds the longest palindromic substring using two pointers technique.
+
+Algorithm:
+1. Handle Edge Case:
+   - If the input string is null or has a length less than or equal to 1, return the input string as it is a palindrome.
+2. Initialize Variables:
+   - Initialize the longest palindromic substring variable as the first character of the input string.
+   - Convert the input string to a character array for efficient traversal.
+   - Create a set to store visited characters.
+   - Generate a map to store the indices of characters in the input string.
+3. Iterate Through Characters:
+   - Iterate through each character of the input string.
+   - Check if the character is already visited. If yes, continue to the next iteration.
+   - If the character occurs only once in the input string, continue to the next iteration.
+   - Skip iteration if the length of the longest palindrome substring is already greater than or equal to the remaining substring length.
+   - Find the longest palindrome substring starting and ending with the current character.
+   - Update the longest palindrome substring if a longer palindrome is found.
+4. Return Result:
+   - After the loop, return the longest palindromic substring found.
+
+Time Complexity:
+- Time complexity is O(n^2), where n is the length of the input string.
+- This is because we iterate through the string and check each substring for palindrome property.
+
+Space Complexity:
+- Space complexity is O(n), where n is the length of the input string.
+- This is because we store the longest palindromic substring and additional variables for traversal.
+
+----------------------------------------------------------------------------------------------------
+
+Approach 2: Dynamic Programming
+
+Description:
+- This method finds the longest palindromic substring using dynamic programming.
+
+Algorithm:
+1. Handle Edge Case:
+   - If the input string is null or has a length less than or equal to 1, return the input string as it is a palindrome.
+2. Initialize Variables:
+   - Initialize a 2D boolean array `dp` of size `n x n`, where `n` is the length of the input string.
+     - `dp[i][j]` represents whether the substring from index `i` to index `j` is a palindrome.
+     - Initialize all elements of `dp` to `false`.
+   - Initialize variables `start` and `maxLen` to keep track of the starting index and length of the longest palindromic substring found so far.
+3. Dynamic Programming:
+   - Iterate through all possible substring lengths `len` from 1 to `n`.
+   - For each substring length `len`, iterate through all starting indices `i` from 0 to `n - len`.
+   - Calculate the ending index `j` as `i + len - 1`.
+   - If the substring from index `i` to index `j` is a palindrome
+     (i.e., `s.charAt(i) == s.charAt(j)` and `dp[i + 1][j - 1]` is true or `len` is 1 or 2), set `dp[i][j]` to true.
+   - Update `start` and `maxLen` if the current substring is longer than the previously found palindromic substring.
+4. Return Result:
+   - After the dynamic programming process, the longest palindromic substring is found using the `start` and `maxLen` variables.
+
+Time Complexity:
+- Time complexity is O(n^2), where n is the length of the input string.
+- This is because we iterate through all substrings of the input string and validate whether they are palindromes.
+
+Space Complexity:
+- Space complexity is O(n^2) as we use a 2D boolean array to store whether each substring is a palindrome.
+
+----------------------------------------------------------------------------------------------------
+
+Complete Java Code Solution:
+
+```java
+
+class Solution {
+
+    public String longestPalindrome(String s) {
+
+        return solutionUsingTwoPointers(s);
+
+        // return solutionUsingDynamicProgramming(s);
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private String solutionUsingTwoPointers(String s) {
+        /*
+            Time Complexity:    O(n^2) - Iterate String s
+            Space Complexity:   O(n) - for the result string
+            Approach:           Using Two Pointers
+         */
+
+        //  Handle Edge Case
+        if (s == null || s.length() <= 1) return s;
+
+        String longestPalindrome = s.substring(0, 1);
+        char[] charArr = s.toCharArray();
+        Set<Character> visitedSet = new HashSet<>();
+
+        Map<Character, List<Integer>> charIndicesMap = generateCharIndicesMap(charArr);
+
+        for (int i = 0; i < s.length(); i++) {
+            //  Iterate each character of string
+            Character currentChar = s.charAt(i);
+            List<Integer> indexList = charIndicesMap.get(currentChar);
+
+            // Skip if currentChar is already visited
+            if (visitedSet.contains(currentChar)) continue;
+            else visitedSet.add(currentChar);
+
+            // Skip strings starting with current character since it occurs only once
+            if (indexList.size() <= 1) continue;
+
+            // Skip if longestPalindrome length is already greater than that of remaining string to be iterated
+            if (longestPalindrome.length() >= s.length() - i + 1) break;
+
+            longestPalindrome = findLongestPalindrome(s, indexList, longestPalindrome);
+
+        }
+
+        return longestPalindrome;
+
+    }
+
+    private String findLongestPalindrome(String s, List<Integer> indexList, String longestPalindrome) {
+
+        //  Process strings starting and ending with currentChar
+        int leftIndex = 0;
+        int left = indexList.get(leftIndex);
+        int rightIndex = indexList.size() - 1;
+        int right = indexList.get(rightIndex);
+
+        // Check if longestPalindrome length is greater than max possible length of strings starting and ending with currentChar
+        if (longestPalindrome.length() >= right - left + 1) return longestPalindrome;
+
+        while (left < right) {
+
+            String str = s.substring(left, right + 1);
+            boolean isPalindrome = isValidPalindrome(str);
+            if (isPalindrome) {
+
+                // Update longestPalindrome if current substring is longer
+                longestPalindrome = longestPalindrome.length() > str.length() ? longestPalindrome : str;
+
+                // Check length of next string for current character by moving left to next index and right at the end of indexList
+                int nextStrIterationLength = indexList.get(indexList.size() - 1) - indexList.get(leftIndex + 1) + 1;
+
+                if (longestPalindrome.length() >= nextStrIterationLength) break;
+                else {
+                    //  Move Left to next & Reset Right
+                    left = indexList.get(++leftIndex);
+                    rightIndex = indexList.size() - 1;
+                    right = indexList.get(rightIndex);
+                }
+            } else right = indexList.get(--rightIndex); // Decrease right index if the substring is not a palindrome
+
+            if (left == right) {
+                //  Move Left to next & Reset Right
+                left = indexList.get(++leftIndex);
+                rightIndex = indexList.size() - 1;
+                right = indexList.get(rightIndex);
+            }
+
+        }
+        return longestPalindrome;
+    }
+
+    private Map<Character, List<Integer>> generateCharIndicesMap(char[] charArr) {
+
+        // Generate a map of character indices
+        Map<Character, List<Integer>> indexMap = new HashMap<>();
+
+        for (int i = 0; i < charArr.length; i++) {
+            Character c = charArr[i];
+
+            List<Integer> indexList = indexMap.getOrDefault(c, new ArrayList<>());
+            indexList.add(i);
+
+            indexMap.put(c, indexList);
+        }
+
+        return indexMap;
+    }
+
+    private boolean isValidPalindrome(String str) {
+
+        boolean isPalindrome = true;
+
+        int left = 0;
+        int right = str.length() - 1;
+
+        while (left <= right) {
+            if (str.charAt(left++) != str.charAt(right--)) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        return isPalindrome;
+
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+    private String solutionUsingDynamicProgramming(String s) {
+        /*
+            Time Complexity:    O(n^2) - Iterate through all substrings
+            Space Complexity:   O(n^2) - Store whether each substring is a palindrome
+            Approach:           Dynamic Programming
+         */
+
+        // Handle Edge Case
+        if (s == null || s.length() <= 1) return s;
+
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+        int start = 0;
+        int maxLen = 1;
+
+        // Initialize dp array for single characters
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+        }
+
+        // Dynamic Programming for substrings of length 2 and above
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i <= n - len; i++) {
+                int j = i + len - 1;
+                if (s.charAt(i) == s.charAt(j) && (len == 2 || dp[i + 1][j - 1])) {
+                    dp[i][j] = true;
+                    if (len > maxLen) {
+                        start = i;
+                        maxLen = len;
+                    }
+                }
+            }
+        }
+
+        return s.substring(start, start + maxLen);
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
+```
+
+----------------------------------------------------------------------------------------------------
