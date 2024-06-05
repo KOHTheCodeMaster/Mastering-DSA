@@ -13,13 +13,16 @@ public class S1351 {
         int[][] grid = {{4, 3, 2, -1}, {3, 2, 1, -1}, {1, 1, -1, -2}, {-1, -1, -2, -3}};
 //        int[][] grid = {{3, 2}, {1, 0}};
 
-        int result = solutionUsingLowerBoundBinarySearch(grid);
+        int result = solutionUsingBruteForce(grid);
+        System.out.println("Brute Force -> Result: " + result);
+
+        result = solutionUsingLowerBoundBinarySearch(grid);
         System.out.println("Binary Search -> Result: " + result);
 
         result = solutionUsingTwoPointersTopRight(grid);
         System.out.println("Two Pointers (Top-right) -> Result: " + result);
 
-        result = solutionUsingTwoPointersTopRight2(grid);
+        result = solutionUsingTopRightTraversal(grid);
         System.out.println("Two Pointers (Top-right) via for loops -> Result: " + result);
 
         result = solutionUsingTwoPointersBottomLeft(grid);
@@ -29,11 +32,27 @@ public class S1351 {
 
     //  ----------------------------------------------------------------------------------------------------
 
+
+    public int solutionUsingBruteForce(int[][] grid) {
+        /*
+            Time Complexity:    O(n * m)
+            Space Complexity:   O(1) - Constant Memory
+            Approach:           Brute Force
+         */
+        int negativeNumCount = 0;
+        for (int[] row : grid)
+            for (int num : row)
+                if (num < 0) negativeNumCount++;
+        return negativeNumCount;
+    }
+
+    //  ----------------------------------------------------------------------------------------------------
+
     public int solutionUsingLowerBoundBinarySearch(int[][] grid) {
         /*
             Time Complexity:    O(n * (log m)) - Binary Search - O(log m) for each row.
             Space Complexity:   O(1) - Constant Memory
-            Approach:           Binary Search - Upper Bound
+            Approach:           Binary Search - Lower Bound
          */
 
         int target = -1;
@@ -86,7 +105,7 @@ public class S1351 {
 
     @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
-    public int solutionUsingTwoPointersTopRight2(int[][] grid) {
+    public int solutionUsingTopRightTraversal(int[][] grid) {
         /*
             Time Complexity:    O(m + n) - Process each row and column at most once
             Space Complexity:   O(1) - Constant Memory
